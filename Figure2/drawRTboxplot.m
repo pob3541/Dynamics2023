@@ -16,7 +16,7 @@ for n=1:length(cueLabelV)
     cueText{n} = sprintf('%2.0f',cueLabelV(n));
     cueColors{n} = 'b'; 
 end
-cohLabels = getTextLabel(cueId, cueText',cueColors')
+cohLabels = getTextLabel(cueId, cueText',cueColors');
 
 axes(whichPlot)
 
@@ -32,8 +32,8 @@ X(:,1) = log10(cueV(V));
 X(:,2) = 1;
 Y = log10(RT(V));
 [~,~,~,~,st] = regress(Y,X);
-st(1)
-axis tight
+st(1);
+axis tight;
 axis square;
 
 text(4, 2200, sprintf('%3.2f%',100*st(1)));

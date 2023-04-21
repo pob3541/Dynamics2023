@@ -29,7 +29,7 @@ switch(txt)
                     ShadedError(t{:,ai,j},y{:,ai,j}',1*SEM{:,ai,j}');
                     LineId(ai) = plot(t{:,ai,j},y{:,ai,j},'LineWidth',1.5,'LineStyle',LS);%,'Color',colors{i});
                 end
-                setLineColors(LineId,'linewidth',3,'linestyle',LS);
+                setLineColors_gs(LineId,'linewidth',3,'linestyle',LS);
             else
                 b=b1(2);
                 LineId = [];
@@ -43,7 +43,7 @@ switch(txt)
                     ShadedError(t{:,ai,j},y{:,ai,j}',1*SEM{:,ai,j}');
                     LineId(ai) =plot(t{:,ai,j},y{:,ai,j},'LineWidth',1.5,'LineStyle',LS);
                 end
-                setLineColors(LineId,'linewidth',3,'linestyle',LS);
+                setLineColors_gs(LineId,'linewidth',3,'linestyle',LS);
                 
             end
         end
