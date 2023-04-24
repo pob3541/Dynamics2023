@@ -50,10 +50,10 @@ Running the following code will initialize the data to recreate all of the plots
 
 
 ## Figure 5: Single-trial analysis and decoding
-Load classifier.mat, regression.mat, result.mat, t_14October2013_345678.mat from DynamicsData/Fig5 into your workspace.
+Load regressions.mat from /Figure5 into your workspace.
 
 Running the following code will initialize the data to recreate all of the plots in Figure 5. 
-> D= PMddecoding(decode) 
+> D= PMddecoding(regressions) 
 
 The following commands will plot all parts of Figure 5: 
 

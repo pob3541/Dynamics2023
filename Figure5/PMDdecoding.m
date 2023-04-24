@@ -9,23 +9,25 @@ classdef PMDdecoding < handle
         lfads
         reg
         dec
-        
+
     end
 
     methods
-        function D = PMDdecoding(decode)
+        function D = PMDdecoding(regressions)
 
-            D.lfads=InitLFADS(D,decode);
-            D.reg=InitReg(D,decode);
-            D.dec=InitDec(D,decode);
+            D.lfads=InitLFADS(D,regressions);
+            D.reg=InitReg(D,regressions);
+            D.dec=InitDec(D,regressions);
 
         end
 
-        function lfads=InitLFADS(D,decode)
-
+        function lfads=InitLFADS(D,regressions)
+            %
             %LFADS variables
-            factors = decode.lfadsR.factors;
+            factors = regressions.lfadsR.factors;
+            %             test = reshape(factors,[size(factors,1), size(factors,2)*size(factors,3)])';
             test = reshape(factors, [size(factors,1), size(factors,2)*size(factors,3)])';
+
             [~, score, ~] = pca(test);
 
             orthF = [];
@@ -33,9 +35,9 @@ classdef PMDdecoding < handle
                 orthF(:,:,thi) = (score( (1:180) + (thi-1)*180, :))';
             end
 
-            trials_data = decode.raw.dat;
+            trials_data = regressions.raw.dat;
             temp = struct2table(trials_data);
-%             sortedTemp = sortrows(temp, 'condId');
+            %             sortedTemp = sortrows(temp, 'condId');
 
             % RT LFADS
 
@@ -44,7 +46,7 @@ classdef PMDdecoding < handle
             % choose condition num
             cond = 1;
 
-%             selectedTrials = (temp.condId == cond);
+            %             selectedTrials = (temp.condId == cond);
             selectedRT = temp.RT(temp.condId == cond, :);
             sortedRT = sort(unique(selectedRT));
 
@@ -92,42 +94,43 @@ classdef PMDdecoding < handle
             end
         end
 
-        function reg=InitReg(D,decode)
-        regression=decode.regression;
 
-        % define session number
-        s = 40;
-        % choice 1
-        bounds1 = regression(s).shuffledBoundC1R2;
-        r21 = regression(s).c1R2;
-        % choice 2
-        bounds2 = regression(s).shuffledBoundC2R2;
-        r22 = regression(s).c2R2;
-        % combine choices
-        reg.SessBounds = (bounds1 + bounds2)./2;
-        reg.SessR2 = (r21 + r22)./2;
+        function reg=InitReg(D,regressions)
+            linreg=regressions.linreg;
+
+            % define session number
+            s = 40;
+            % choice 1
+            bounds1 = linreg(s).shuffledBoundC1R2;
+            r21 = linreg(s).c1R2;
+            % choice 2
+            bounds2 = linreg(s).shuffledBoundC2R2;
+            r22 = linreg(s).c2R2;
+            % combine choices
+            reg.SessBounds = (bounds1 + bounds2)./2;
+            reg.SessR2 = (r21 + r22)./2;
 
 
-        reg.AvgR2 = [];
-        for ip2 = 1 : length(regression)
-            reg.AvgR2(:,ip2) = (regression(ip2).c1R2 + regression(ip2).c2R2)./2 ;
+            reg.AvgR2 = [];
+            for ip2 = 1 : length(linreg)
+                reg.AvgR2(:,ip2) = (linreg(ip2).c1R2 + linreg(ip2).c2R2)./2 ;
+            end
+
         end
 
-        end
 
+        function dec=InitDec(D,regressions)
+            classifier=regressions.classifier;
 
-        function dec=InitDec(D,decode)
-        classifier=decode.classifier;
+            % define session number
+            s = 40;
+            dec.SessBounds = classifier(s).shuffled_bound_accuracy;
+            dec.SessAcc = classifier(s).accuracy;
 
-        % define session number
-        s = 40;
-        dec.SessBounds = classifier(s).shuffled_bound_accuracy;
-        dec.SessAcc = classifier(s).accuracy;
-
-        dec.AvgAcc = [];
-        for ip2 = 1 : length(classifier)
-            dec.AvgAcc(:,ip2) = classifier(ip2).accuracy;
-        end
+            dec.AvgAcc = [];
+            for ip2 = 1 : length(classifier)
+                dec.AvgAcc(:,ip2) = classifier(ip2).accuracy;
+            end
 
         end
 
@@ -135,7 +138,7 @@ classdef PMDdecoding < handle
 
         function plotRTLFADS(D)
 
-            label1RT=D.lfads.label1RT; 
+            label1RT=D.lfads.label1RT;
             label2RT=D.lfads.label2RT;
 
             fast_traj= D.lfads.fast_traj;
@@ -325,49 +328,49 @@ classdef PMDdecoding < handle
             % Avg R2 plot
 
             subplot(1,2,2); hold on
-            
+
             ylimit = 40;
             xpatch = [-300 -300 0 0];
             ypatch = [0 1 1 0].*ylimit;
             p1 = patch(xpatch, ypatch, 'cyan');
             p1.FaceAlpha = 0.2;
             p1.EdgeAlpha = 0;
-            
+
             options.x_axis = t;
             options.alpha      = 0.5;
             options.line_width = 5;
             options.error      = 'sem';
-%             options.handle     = subplot(2,3,3);
+            %             options.handle     = subplot(2,3,3);
             options.color_area = [243 169 114]./255;    % Orange theme
             options.color_line = [236 112  22]./255;
-            
+
             plot_areaerrorbar(D.reg.AvgR2'*100, options);
-            
+
             plot([0,0], [0,1].*ylimit, 'color', [0 0 0], 'linestyle', '--', 'linewidth',2)
-            
-%             line for variance explained by coherence
+
+            %             line for variance explained by coherence
             plot([-600,1200], [6.32,6.32], 'color', [0 0 0], 'linestyle', '--', 'linewidth',2)
-            
+
             plot([0,0], [0,1].*ylimit, 'color', [0 0 0], 'linestyle', '--', 'linewidth',2)
-                        
-            
-            
-%             cosmetic code
+
+
+
+            %             cosmetic code
             hLimits = [-600,1200];
             hTickLocations = -600:300:1200;
             hLabOffset = 2.5;
             hAxisOffset =  -0.011;
             hLabel = "Time (ms)";
-            
+
             vLimits = [0,ylimit];
             vTickLocations = [0 ylimit/2 ylimit];
             vLabOffset = 180;
             vAxisOffset =  -650;
             vLabel = "R^{2} (%)";
             title('Average across sessions')
-            
+
             plotAxis = [1 1];
-            
+
             [hp,vp] = getAxesP(hLimits,...
                 hTickLocations,...
                 hLabOffset,...
@@ -378,7 +381,7 @@ classdef PMDdecoding < handle
                 vLabOffset,...
                 vAxisOffset,...
                 vLabel, plotAxis);
-            
+
             set(gcf, 'Color', 'w');
             axis off;
             axis square;
@@ -386,7 +389,7 @@ classdef PMDdecoding < handle
             text(1220,6.32,sprintf('%3.2f%%',6.32),'Color',[0 0 0]);
         end
 
-          function plotAcc(D)
+        function plotAcc(D)
 
             %Session Acc plot
 
@@ -459,7 +462,7 @@ classdef PMDdecoding < handle
             options.alpha      = 0.5;
             options.line_width = 5;
             options.error      = 'sem';
-%             options.handle     = subplot(2,3,6);
+            %             options.handle     = subplot(2,3,6);
             options.color_area = [243 169 114]./255;    % Orange theme
             options.color_line = [236 112  22]./255;
 

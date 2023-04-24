@@ -91,7 +91,7 @@ switch(txt)
                     t{:,i,j}=(-base:cenRT);
                     y2{:,i,j}=mean(convMat(((abs(b)*1000-base):(abs(b)*1000+cenRT)),choice==j & tmpRT==1),2); %don't omitnan here. will do avgs up to the weakest link. once 1st nan in 1st data set reached, rest data considered NaN and doesn't avg just half of time pts for example.
                     convVec{:,i,j}= convMat(((abs(b)*1000-base):(abs(b)*1000+cenRT)),choice==j & tmpRT==1);
-                    SEM{:,i,j}=sem(convVec{:,i,j},'includenan'); %include
+                    SEM{:,i,j}=sem(convVec{:,i,j},'omitnan'); %include
                     ShadedError(t{:,i,j},y2{:,i,j}',1*SEM{:,i,j}');
                     LineId(i) = plot(t{:,i,j},y2{:,i,j},'LineWidth',1.5,'LineStyle',LS);
                 end
