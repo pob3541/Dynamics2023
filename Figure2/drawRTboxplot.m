@@ -36,7 +36,7 @@ st(1);
 axis tight;
 axis square;
 
-text(4, 2200, sprintf('%3.2f%',100*st(1)));
+text(4, 2200, sprintf('Regression with log10(c): %3.2f\%',100*st(1)));
 
 
 
@@ -50,4 +50,4 @@ box off;
 set(gca,'visible','off');
 h = findobj(ax,'tag','Outliers');
 set(h,'markerfacecolor',[0 0.45 0.7],'markersize',8,'markeredgecolor','none');
-getAxesP([1 7],[ ],'Conditions',140,0,[200 2000],[200:400:2000],'RT(ms)',.5,1,[1 1], cohLabels);  
+getAxesP([1 7],[ ],'Conditions',-5,0,[200 2000],[200:400:2000],'RT(ms)',.5,1,[1 1], cohLabels);  

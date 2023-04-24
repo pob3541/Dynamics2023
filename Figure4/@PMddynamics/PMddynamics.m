@@ -21,6 +21,7 @@ classdef PMddynamics < handle
         kinet
         
         metaData;
+        trialCounts
         
         processingFlags;
     end
@@ -35,7 +36,7 @@ classdef PMddynamics < handle
             r.initializeProcessingFlags(useSingleNeurons, useNonOverlapping);
             r.initializeMetaData(M);
             
-            
+            r.trialCounts = M.rt.TrialCounts;
             
             r.rtFR = M.rt.FR;
             
@@ -81,6 +82,7 @@ classdef PMddynamics < handle
         dataV = calcSpeed(r, PCoutput, varargin)
         PCoutput = calculatePCs(r,FR, varargin)
         calcInputsAndIC(r, varargin)
+        plotTrialCounts(r)
         
         % Plotting functions
         plotKinet(r)
