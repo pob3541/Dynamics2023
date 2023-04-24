@@ -1,49 +1,36 @@
 function Fig3Neurons(unit)
 
 %Load in data for the neuron
-% load(matFile)
 load('HetNeurons.mat','Data')
 Data=Data(unit).Unit;
 
-%Figure creation
+%Figure creation with title
 figure('units','normalized','outerposition',[0.1 0.1 0.6 0.6])
 center_title=sgtitle(['Monkey ', Data.Monkey,'; ',Data.Date, '; Channel ' num2str(Data.Ch), ', Unit ', num2str(Data.Unit)]);
 center_title.FontWeight = 'bold';
 center_title.FontSize = 12;
 
-
-%Top left plot
+%Top left plot - FR by coherence; cue aligned
 tLeftHand=subplot(2,2,1);[y]=plotConv(Data.CueAlignFR,Data.Choice,Data.Coherence,Data.RT,'Coh',Data.bound1,Data.bound2,'Cue');
 hold on;
 set(gca,'visible','off');
 tc = getTextLabel(0,{'Cue'},{'b'});
-c=colorbar('Ticks',[0 1],'TickLabels',{'High','Low'},'Location','northoutside',...
-    'FontSize',10);
-c.Label.String = 'Coherence';
-c.Label.FontName = 'Arial';
-c.Label.FontSize = 10;
-c.Position = [0.1299 0.9372 0.2 0.015];
 axis tight
 
 
-%Top right plot
+%Top right plot - FR by RT; cue aligned
 tRightHand=subplot(2,2,2);[~,y2]=plotConv(Data.CueAlignFR,Data.Choice,Data.Coherence,Data.RT,'RT',Data.bound1,Data.bound2,'Cue');
 set(gca,'visible','off');
-c=colorbar('Ticks',[0 1],'TickLabels',{'Fast','Slow'},'Location','northoutside'...
-    ,'FontSize',10);
-c.Label.String = 'RT';
-c.Label.FontName = 'Arial';
-c.Label.FontSize = 10;
-c.Position = [0.7299 0.9372 0.2 0.015];
 axis tight
 
-%Bottom right plot
+
+%Bottom right plot - FR by coherence; movement aligned
 bLeftHand=subplot(2,2,3);[y3]=plotConv(Data.MovAlignFR,Data.Choice,Data.Coherence,Data.RT,'Coh',Data.bound1,Data.bound2,'Mov');
 set(gca,'visible','off');
 tm = getTextLabel(0,{'Move'},{'b'});
 axis tight
 
-%Bottom left plot
+%Bottom left plot - FR by RT; movement aligned
 bRightHand=subplot(2,2,4);[~,y4]=plotConv(Data.MovAlignFR,Data.Choice,Data.Coherence,Data.RT,'RT',Data.bound1,Data.bound2,'Mov');
 set(gca,'visible','off');
 axis tight
@@ -60,8 +47,6 @@ else
     hlaboff = 9;
 end
 
-
-
 cxLims = [-100 600];
 cxTicks = [-100 100 300 500];
 
@@ -76,7 +61,6 @@ drawRestrictedLines(0,[0 y_max]);
 set(gcf,'CurrentAxes',tRightHand)
 getAxesP(cxLims,cxTicks,hlaboff,-1, 'Time (ms)', [0 y_max],[0 y_max],10,-110, 'Firing rate (Spikes /s)',[1 1], tc);
 drawRestrictedLines(0,[0 y_max]);
-
 
 set(gcf,'CurrentAxes',bLeftHand)
 getAxesP(mxLims,mxTicks,hlaboff,-1, 'Time (ms)', [0 y_max],[0 y_max],10,-610, 'Firing rate (Spikes /s)',[1 1], tm);
@@ -94,6 +78,28 @@ h(1) = plot(NaN,NaN,'k-','LineWidth',2);
 h(2) = plot(NaN,NaN,'k--','LineWidth',2);
 legend(h, 'Left Reach','Right Reach','Location','northwest','FontSize',12,'TextColor','black');
 legend('boxoff')
+
+%plot color bars
+
+% xy positioning
+Params = getParams;
+cbPos=[0.205 .94];
+cbSize=[0.2 0.012];
+fSize=12;
+cbLyPos=1.8;
+
+%coherence color bar
+newMap=custColorBar(Params.cohColors_gs,tLeftHand,cbPos,cbSize,fSize,cbLyPos,...
+    'string','Coherence','labLeft','90','labRight','4');
+% tLeftHand.Colormap=newMap;
+% 
+% RT color bar
+cbPos2=[0.65 .94];
+custColorBar(Params.posterColors,tRightHand,cbPos2,cbSize,fSize,cbLyPos);
+
+
+
+
 
 
 end

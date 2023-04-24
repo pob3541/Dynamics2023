@@ -5,7 +5,9 @@
 % figOData 
 % 
 % These are structures with the number of sessions.
-clear all
+clear
+close all
+
 load('Fig2_MonkeyT_data.mat');
 load('Fig2_MonkeyO_data.mat');
 
@@ -15,14 +17,14 @@ plotPsychAndChrono(figOData);
 % Plot boxplots of RT vs. Coherence
 
 figure(1);
-width = 0.4
+width = 0.4;
 ax = axes('position',[0.05 0.05 width width]);
-drawRTboxplot(figTData, ax)
+drawRTboxplot(figTData, ax);
 
-figure(2)
-width = 0.4
+figure(2);
+width = 0.4;
 ax = axes('position',[0.05 0.05 width width]);
-drawRTboxplot(figOData, ax)
+drawRTboxplot(figOData, ax);
 
 
 

@@ -1,4 +1,4 @@
-﻿# Code for recreating figures from the manuscript
+# Code for recreating figures from the manuscript
 > P. O. Boucher, T. Wang, L. Carceroni, G. Kane, K. V. Shenoy, C. Chandramouli.
 > **Neural population dynamics in dorsal premotor cortex underlying a reach
 decision**
@@ -19,14 +19,14 @@ For the repository to work on your computer add the subfolders for any sub funct
 
 ## Figure 2: Behavior
 
-Open figure2.m. The first section of this script loads and displays the accuracy and reaction time (RT) data. The second section adds the boxplots of the RT data to the same figures.
+Open figure2.m. Run this script to load behavioral data from both monkeys and for each monkey display psychometric curves (the percent responded red as a function of signed coherence), reaction time (RT) curves (RT as a function of signed coherence), and boxplots of RTs organized by stimulus coherence.
 
 ## Figure 3: Heterogeneous and time-varying activity of PMd neurons 
  
-If you want to display the first unit, for example, presented in Figure 3 run the following line in Matlab's command prompt:
+If you want to display the first unit, for example, presented in Figure 3 run the following line in MATLAB's command prompt:
  >Fig3Neurons(1)
 
-The number corresponds to the order of presentation in the figure. Plotted units are shown organized by coherence and RT, as well as aligned to cue and movement onset. Scaling may be slightly different between the the figures in the paper and what is plotted from Matlab.
+The number corresponds to the order of presentation in the figure. Plotted units are shown organized by coherence and RT, as well as aligned to cue and movement onset. Scaling may be slightly different between the figures in the paper and what is plotted from MATLAB.
 
 ## Figure 4: Initial conditions predict subsequent dynamics and RT
 
