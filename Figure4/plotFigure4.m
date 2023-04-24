@@ -25,6 +25,7 @@ sgtitle('Fig. 4C-G');
 
 %%
 
+
 N.calcWinCoh(M);
 %%
 N.plotTrajectories('showPooled',0,'whichCoh',1, 'showGrid',0, 'hideAxes',1);
