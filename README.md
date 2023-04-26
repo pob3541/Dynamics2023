@@ -83,10 +83,10 @@ The first section of calcSlopeV.m plots Fig 6D or the Euclidean distance in neur
 
 ## Figure 7: Outcome changes initial conditions
 
-Load Outcome.mat from DynamicsData/Fig7 into your workspace.
+Load outcome.mat from Dynamics2023/Figure7 into your workspace.
 
 Running the following command in POA.m will initialize the data to recreate all of the plots in Figure 7. 
->[r] = POA(AllSess) 
+>[r] = POA_plotting(outcome) 
 >
 The following commands will plot all parts of Figure 7: 
 
@@ -100,5 +100,4 @@ The following commands will plot all parts of Figure 7:
 >r.plotKinet()
 
 7D
->r.calcDecode(AllSess) 
 >r.plotDecoder()
