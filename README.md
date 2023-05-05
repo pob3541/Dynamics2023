@@ -12,7 +12,7 @@ Toolboxes needed:
 - Statistics and Machine Learning Toolbox
 - Bioinformatics Toolbox
 
-For the repository to work on your computer add the subfolders for any sub functions. 
+For the repository to work on your computer please add the Dynamics2023 folder with all subfolders to your MATLAB path. 
 
 ## Figure 2: Behavior
 
