@@ -11,11 +11,7 @@ Toolboxes needed:
 - Curve Fitting Toolbox
 - Statistics and Machine Learning Toolbox
 
-Download the associated data files for this repository from Dryad at this doi:
-- zip file (~11 GB).
-
 For the repository to work on your computer add the subfolders for any sub functions. 
-
 
 ## Figure 2: Behavior
 
