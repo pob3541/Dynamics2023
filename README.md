@@ -10,6 +10,7 @@ Tested in Matlab R2021b
 Toolboxes needed: 
 - Curve Fitting Toolbox
 - Statistics and Machine Learning Toolbox
+- Bioinformatics Toolbox
 
 For the repository to work on your computer add the subfolders for any sub functions. 
 
