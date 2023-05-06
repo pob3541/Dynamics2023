@@ -1,15 +1,13 @@
 # Code for recreating figures from the manuscript
 > P. O. Boucher, T. Wang, L. Carceroni, G. Kane, K. V. Shenoy, C. Chandramouli.
-> **Neural population dynamics in dorsal premotor cortex underlying a reach
-decision**
->  2022, bioRxiv, [https://doi.org/10.1101/2022.06.30.497070](https://doi.org/10.1101/2022.06.30.497070)
-
-
-
+> ****
+Initial conditions in dorsal premotor cortex covary with reaction time, are altered by trial outcome, and combine with sensory evidence to induce decision-related dynamics****
 Tested in Matlab R2021b
 
 Data needed:
 - Data is available on Dryad at this url
+
+https://datadryad.org/stash/share/xZzCe2AjAL8UBipbAgG1EX1R9abPc7pJ8zCYgU728GE
 
 Toolboxes needed: 
 - Curve Fitting Toolbox
