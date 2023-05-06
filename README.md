@@ -51,7 +51,7 @@ Running the following code will initialize the data to recreate all of the plots
 
 
 ## Figure 5: Single-trial analysis and decoding
-Load regressions.mat from /Figure5 into your workspace.
+Load regressions.mat from /DryadData2 into your workspace.
 
 Running the following code will initialize the data to recreate all of the plots in Figure 5. 
 > D= PMddecoding(regressions) 
