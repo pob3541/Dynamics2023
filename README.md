@@ -1,7 +1,6 @@
 # Code for recreating figures from the manuscript
 > P. O. Boucher, T. Wang, L. Carceroni, G. Kane, K. V. Shenoy, C. Chandramouli.
-> ****
-Initial conditions in dorsal premotor cortex covary with reaction time, are altered by trial outcome, and combine with sensory evidence to induce decision-related dynamics****
+> **** Initial conditions in dorsal premotor cortex covary with reaction time, are altered by trial outcome, and combine with sensory evidence to induce > decision-related dynamics ****
 Tested in Matlab R2021b
 
 Data needed:
