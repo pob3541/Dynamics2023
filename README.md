@@ -34,8 +34,8 @@ The number corresponds to the order of presentation in the figure. You can plot 
 Load Figure4Data.mat from Dryad_Data. Open Figure4\plotFigure4.m.
 
 Running the following code will initialize the data to recreate all of the plots in Figure 4:
->N = PMddynamics(M); 
->N.calcWinCoh(M);
+> N = PMddynamics(M); 
+> N.calcWinCoh(M);
 
 
  The following commands will plot all parts of Figure 4: 
@@ -49,7 +49,6 @@ Running the following code will initialize the data to recreate all of the plots
 
 4C-G
 > N.plotKinet
-
 
 - A sister plot to the average raw speed plot is included here. This sister plot shows how the raw firing rate speed changes over the course of the trial organized by RT bin. In short, it's the Euclidean distance between each adjacent time points, so how firing rate changes in state space over time. In essence, firing rates associated with faster RT bins move through state space faster than firing rates in slower RT bins [May want to include that's the average prestimulus speed in Fig 4G.]
 
@@ -76,24 +75,22 @@ The following commands will plot all parts of Figure 5:
 
 ## Figure 6: Initial conditions and inputs contribute to choice-related dynamics
 
-Load MonkeyFRs.mat from DynamicsData/Fig4_6 into your workspace.
+Load Figure4Data.mat from Dryad_Data. Open Figure4\plotFigure4.m.
 
-For Fig 6C in order to plot the trajectories within a coherence use the following code as an example which will plot the trajectory for the 90% coherence: 
+6C
+>N.plotTrajectories('showPooled',0,'whichCoh',1, 'showGrid',0, 'hideAxes',1);
+>N.plotTrajectories('showPooled',0,'whichCoh',4, 'showGrid',0, 'hideAxes',1);
+>N.plotTrajectories('showPooled',0,'whichCoh',7,'showGrid',0, 'hideAxes',1);
 
-> r.plotTrajectories('showPooled',false,'whichCoh',1) 
-
-To see the 31% and 4% coherences as plotted for Fig 6C change the 'whichCoh' variable to 4 and 7 respectively. 
-
-The first section of calcSlopeV.m plots Fig 6D or the Euclidean distance in neural state space between left and right reaches within a stimulus coherence. The second section of code calculates the slope and the latency and the third chunk of code then plots Fig 6E.
+6D-G
+>N.calcInputsAndIC
 
 ## Figure 7: Outcome changes initial conditions
 
-Load outcome.mat from Dynamics2023/Figure7 into your workspace.
+Load Figure7Data.mat from Dryad_Data. Open Figure7\@POA\POA.m.
 
 Running the following command in POA.m will initialize the data to recreate all of the plots in Figure 7. 
 >[r] = POA_plotting(outcome) 
->
-The following commands will plot all parts of Figure 7: 
 
 7A
 >r.plotComponents()
