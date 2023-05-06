@@ -7,12 +7,16 @@ decision**
 
 
 Tested in Matlab R2021b
+
+Data needed:
+- Data is available on Dryad at this url
+
 Toolboxes needed: 
 - Curve Fitting Toolbox
 - Statistics and Machine Learning Toolbox
 - Bioinformatics Toolbox
 
-For the repository to work on your computer please add the Dynamics2023 folder with all subfolders to your MATLAB path. 
+For the repository to work on your computer please add the Dynamics2023 folder with all subfolders to your MATLAB path (add utils separately). 
 
 ## Figure 2: Behavior
 
@@ -27,21 +31,25 @@ The number corresponds to the order of presentation in the figure. You can plot 
 
 ## Figure 4: Initial conditions predict subsequent dynamics and RT
 
-Load MonkeyFRs.mat from DynamicsData/Fig4 into your workspace.
+Load Figure4Data.mat from Dryad_Data. Open Figure4\plotFigure4.m.
 
 Running the following code will initialize the data to recreate all of the plots in Figure 4:
-> [r, temp] = PMddynamics(M) 
+>N = PMddynamics(M); 
+>N.calcWinCoh(M);
+
 
  The following commands will plot all parts of Figure 4: 
 
 4A & H
->r.plotComponents() 
+> N.plotComponents
+
 
 4B
-> r.plotTrajectories() 
+> N.plotTrajectories('showPooled',1,'showGrid',0,'hideAxes',1); 
 
-4C, D, E, F, G
-> r.plotKinet() 
+4C-G
+> N.plotKinet
+
 
 - A sister plot to the average raw speed plot is included here. This sister plot shows how the raw firing rate speed changes over the course of the trial organized by RT bin. In short, it's the Euclidean distance between each adjacent time points, so how firing rate changes in state space over time. In essence, firing rates associated with faster RT bins move through state space faster than firing rates in slower RT bins [May want to include that's the average prestimulus speed in Fig 4G.]
 
