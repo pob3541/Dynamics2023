@@ -120,6 +120,14 @@ else
     %
 end
 
+r.decode.binnedSpikeTimes=outcome.binnedSpikeTimes;
+r.decode.sessions=outcome.sessions;
+r.decode.binAcc=outcome.binAcc;
+r.decode.binAcc2=outcome.binAcc2;
+r.decode.bins=outcome.bins;
+
+
+
 end
 
 % Plotting functions

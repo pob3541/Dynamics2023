@@ -25,10 +25,7 @@ sgtitle('Fig. 6C: 31%');
 N.plotTrajectories('showPooled',0,'whichCoh',7,'showGrid',0, 'hideAxes',1);
 sgtitle('Fig. 6C: 4%');
 
-
 N.calcInputsAndIC
-
-
 
 %% Figure S5A
 N.plotVariance
