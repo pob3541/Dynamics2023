@@ -16,7 +16,7 @@ For the repository to work on your computer please add the Dynamics2023 folder w
 
 ## Figure 2: Behavior
 
-Open figure2.m. Run this script to load behavioral data from both monkeys and for each monkey display psychometric curves (the percent responded red as a function of signed coherence), reaction time (RT) curves (RT as a function of signed coherence), and boxplots of RTs organized by stimulus coherence.
+Open figure2.m. Run this script to load behavioral data for both monkeys. Script then displays psychometric curves (percent responded red as a function of signed coherence), reaction time (RT) curves as a function of signed coherence, and boxplots of RTs organized by stimulus coherence for both monkeys.
 
 ## Figure 3: Heterogeneous and time-varying activity of PMd neurons 
  
