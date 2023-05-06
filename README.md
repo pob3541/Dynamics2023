@@ -23,11 +23,11 @@ Open figure2.m. Run this script to load behavioral data for both monkeys. Script
 If you want to display the first unit, for example, presented in Figure 3 run the following line in MATLAB's command prompt:
  >Fig3Neurons(1)
 
-The number corresponds to the order of presentation in the figure. Plotted units are shown organized by coherence and RT, as well as aligned to cue and movement onset. Scaling may be slightly different between the figures in the paper and what is plotted from MATLAB.
+The number corresponds to the order of presentation in the figure. You can plot all 5 units in this manner (e.g., Fig3Neurons(2) will plot the second and so on). Plotted units are shown organized by coherence and RT, as well as aligned to cue and movement onset. Scaling may be slightly different between the figures in the paper and what is plotted from MATLAB.
 
 ## Figure 4: Initial conditions predict subsequent dynamics and RT
 
-Load MonkeyFRs.mat from DynamicsData/Fig4_6 into your workspace.
+Load MonkeyFRs.mat from DynamicsData/Fig4 into your workspace.
 
 Running the following code will initialize the data to recreate all of the plots in Figure 4:
 > [r, temp] = PMddynamics(M) 
