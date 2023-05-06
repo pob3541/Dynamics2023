@@ -154,13 +154,13 @@ axis tight;
 text(-10,70,'Average Rate');
 
 [r1,p1] = partialcorr(Yave',X1(:,1),X1(:,2));
-S1 = sprintf('Corr:%3.2f( p = %3.2f)',r1,p1);
+S1 = sprintf('Corr:%3.2f( p = %3.2e)',r1,p1);
 text([-10],50,S1);
 fprintf('\n For Average Rate: Initial Conditions %s', S1);
 
 
 [r2,p2] = partialcorr(Yave',X1(:,2),X1(:,1));
-S1 = sprintf('Corr:%3.2f( p = %3.2f)',r2,p2);
+S1 = sprintf('Corr:%3.2f( p = %3.2e)',r2,p2);
 text([-10],10,S1);
 fprintf(' \n For Average Rate: Coherence %s', S1);
 
@@ -184,14 +184,14 @@ axis square;
 axis tight;
 
 [r1,p1] = partialcorr(Ylatency',X1(:,1),X1(:,2));
-S1 = sprintf('Corr:%3.2f( p = %3.2f)',r1,p1);
+S1 = sprintf('Corr:%3.2f( p = %3.2e)',r1,p1);
 fprintf('\n For Latency: Initial Conditions %s', S1);
 
 text([-10],250,S1);
 
 
 [r2,p2] = partialcorr(Ylatency',X1(:,2),X1(:,1));
-S1 = sprintf('Corr:%3.2f( p = %3.2f)',r2,p2);
+S1 = sprintf('Corr:%3.2f( p = %3.2e)',r2,p2);
 text([-10],10,S1);
 fprintf(' \n For Latency: Coherence %s', S1);
 
@@ -218,12 +218,12 @@ axis tight;
 
 
 [r1,p1] = partialcorr(Yslope',X1(:,1),X1(:,2));
-S1 = sprintf('Corr:%3.2f( p = %3.2f)',r1,p1);
+S1 = sprintf('Corr:%3.2f( p = %3.2e)',r1,p1);
 fprintf('\n For Average Slope: Initial Conditions %s', S1);
 text([-10],.003,sprintf('Corr:%3.2f( p = %3.2f)',r1,p1));
 
 [r2,p2] = partialcorr(Yslope',X1(:,2),X1(:,1));
-S1 = sprintf('Corr:%3.2f( p = %3.2f)',r2,p2);
+S1 = sprintf('Corr:%3.2f( p = %3.2e)',r2,p2);
 fprintf(' \n For Average Slope: Coherence %s', S1);
 text([-10],.0005,S1);
 
