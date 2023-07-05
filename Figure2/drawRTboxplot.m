@@ -36,7 +36,7 @@ st(1);
 axis tight;
 axis square;
 
-text(4, 2200, sprintf('Regression with log10(c): %3.2f\%',100*st(1)));
+text(4, 2200, sprintf('Regression with log10(c): %3.2f%%',100*st(1)));
 
 
 
