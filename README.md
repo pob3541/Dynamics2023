@@ -1,15 +1,12 @@
-# Code for recreating figures from the manuscript
+# MATLAB analysis code for recreating main Figures from the manuscript
 > P. O. Boucher, T. Wang, L. Carceroni, G. Kane, K. V. Shenoy, C. Chandramouli.
-> **Neural population dynamics in dorsal premotor cortex underlying a reach
-decision**
->  2022, bioRxiv, [https://doi.org/10.1101/2022.06.30.497070](https://doi.org/10.1101/2022.06.30.497070)
-
-
-
+> **** Initial conditions in dorsal premotor cortex covary with reaction time, are altered by trial outcome, and combine with sensory evidence to induce > decision-related dynamics ****
 Tested in Matlab R2021b
 
 Data needed:
 - Data is available on Dryad at this url
+
+https://datadryad.org/stash/share/xZzCe2AjAL8UBipbAgG1EX1R9abPc7pJ8zCYgU728GE
 
 Toolboxes needed: 
 - Curve Fitting Toolbox
@@ -54,7 +51,7 @@ Running the following code will initialize the data to recreate all of the plots
 
 
 ## Figure 5: Single-trial analysis and decoding
-Load regressions.mat from /Figure5 into your workspace.
+Load regressions.mat from /DryadData2 into your workspace.
 
 Running the following code will initialize the data to recreate all of the plots in Figure 5. 
 > D= PMddecoding(regressions) 
