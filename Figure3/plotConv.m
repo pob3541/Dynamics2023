@@ -5,6 +5,9 @@ function [y,y2,t,SEM,convVec,centerRT]=plotConv(convMat,choice,C,RT,txt,b1,b2,tx
 %
 hold on;
 base=100;
+Params = getParams;
+colorsRT= Params.posterColors;
+colorsCoh=Params.cohColors_gs;
 
 switch(txt)
     case 'Coh'
@@ -26,7 +29,7 @@ switch(txt)
                     y{:,ai,j}=mean(convMat(((abs(b)*1000-medianRT(ai)):(abs(b)*1000+base)),choice==j & C==uniqC(i,1)),2);
                     convVec{:,ai,j}= convMat(((abs(b)*1000-medianRT(ai)):(abs(b)*1000+base)),choice==j & C==uniqC(i,1));
                     SEM{:,ai,j}=sem(convVec{:,ai,j},'omitnan'); %include
-                    ShadedError(t{:,ai,j},y{:,ai,j}',1*SEM{:,ai,j}');
+                    ShadedError(t{:,ai,j},y{:,ai,j}',1*SEM{:,ai,j}');%',colorsCoh(i,:),colorsCoh(i,:));
                     LineId(ai) = plot(t{:,ai,j},y{:,ai,j},'LineWidth',1.5,'LineStyle',LS);%,'Color',colors{i});
                 end
                 setLineColors_gs(LineId,'linewidth',3,'linestyle',LS);
@@ -40,7 +43,7 @@ switch(txt)
                     y{:,ai,j}=mean(convMat(((abs(b)*1000-base):(medianRT(ai)+abs(b)*1000)),choice==j & C==uniqC(i,1)),2,'omitnan'); %grouping based on coh level & not RT.NaNs less RT dependent this way. more coh, faster RT in general & more NaNs. however this would shorten what should be longer RTs as well.
                     convVec{:,ai,j}=convMat(((abs(b)*1000-base):(medianRT(ai)+abs(b)*1000)),choice==j & C==uniqC(i,1));
                     SEM{:,ai,j}=sem(convVec{:,ai,j},'omitnan');
-                    ShadedError(t{:,ai,j},y{:,ai,j}',1*SEM{:,ai,j}');
+                    ShadedError(t{:,ai,j},y{:,ai,j}',1*SEM{:,ai,j}');%,colorsCoh(i,:),colorsCoh(i,:));
                     LineId(ai) =plot(t{:,ai,j},y{:,ai,j},'LineWidth',1.5,'LineStyle',LS);
                 end
                 setLineColors_gs(LineId,'linewidth',3,'linestyle',LS);
@@ -73,7 +76,7 @@ switch(txt)
                     y2{:,i,j}=mean(convMat(((abs(b)*1000-cenRT):(abs(b)*1000+base)),choice==j & tmpRT==1),2);
                     convVec{:,i,j}= convMat(((abs(b)*1000-cenRT):(abs(b)*1000+base)),choice==j & tmpRT==1);
                     SEM{:,i,j}=sem(convVec{:,i,j},'omitnan'); %include
-                    ShadedError(t{:,i,j},y2{:,i,j}',1*SEM{:,i,j}');
+                    ShadedError(t{:,i,j},y2{:,i,j}',1*SEM{:,i,j}',colorsRT(i,:),colorsRT(i,:));
                     LineId(i) = plot(t{:,i,j},y2{:,i,j},'LineWidth',1.5,'LineStyle',LS);
                 end
                 setLineColors(LineId,'linewidth',3,'linestyle',LS);
@@ -92,7 +95,7 @@ switch(txt)
                     y2{:,i,j}=mean(convMat(((abs(b)*1000-base):(abs(b)*1000+cenRT)),choice==j & tmpRT==1),2); %don't omitnan here. will do avgs up to the weakest link. once 1st nan in 1st data set reached, rest data considered NaN and doesn't avg just half of time pts for example.
                     convVec{:,i,j}= convMat(((abs(b)*1000-base):(abs(b)*1000+cenRT)),choice==j & tmpRT==1);
                     SEM{:,i,j}=sem(convVec{:,i,j},'omitnan'); %include
-                    ShadedError(t{:,i,j},y2{:,i,j}',1*SEM{:,i,j}');
+                    ShadedError(t{:,i,j},y2{:,i,j}',1*SEM{:,i,j}',colorsRT(i,:),colorsRT(i,:));
                     LineId(i) = plot(t{:,i,j},y2{:,i,j},'LineWidth',1.5,'LineStyle',LS);
                 end
                 setLineColors(LineId,'linewidth',3,'linestyle',LS);

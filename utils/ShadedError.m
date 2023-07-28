@@ -117,7 +117,7 @@ keepIndex = ~isnan(Xcoords) & ~isnan(Ycoords);
 Xcoords = Xcoords(keepIndex);
 Ycoords = Ycoords(keepIndex);
 
-Pa = patch(Xcoords,Ycoords',PatchColor);
+Pa = patch(Xcoords,Ycoords',PatchColor,'FaceAlpha',.4);
 set(Pa,'linestyle','none');
 % hold on;
 % Li = plot(x,y,'color',LineColor,'linewidth',lw);
