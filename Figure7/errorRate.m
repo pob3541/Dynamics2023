@@ -5,10 +5,11 @@ perc=5;
 
 assignopts(who,varargin)
 
-CR = Y_logic;
+%CR = Y_logic;
+CR =vertcat(Y_logic{:});
 
 % Organize sessions into fifths; with -1 to fill in cols
-for sess =1:141
+for sess =1:length(CR)%141
     
     r=mod(length(CR{sess,1}),perc);
     div=ones(perc-r,1)*-1;
@@ -17,7 +18,7 @@ for sess =1:141
 end
 
 %number of errors over number number of trials per division of a session
-for sess = 1:141
+for sess = 1:length(CR)%141
     for col = 1:perc
 
         Y_quintile=percentile{sess,1}(:,col);
