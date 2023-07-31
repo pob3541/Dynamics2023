@@ -4,6 +4,7 @@ function [CCEC_RT]=findBxErrs(Y_logic,RT,ST_Logic,type)
 % cd('/home/pierreb/Documents/Code/UrgencyData') 
 % load Olafius2.mat
 % [CCEC_RT]=findBxErrs(AllSess2.Y_logic,AllSess2.RT,AllSess2.ST_Logic,'CCEC');
+% [CCECC_RT]=findBxErrs(AllSess2.Y_logic,AllSess2.RT,AllSess2.ST_Logic,'CCE_ECC');
 
 switch(type)
     case 'CCEC'

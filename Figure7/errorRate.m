@@ -5,8 +5,8 @@ perc=5;
 
 assignopts(who,varargin)
 
-%CR = Y_logic;
-CR =vertcat(Y_logic{:});
+CR = Y_logic;
+%CR =vertcat(Y_logic{:});
 
 % Organize sessions into fifths; with -1 to fill in cols
 for sess =1:length(CR)%141
