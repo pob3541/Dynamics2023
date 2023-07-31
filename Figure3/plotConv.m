@@ -37,22 +37,12 @@ switch(txt)
                     t{:,ai,j}=(-medianRT(ai):base);
                     y{:,ai,j}=mean(convMat(((abs(b)*1000-medianRT(ai)):(abs(b)*1000+base)),choice==j & C==uniqC(i,1)),2);
                     convVec{:,ai,j}= convMat(((abs(b)*1000-medianRT(ai)):(abs(b)*1000+base)),choice==j & C==uniqC(i,1));
-<<<<<<< HEAD
 
                     SEM{:,ai,j}=sem(convVec{:,ai,j},'omitnan'); %include
                     ShadedError(t{:,ai,j},y{:,ai,j}',1*SEM{:,ai,j}',colorsCoh(ai,:),colorsCoh(ai,:));
                     LineId(ai) = plot(t{:,ai,j},y{:,ai,j},'LineWidth',1.5,'LineStyle',LS);%,'Color',colors{i});
 
-=======
-                    SEM{:,ai,j}=sem(convVec{:,ai,j},'omitnan'); %include
-                    ShadedError(t{:,ai,j},y{:,ai,j}',1*SEM{:,ai,j}');%',colorsCoh(i,:),colorsCoh(i,:));
-                    LineId(ai) = plot(t{:,ai,j},y{:,ai,j},'LineWidth',1.5,'LineStyle',LS);%,'Color',colors{i});
-                    
-                    SEM{:,ai,j}=sem(convVec{:,ai,j},'omitnan');
-                    ShadedError(t{:,ai,j},y{:,ai,j}',1*SEM{:,ai,j}');
-                    LineId(ai) = plot(t{:,ai,j},y{:,ai,j},'LineWidth',1.5,'LineStyle',LS);
-                    
->>>>>>> 5e6b115de56dc27c1df971e92e00930a9c32d723
+              
                 end
                 
                 setLineColors_gs(LineId,'linewidth',3,'linestyle',LS);
@@ -123,13 +113,6 @@ switch(txt)
                     
                     SEM{:,i,j}=sem(convVec{:,i,j},'omitnan'); %include
                     ShadedError(t{:,i,j},y2{:,i,j}',1*SEM{:,i,j}',colorsRT(i,:),colorsRT(i,:));
-<<<<<<< HEAD
-=======
-                    
-                    SEM{:,i,j}=sem(convVec{:,i,j},'omitnan');
-                    ShadedError(t{:,i,j},y2{:,i,j}',1*SEM{:,i,j}');
-                    
->>>>>>> 5e6b115de56dc27c1df971e92e00930a9c32d723
                     LineId(i) = plot(t{:,i,j},y2{:,i,j},'LineWidth',1.5,'LineStyle',LS);
                     
                 end
@@ -159,18 +142,10 @@ switch(txt)
                     t{:,i,j}=(-base:cenRT);
                     y2{:,i,j}=mean(convMat(((abs(b)*1000-base):(abs(b)*1000+cenRT)),choice==j & tmpRT==1),2); %don't omitnan here. will do avgs up to the weakest link. once 1st nan in 1st data set reached, rest data considered NaN and doesn't avg just half of time pts for example.
                     convVec{:,i,j}= convMat(((abs(b)*1000-base):(abs(b)*1000+cenRT)),choice==j & tmpRT==1);
-<<<<<<< HEAD
                    
                     SEM{:,i,j}=sem(convVec{:,i,j},'omitnan'); %include
                     ShadedError(t{:,i,j},y2{:,i,j}',1*SEM{:,i,j}',colorsRT(i,:),colorsRT(i,:));
-=======
-                    
-                    SEM{:,i,j}=sem(convVec{:,i,j},'omitnan'); %include
-                    ShadedError(t{:,i,j},y2{:,i,j}',1*SEM{:,i,j}',colorsRT(i,:),colorsRT(i,:));
-                    SEM{:,i,j}=sem(convVec{:,i,j},'omitnan');
-                    ShadedError(t{:,i,j},y2{:,i,j}',1*SEM{:,i,j}');
->>>>>>> 5e6b115de56dc27c1df971e92e00930a9c32d723
-                    LineId(i) = plot(t{:,i,j},y2{:,i,j},'LineWidth',1.5,'LineStyle',LS);
+                      LineId(i) = plot(t{:,i,j},y2{:,i,j},'LineWidth',1.5,'LineStyle',LS);
                     
                 end
                 
