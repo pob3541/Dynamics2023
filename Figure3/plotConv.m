@@ -12,10 +12,10 @@ colorsCoh=Params.cohColors_gs;
 %Plotting unit firing rates organized by coherence
 switch(txt)
     case 'Coh'
-
+        
         uniqC=unique(C);
         y2=0;
-
+        
         % Change plotting style for left/right reaches
         for j=1:2
             
@@ -24,35 +24,46 @@ switch(txt)
             else
                 LS='--';
             end
-
+            
             % Plot firing rates aligned to movement onset
             if  strcmp(txt2,'Mov')==1
                 b=b1(1);
                 LineId = [];
-
+                
                 for i=length(uniqC):-1:1
-
+                    
                     ai=(length(uniqC)-i)+1;
                     medianRT(ai)=round(median(RT(C==uniqC(i))))+50;
                     t{:,ai,j}=(-medianRT(ai):base);
                     y{:,ai,j}=mean(convMat(((abs(b)*1000-medianRT(ai)):(abs(b)*1000+base)),choice==j & C==uniqC(i,1)),2);
                     convVec{:,ai,j}= convMat(((abs(b)*1000-medianRT(ai)):(abs(b)*1000+base)),choice==j & C==uniqC(i,1));
+<<<<<<< HEAD
 
                     SEM{:,ai,j}=sem(convVec{:,ai,j},'omitnan'); %include
                     ShadedError(t{:,ai,j},y{:,ai,j}',1*SEM{:,ai,j}',colorsCoh(ai,:),colorsCoh(ai,:));
                     LineId(ai) = plot(t{:,ai,j},y{:,ai,j},'LineWidth',1.5,'LineStyle',LS);%,'Color',colors{i});
 
+=======
+                    SEM{:,ai,j}=sem(convVec{:,ai,j},'omitnan'); %include
+                    ShadedError(t{:,ai,j},y{:,ai,j}',1*SEM{:,ai,j}');%',colorsCoh(i,:),colorsCoh(i,:));
+                    LineId(ai) = plot(t{:,ai,j},y{:,ai,j},'LineWidth',1.5,'LineStyle',LS);%,'Color',colors{i});
+                    
+                    SEM{:,ai,j}=sem(convVec{:,ai,j},'omitnan');
+                    ShadedError(t{:,ai,j},y{:,ai,j}',1*SEM{:,ai,j}');
+                    LineId(ai) = plot(t{:,ai,j},y{:,ai,j},'LineWidth',1.5,'LineStyle',LS);
+                    
+>>>>>>> 5e6b115de56dc27c1df971e92e00930a9c32d723
                 end
-
+                
                 setLineColors_gs(LineId,'linewidth',3,'linestyle',LS);
-
-          % Plot firing rates aligned to cue onset
+                
+                % Plot firing rates aligned to cue onset
             else
                 b=b1(2);
                 LineId = [];
-
+                
                 for i=length(uniqC):-1:1
-
+                    
                     ai=(length(uniqC)-i)+1;
                     medianRT(ai)=round(median(RT(C==uniqC(i))));
                     t{:,ai,j}=-base:medianRT(ai);
@@ -62,98 +73,113 @@ switch(txt)
                     SEM{:,ai,j}=sem(convVec{:,ai,j},'omitnan');
                     ShadedError(t{:,ai,j},y{:,ai,j}',1*SEM{:,ai,j}',colorsCoh(ai,:),colorsCoh(ai,:));
                     LineId(ai) =plot(t{:,ai,j},y{:,ai,j},'LineWidth',1.5,'LineStyle',LS);
-
+                    
                 end
-
+                
                 setLineColors_gs(LineId,'linewidth',3,'linestyle',LS);
-
+                
             end
-
+            
         end
-
+        
         %Plotting unit firing rates organized by RT
     case 'RT'
-
+        
         [RTbins, centerRT]=RT_binning(RT);
         y=0;
-
+        
         % Change plotting style for left/right reaches
         for j=1:2
-
+            
             if j==1
                 LS='-';
             else
                 LS='--';
             end
-          
-         % Plot firing rates aligned to movement onset
+            
+            % Plot firing rates aligned to movement onset
             if  strcmp(txt2,'Mov')==1
-
+                
                 b=b1(1);
                 LineId = [];
-
+                
                 for i=1:size(RTbins,2)
-
+                    
                     tmpRT=zeros(length(RT),1);
                     tmpRT(RTbins(:,i))=1;
                     cenRT=round(median(centerRT{i,1}))+50;
-
+                    
                     if cenRT >(b2(2)-.1)*1000
-
+                        
                         cenRT=(b2(2)-.1)*1000;
-
+                        
                     else
-
+                        
                     end
-
+                    
                     t{:,i,j}=(-cenRT:base);
                     y2{:,i,j}=mean(convMat(((abs(b)*1000-cenRT):(abs(b)*1000+base)),choice==j & tmpRT==1),2);
                     convVec{:,i,j}= convMat(((abs(b)*1000-cenRT):(abs(b)*1000+base)),choice==j & tmpRT==1);
                     
                     SEM{:,i,j}=sem(convVec{:,i,j},'omitnan'); %include
                     ShadedError(t{:,i,j},y2{:,i,j}',1*SEM{:,i,j}',colorsRT(i,:),colorsRT(i,:));
+<<<<<<< HEAD
+=======
+                    
+                    SEM{:,i,j}=sem(convVec{:,i,j},'omitnan');
+                    ShadedError(t{:,i,j},y2{:,i,j}',1*SEM{:,i,j}');
+                    
+>>>>>>> 5e6b115de56dc27c1df971e92e00930a9c32d723
                     LineId(i) = plot(t{:,i,j},y2{:,i,j},'LineWidth',1.5,'LineStyle',LS);
-
+                    
                 end
-
+                
                 setLineColors(LineId,'linewidth',3,'linestyle',LS);
                 
-         % Plot firing rates aligned to cue onset
+                % Plot firing rates aligned to cue onset
             else
-
+                
                 b=b1(2);
                 LineId = [];
-
+                
                 for i=1:size(RTbins,2)
-
+                    
                     tmpRT=zeros(length(RT),1);
                     tmpRT(RTbins(:,i))=1;
                     cenRT=round(median(centerRT{i,1}));
-
+                    
                     if cenRT > b2(2)*1000
-
+                        
                         cenRT=b2(2)*1000-1;
-
+                        
                     else
-
+                        
                     end
-
+                    
                     t{:,i,j}=(-base:cenRT);
                     y2{:,i,j}=mean(convMat(((abs(b)*1000-base):(abs(b)*1000+cenRT)),choice==j & tmpRT==1),2); %don't omitnan here. will do avgs up to the weakest link. once 1st nan in 1st data set reached, rest data considered NaN and doesn't avg just half of time pts for example.
                     convVec{:,i,j}= convMat(((abs(b)*1000-base):(abs(b)*1000+cenRT)),choice==j & tmpRT==1);
+<<<<<<< HEAD
                    
                     SEM{:,i,j}=sem(convVec{:,i,j},'omitnan'); %include
                     ShadedError(t{:,i,j},y2{:,i,j}',1*SEM{:,i,j}',colorsRT(i,:),colorsRT(i,:));
+=======
+                    
+                    SEM{:,i,j}=sem(convVec{:,i,j},'omitnan'); %include
+                    ShadedError(t{:,i,j},y2{:,i,j}',1*SEM{:,i,j}',colorsRT(i,:),colorsRT(i,:));
+                    SEM{:,i,j}=sem(convVec{:,i,j},'omitnan');
+                    ShadedError(t{:,i,j},y2{:,i,j}',1*SEM{:,i,j}');
+>>>>>>> 5e6b115de56dc27c1df971e92e00930a9c32d723
                     LineId(i) = plot(t{:,i,j},y2{:,i,j},'LineWidth',1.5,'LineStyle',LS);
-
+                    
                 end
-
+                
                 setLineColors(LineId,'linewidth',3,'linestyle',LS);
-
+                
             end
-
+            
         end
-
+        
 end
 
 title(txt);ylabel('Spikes /s');xlabel('Time (s)')
