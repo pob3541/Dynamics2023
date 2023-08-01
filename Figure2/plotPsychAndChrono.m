@@ -6,17 +6,19 @@ function plotPsychAndChrono(summary)
 %   Plots the psychometric and chronometric curves given a summary data
 %   structure. 
 % 
-%        summary contains field rawdata that contains pRed and RT as
-%        fields.
+%   summary contains field rawdata that contains pRed and RT as
+%   fields.
 % 
-%        summary also contains a field params that is useful for drawing 
-%        the axes 
+%   summary also contains a field params that is useful for drawing 
+%   the axes 
 %
-% Pierre Boucher and Chand Chandrasekaran, January 2022
+% Pierre Boucher and Chand Chandrasekaran, July 2023
+%
 
 
 params = summary.params;
-figure; set(gcf, 'color', [1 1 1],'units','normalized','position',params.position);
+figure; set(gcf, 'color', [1 1 1],'units',...
+    'normalized','position',params.position);
 
 
 pRed = summary.rawdata.pRed;
@@ -29,7 +31,7 @@ summary.RT = squeeze(nanmean(RT));
 summary.RTe = squeeze(nanstd(RT))./sqrt(size(RT,1));
 
 
-vLabOffset = 10;
+vLabOffset = 15;
 width = 0.4;
 height = 0.4;
 
@@ -68,7 +70,8 @@ vLims(2) = vLims(1) + 3*delta;
 vLims = [410 570];
 T = [410 460 510 570];
 
-getAxesP([-100 100],[-100:50:100],params.hAxesOffsetRT, 400,'Coherence',...
+getAxesP([-100 100],[-100:50:100],params.hAxesOffsetRT, 400,...
+    'Coherence',...
     vLims,T,vLabOffset,-110,'RT (ms)');
 axis tight;
 errorbar(summary.signedColorCoherence, summary.RT, params.CI*summary.RTe,'o-','color',params.Color, 'linewidth',params.lineWidth,'markersize',params.markerSize, 'MarkerFaceColor',[0.4 0.4 0.4]); hold on;

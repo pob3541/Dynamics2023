@@ -103,7 +103,6 @@ switch(nargin)
         LineColor =  varargin{5};
         PatchColor = varargin{6};
 end
-tic
 % x = x(~isnan(E));
 % y = y(~isnan(E));
 % L = L(~isnan(L));
@@ -111,14 +110,17 @@ tic
 
 Xcoords = [x x(end:-1:1)];
 Ycoords = [U L(end:-1:1)];
-lw=1;
+% lw=.01;
 
-Pa = patch(Xcoords,Ycoords,PatchColor);
-set(Pa,'linestyle','none','linewidth',lw);
-hold on;
-Li = plot(x,y,'color',LineColor,'linewidth',lw);
-hold on;
-t = toc;
+% remove indices with nans as they don't play nice w/ patch
+keepIndex = ~isnan(Xcoords) & ~isnan(Ycoords);
+Xcoords = Xcoords(keepIndex);
+Ycoords = Ycoords(keepIndex);
+
+Pa = patch(Xcoords,Ycoords',PatchColor,'FaceAlpha',.4);
+set(Pa,'linestyle','none');
+% hold on;
+% Li = plot(x,y,'color',LineColor,'linewidth',lw);
 
 
 

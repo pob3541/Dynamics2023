@@ -91,15 +91,9 @@ cbLyPos=1.8;
 %coherence color bar
 newMap=custColorBar(Params.cohColors_gs,tLeftHand,cbPos,cbSize,fSize,cbLyPos,...
     'string','Coherence','labLeft','90','labRight','4');
-% tLeftHand.Colormap=newMap;
-% 
+ 
 % RT color bar
 cbPos2=[0.65 .94];
 custColorBar(Params.posterColors,tRightHand,cbPos2,cbSize,fSize,cbLyPos);
-
-
-
-
-
 
 end
