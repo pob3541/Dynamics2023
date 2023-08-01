@@ -51,7 +51,7 @@ classdef PMddynamics < handle
             fprintf('\n------');
              for p=1:size(M.rt.bsFR,4)
                 cprintf('yellow',sprintf('\n Bootstrap: %d', p));
-                [temp] = r.calculatePCs(permute(squeeze(M.rt.bsFR(r.metaData.neuronIdx,:,:,p,:)),[2 3 1 4]));
+                [temp] = r.calculatePCs(permute(squeeze(M.rt.bsFR(r.metaData.neuronIdx,:,:,p,:)),[2 3 1 4]),'rem);
                 
                 r.signalerror.varExplained(p,:) = temp.varExplained;
                 
@@ -82,8 +82,7 @@ classdef PMddynamics < handle
         reportKinetStats(r) 
         dataV = calcSpeed(r, PCoutput, varargin)
         PCoutput = calculatePCs(r,FR, varargin)
-        temp = calculatePCsfromEachBS(r,FR, varargin);
-        [slopeV, bV, cohValues,  forBigCorr,  netaData] = calcInputsAndIC(r, varargin)
+        calcInputsAndIC(r, varargin)
         plotTrialCounts(r)
         
         % Plotting functions
@@ -259,7 +258,7 @@ classdef PMddynamics < handle
           nDims = 6;
           assignopts(who, varargin);
           for coh= 1:7
-             [r.perCoh(coh).pcaData] = r.calculatePCs(permute(squeeze(M.rt.AllFR(r.metaData.neuronIdx,coh,:,:,:)),[2 3 1 4]),'removeTime',25, 'projectFromMean', true, 'nDims', nDims);
+             [r.perCoh(coh).pcaData] = r.calculatePCs(permute(squeeze(M.rt.AllFR(r.metaData.neuronIdx,coh,:,:,:)),[2 3 1 4]),'removeTime',50, 'projectFromMean', true, 'nDims', nDims);
           end
 
     end
