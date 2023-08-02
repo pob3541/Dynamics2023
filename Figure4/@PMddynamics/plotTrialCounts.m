@@ -1,5 +1,7 @@
 function plotTrialCounts(r)
-
+%
+%
+% CC, Aug 1 2023
 figure;
 
 Z = nanmean(r.trialCounts,3);

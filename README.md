@@ -1,10 +1,10 @@
 # MATLAB analysis code for recreating main Figures from the manuscript
 > P. O. Boucher, T. Wang, L. Carceroni, G. Kane, K. V. Shenoy, C. Chandramouli.
-> **** Initial conditions in dorsal premotor cortex covary with reaction time, are altered by trial outcome, and combine with sensory evidence to induce > decision-related dynamics ****
+> **** Initial conditions combine with sensory evidence to induce decision-related dynamics in premotor cortex ****
 Tested in Matlab R2021b
 
 Data needed:
-- Data is available on Dryad at this url
+- Data needed for successfully replicating the main figures and some of the supplementary figures is provided in this github repository.
 
 https://datadryad.org/stash/share/xZzCe2AjAL8UBipbAgG1EX1R9abPc7pJ8zCYgU728GE
 
@@ -47,7 +47,7 @@ Running the following code will initialize the data to recreate all of the plots
 4C-G
 > N.plotKinet
 
-- A sister plot to the average raw speed plot is included here. This sister plot shows how the raw firing rate speed changes over the course of the trial organized by RT bin. In short, it's the Euclidean distance between each adjacent time points, so how firing rate changes in state space over time. In essence, firing rates associated with faster RT bins move through state space faster than firing rates in slower RT bins [May want to include that's the average prestimulus speed in Fig 4G.]
+- A sister plot to the average raw speed plot is included here. This sister plot shows how the raw firing rate speed changes over the course of the trial organized by RT bin. In short, it's the Euclidean distance between each adjacent time points, so how firing rate changes in state space over time. In essence, firing rates associated with faster RT bins move through state space faster than firing rates in slower RT bins [This plot is used to computer the average prestimulus speed in Fig 4G.]
 
 
 ## Figure 5: Single-trial analysis and decoding
