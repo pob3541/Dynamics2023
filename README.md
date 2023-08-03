@@ -1,4 +1,5 @@
-# MATLAB analysis code for recreating main Figures from the manuscript
+## MATLAB analysis code for recreating main Figures from the manuscript
+
 > P. O. Boucher, T. Wang, L. Carceroni, G. Kane, K. V. Shenoy, C. Chandramouli.
 > **** Initial conditions combine with sensory evidence to induce decision-related dynamics in premotor cortex ****
 Tested in Matlab R2021b
@@ -15,11 +16,11 @@ Toolboxes needed:
 
 For the repository to work on your computer please add the Dynamics2023 folder with all subfolders to your MATLAB path (add utils separately). 
 
-## Figure 2: Behavior
+### Figure 2: Psychometric curves for the monkey, and RT and box plots
 
 Open figure2.m. Run this script to load behavioral data for both monkeys. Script then displays psychometric curves (percent responded red as a function of signed coherence), reaction time (RT) curves as a function of signed coherence, and boxplots of RTs organized by stimulus coherence for both monkeys.
 
-## Figure 3: Heterogeneous and time-varying activity of PMd neurons 
+### Figure 3: Heterogeneous and time-varying activity of PMd neurons 
  
 If you want to display the first unit, for example, presented in Figure 3 run the following line in MATLAB's command prompt:
  >Fig3Neurons(1)
@@ -48,6 +49,8 @@ Running the following code will initialize the data to recreate all of the plots
 > N.plotKinet
 
 - A sister plot to the average raw speed plot is included here. This sister plot shows how the raw firing rate speed changes over the course of the trial organized by RT bin. In short, it's the Euclidean distance between each adjacent time points, so how firing rate changes in state space over time. In essence, firing rates associated with faster RT bins move through state space faster than firing rates in slower RT bins [This plot is used to computer the average prestimulus speed in Fig 4G.]
+
+plotFigure4.m
 
 
 ## Figure 5: Single-trial analysis and decoding
