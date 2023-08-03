@@ -22,10 +22,9 @@ classdef PMDdecoding < handle
         end
 
         function lfads=InitLFADS(D,regressions)
-            %
+            
             %LFADS variables
             factors = regressions.lfadsR.factors;
-            %             test = reshape(factors,[size(factors,1), size(factors,2)*size(factors,3)])';
             test = reshape(factors, [size(factors,1), size(factors,2)*size(factors,3)])';
 
             [~, score, ~] = pca(test);
@@ -37,25 +36,24 @@ classdef PMDdecoding < handle
 
             trials_data = regressions.raw.dat;
             temp = struct2table(trials_data);
-            %             sortedTemp = sortrows(temp, 'condId');
 
             % RT LFADS
 
             % choose the 30% fast and slow reaction
             percentile = 30;
+
             % choose condition num
             cond = 1;
-
-            %             selectedTrials = (temp.condId == cond);
             selectedRT = temp.RT(temp.condId == cond, :);
             sortedRT = sort(unique(selectedRT));
 
             % 20% RT
             fastPoint = sortedRT(round(length(sortedRT)*percentile/100));
+
             % 80% RT
             slowPoint = sortedRT(round(length(sortedRT)*(100 - percentile)/100));
 
-            % trials that belong to fast 20% (label1) and slow 20% (label2)
+            % trials that belong to fast 20% (label 1) and slow 20% (label 2)
             label1 = (temp.condId == cond) & (temp.RT <= fastPoint);
             label2 = (temp.condId == cond) & (temp.RT >= slowPoint);
 
@@ -63,7 +61,7 @@ classdef PMDdecoding < handle
             lfads.label1RT = temp.RT(label1);
             lfads.label2RT = temp.RT(label2);
 
-            % extract slow and fast trajs
+            % extract slow and fast trajectories
             lfads.fast_traj = orthF(1:3,:,label1);
             lfads.slow_traj = orthF(1:3,:,label2);
 
@@ -77,15 +75,19 @@ classdef PMDdecoding < handle
 
             for id = 1 : length(condition)
                 cond = condition(id);
+
                 % extract the RT and trajs with target condition
                 trajs = orthF(1:3,:,temp.condId == cond);
                 trajRT = temp.RT(temp.condId == cond, :);
+
                 % randomly select 50% data
                 idx = randperm(size(trajRT,1));
                 extract = sort(idx(1:round(length(idx)*portion)));
+
                 % update trajs and corresponding RT
                 trajs = trajs(:,:,extract);
                 trajRT = trajRT(extract);
+
                 % store the data into a struct
                 lfads.Traj(id).cond = cond;
                 lfads.Traj(id).trajs = trajs;
@@ -100,12 +102,15 @@ classdef PMDdecoding < handle
 
             % define session number
             s = 40;
+
             % choice 1
             bounds1 = linreg(s).shuffledBoundC1R2;
             r21 = linreg(s).c1R2;
+
             % choice 2
             bounds2 = linreg(s).shuffledBoundC2R2;
             r22 = linreg(s).c2R2;
+            
             % combine choices
             reg.SessBounds = (bounds1 + bounds2)./2;
             reg.SessR2 = (r21 + r22)./2;
@@ -149,13 +154,17 @@ classdef PMDdecoding < handle
             figure;
 
             for ii = 1 : size(fast_traj,3)
+
                 % endPoint
                 lastPt = 60 + round(label1RT(ii)/binWidth);
+
                 % plot trajectories from -200 of stimulus onset
                 plot3(fast_traj(1,40:lastPt,ii), fast_traj(2,40:lastPt,ii),fast_traj(3,40:lastPt,ii), 'color', [0,0,1]);
                 hold on
+
                 % stimulus onset
                 plot3(fast_traj(1,60,ii), fast_traj(2,60,ii),fast_traj(3,60,ii), 'bo', 'markerfacecolor', 'b', 'markersize', 8);
+                
                 % end dot
                 plot3(fast_traj(1,lastPt,ii), fast_traj(2,lastPt,ii),fast_traj(3,lastPt,ii), 'd', 'markeredgecolor', 'none', 'markerfacecolor', 'b', 'markersize', 10);
 
@@ -163,18 +172,21 @@ classdef PMDdecoding < handle
 
 
             for ii = 1 : size(slow_traj,3)
+
                 % endPoint
                 lastPt = 60 + round(label2RT(ii)/binWidth);
+
                 % plot trajectories from -200 of stimulus onset
                 plot3(slow_traj(1,40:lastPt,ii), slow_traj(2,40:lastPt,ii), slow_traj(3,40:lastPt,ii), 'color', [1,0,0]);
                 hold on
+
                 % stimulus onset
                 plot3(slow_traj(1,60,ii), slow_traj(2,60,ii),slow_traj(3,60,ii), 'ro', 'markerfacecolor', 'r', 'markersize', 8);
+                
                 % end dot
                 plot3(slow_traj(1,lastPt,ii), slow_traj(2,lastPt,ii),slow_traj(3,lastPt,ii),'d', 'markeredgecolor', 'none', 'markerfacecolor', 'r', 'markersize', 10);
 
             end
-
 
             set(gcf, 'Color', 'w');
             axis off;
@@ -210,29 +222,40 @@ classdef PMDdecoding < handle
             % plot cond 1
             trajs = D.lfads.Traj(1).trajs;
             trajRT = D.lfads.Traj(1).trajRT;
+            
+            figure;
             for ii = 1 : size(trajs,3)
+
                 % endPoint
                 lastPt = 60 + round(trajRT(ii)/binWidth);
+
                 % plot trajectories from -200 of stimulus onset
                 plot3(trajs(1,40:lastPt,ii), trajs(2,40:lastPt,ii),trajs(3,40:lastPt,ii), 'color', [0.5,0,1]);
                 hold on
+
                 % stimulus onset
                 plot3(trajs(1,60,ii), trajs(2,60,ii),trajs(3,60,ii), 'o', 'markeredgecolor', 'none', 'markerfacecolor', [0.5,0,1], 'markersize', 8);
+                
                 % plot end dot
                 plot3(trajs(1,lastPt,ii), trajs(2,lastPt,ii),trajs(3,lastPt,ii), 'd', 'markeredgecolor', 'none', 'markerfacecolor', [0.5,0,1], 'markersize', 10);
+            
             end
 
             % plot cond 8
             trajs = D.lfads.Traj(2).trajs;
             trajRT = D.lfads.Traj(2).trajRT;
+            
             for ii = 1 : size(trajs,3)
                 % endPoint
                 lastPt = 60 + round(trajRT(ii)/binWidth);
+                
                 % plot trajectories from -200 of stimulus onset
                 plot3(trajs(1,40:lastPt,ii), trajs(2,40:lastPt,ii),trajs(3,40:lastPt,ii), 'color', [0,0.7,0.2]);
                 hold on
+                
                 % stimulus onset
                 plot3(trajs(1,60,ii), trajs(2,60,ii),trajs(3,60,ii), 'o', 'markeredgecolor', 'none', 'markerfacecolor', [0,0.7,0.2], 'markersize', 8);
+                
                 % plot end dot
                 plot3(trajs(1,lastPt,ii), trajs(2,lastPt,ii),trajs(3,lastPt,ii), 'd', 'markeredgecolor', 'none', 'markerfacecolor', [0,0.7,0.2], 'markersize', 10);
             end
@@ -248,7 +271,6 @@ classdef PMDdecoding < handle
             ylabel('X_2');
             zlabel('X_3');
             axis vis3d;
-            % view([-172,60])
             view([131, 37])
 
             tv = ThreeVector(gca);
@@ -267,9 +289,11 @@ classdef PMDdecoding < handle
         end
 
         function plotR2(D)
+            
             %Session R2 plot
-
+            figure;
             subplot(1,2,1); hold on
+            
             %time
             t = linspace(-580,1200,90);
 
@@ -324,9 +348,7 @@ classdef PMDdecoding < handle
             text(1220,5,'99 perc. shuff.','Color',[231 0 212]./255);
             text(1220,1,'1 perc. shuff.','Color',[0 255 109]./255);
 
-
             % Avg R2 plot
-
             subplot(1,2,2); hold on
 
             ylimit = 40;
@@ -336,26 +358,24 @@ classdef PMDdecoding < handle
             p1.FaceAlpha = 0.2;
             p1.EdgeAlpha = 0;
 
-            options.x_axis = t;
-            options.alpha      = 0.5;
-            options.line_width = 5;
-            options.error      = 'sem';
-            %             options.handle     = subplot(2,3,3);
-            options.color_area = [243 169 114]./255;    % Orange theme
-            options.color_line = [236 112  22]./255;
+            
+            lineColor = [236 112  22]./255;
+            areaColor=[243 169 114]./255;
+            AvgR2 =D.reg.AvgR2'*100;
+            semAvgR2=std(AvgR2)/sqrt(size(AvgR2,1));
+            ShadedError(t,mean(AvgR2),semAvgR2,lineColor,areaColor);
 
-            plot_areaerrorbar(D.reg.AvgR2'*100, options);
+
+
 
             plot([0,0], [0,1].*ylimit, 'color', [0 0 0], 'linestyle', '--', 'linewidth',2)
 
-            %             line for variance explained by coherence
+            % line for variance explained by coherence
             plot([-600,1200], [6.32,6.32], 'color', [0 0 0], 'linestyle', '--', 'linewidth',2)
 
             plot([0,0], [0,1].*ylimit, 'color', [0 0 0], 'linestyle', '--', 'linewidth',2)
 
-
-
-            %             cosmetic code
+            % cosmetic code
             hLimits = [-600,1200];
             hTickLocations = -600:300:1200;
             hLabOffset = 2.5;
@@ -387,12 +407,13 @@ classdef PMDdecoding < handle
             axis square;
             axis tight;
             text(1220,6.32,sprintf('%3.2f%%',6.32),'Color',[0 0 0]);
+
         end
 
         function plotAcc(D)
 
             %Session Acc plot
-
+            figure;
             subplot(1,2,1); hold on
             t = linspace(-580,1200,90);
             ylimit = 40;
@@ -407,7 +428,6 @@ classdef PMDdecoding < handle
             plot(t, D.dec.SessAcc*100, 'linewidth', 2, 'color', [236 112  22]./255)
             plot([0,0], [ylimit,100], 'color', [0 0 0], 'linestyle', '--', 'linewidth',2)
             yline(50, 'k--', 'linewidth', 2);
-            % title('Accuracy of LFADS session', 'fontsize', 30)
 
             % cosmetic code
             hLimits = [-600,1200];
@@ -444,8 +464,6 @@ classdef PMDdecoding < handle
             text(1220,46.5,'1 perc. shuff.','Color',[0 255 109]./255);
             title('Single session accuracy')
 
-
-
             % Avg Acc plot
 
             subplot(1,2,2); hold on
@@ -458,19 +476,16 @@ classdef PMDdecoding < handle
             p1.FaceAlpha = 0.2;
             p1.EdgeAlpha = 0;
 
-            options.x_axis = t;
-            options.alpha      = 0.5;
-            options.line_width = 5;
-            options.error      = 'sem';
-            %             options.handle     = subplot(2,3,6);
-            options.color_area = [243 169 114]./255;    % Orange theme
-            options.color_line = [236 112  22]./255;
+      
 
-            plot_areaerrorbar(D.dec.AvgAcc'*100, options);
+            lineColor = [236 112  22]./255;
+            areaColor=[243 169 114]./255;
+            AvgAcc =D.dec.AvgAcc'*100;
+            semAvgAcc=std(AvgAcc)/sqrt(size(AvgAcc,1));
+            ShadedError(t,mean(AvgAcc),semAvgAcc,lineColor,areaColor);
+
             plot([0,0], [yLower,yUpper], 'color', [0 0 0], 'linestyle', '--', 'linewidth',2)
             yline(50, 'k--', 'linewidth', 2);
-            % title('Average Accuracy', 'fontsize', 30)
-
 
             % cosmetic code
             hLimits = [-600,1200];
