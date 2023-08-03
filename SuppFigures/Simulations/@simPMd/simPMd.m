@@ -69,7 +69,7 @@ classdef simPMd < handle
             % lower and upper bound of RT percentile
             r.params.RTl = RTp(1:end-1);
             r.params.RTr = RTp(2:end);
-
+            
             
         end
         
@@ -94,7 +94,7 @@ classdef simPMd < handle
             [accuracy_g] = predictChoice(binnedFRmatrix, rt, decision, options, 'greater');
             
             keyboard
-
+            
             
         end
         
@@ -163,7 +163,7 @@ classdef simPMd < handle
             for cId = 1:length(RTl)
                 FRnew(:,:,cId,:) = squeeze(nanmean(r.FR(:,r.RT > RTl(cId) & r.RT < RTr(cId),:,:),2));
             end
- 
+            
             bigMatrix = [];
             for choiceId = 1:2
                 for RTid = 1:length(r.params.RTl)
