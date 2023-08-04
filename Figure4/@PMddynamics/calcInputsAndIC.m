@@ -141,16 +141,16 @@ ColVals = repmat([0 0.5 0.55 0.6 0.65 0.72 0.84]',1,3);
 D = floor(linspace(1,size(p.posterColors,1),length(r.perCoh(1).pcaData.TrajIn)));
 
 
-forBigCorr = F(:,1);
-forBigCorr(:,2) = Yave;
-forBigCorr(:,3) = Ylatency;
-forBigCorr(:,4) = Yslope;
-forBigCorr(:,5) = idV;
-
-
-[r11,pp11] = corr(Yave', X1(:,3),'type','spearman')
-[r12,p12] = corr(Ylatency', X1(:,3), 'type','spearman')
-[r13,p13] = corr(Yslope', X1(:,3), 'type','spearman')
+% forBigCorr = F(:,1);
+% forBigCorr(:,2) = Yave;
+% forBigCorr(:,3) = Ylatency;
+% forBigCorr(:,4) = Yslope;
+% forBigCorr(:,5) = idV;
+% 
+% 
+% [r11,pp11] = corr(Yave', X1(:,3),'type','spearman')
+% [r12,p12] = corr(Ylatency', X1(:,3), 'type','spearman')
+% [r13,p13] = corr(Yslope', X1(:,3), 'type','spearman')
 
 
 

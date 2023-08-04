@@ -5,7 +5,7 @@ step = 100;
 
 %%
 fileList = [1:length(files)];
-fileList = 40;
+
 
 sStats = [];
 

@@ -21,13 +21,13 @@ N.plotTrajectories('showPooled',1,'showGrid',1,'hideAxes',0);
 
 %% Calculate within coh trajectories (Figure 6C-G)
 N.plotTrajectories('showPooled',0,'whichCoh',1, 'showGrid',0, 'hideAxes',1);
-sgtitle('Fig. 6C: 90%');
+sgtitle('Fig. 7C: 90%');
 
 N.plotTrajectories('showPooled',0,'whichCoh',4, 'showGrid',0, 'hideAxes',1);
-sgtitle('Fig. 6C: 31%');
+sgtitle('Fig. 7C: 31%');
 
 N.plotTrajectories('showPooled',0,'whichCoh',7,'showGrid',0, 'hideAxes',1);
-sgtitle('Fig. 6C: 4%');
+sgtitle('Fig. 7C: 4%');
 
 N.calcInputsAndIC
 

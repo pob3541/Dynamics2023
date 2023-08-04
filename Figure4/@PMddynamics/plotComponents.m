@@ -59,8 +59,9 @@ for z=1:length(tData)
     Dist{z} = nanmean(DistV);
     distMinMax(z,:) = [min(Dist{z}), max(Dist{z})];
 end
-[rV,pV] = corr(nanmean(r.metaData.RTlims(:,r.metaData.whichConds))', dVal')
+[rV,pV, rL, rU] = corrcoef(nanmean(r.metaData.RTlims(:,r.metaData.whichConds))', dVal');
 
+fprintf('\n %3.2f (%3.2f - %3.2f), p = %3.4e', rV(1,2), rL(1,2), rU(1,2), pV(1,2));
 
 
 S1 = MinMax(:,:,1);

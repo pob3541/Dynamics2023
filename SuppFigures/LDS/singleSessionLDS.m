@@ -4,12 +4,15 @@
 % other trials. It is a tad lazy just to change one variable but it is
 % simple and easy.
 
+files = dir('/net/derived/tianwang/LFADSdata/*.mat')
+step = 100;
 
 %%
 sessionId = 40;
 step = 100;
 titles = {'Before Checkerboard Onset', 'After Checkerboard Onset'};
-loc = [-.6 0]
+loc = [-.6 0];
+
 for timeperiods = 1:2
 
     fprintf('\n %s', titles{timeperiods});

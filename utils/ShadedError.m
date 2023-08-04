@@ -43,7 +43,7 @@ function [Pa,Li,t] = ShadedError(varargin)
 %                         xlabel('time');
 %                         ylabel('Amplitude');
 %                         title('Using Errors alone');
-% 
+%
 %                         figure;
 %                         L = Y - E;
 %                         U = Y + E;
@@ -52,7 +52,7 @@ function [Pa,Li,t] = ShadedError(varargin)
 %                         ylabel('Amplitude');
 %                         title('Using Lower and Upper Confidence Intervals');
 %                         hold on;
-% 
+%
 %                         Y1 = 2*Y;
 %                         L = Y1 - 0.2;
 %                         U = Y1 + 0.2;
@@ -103,24 +103,21 @@ switch(nargin)
         LineColor =  varargin{5};
         PatchColor = varargin{6};
 end
-% x = x(~isnan(E));
-% y = y(~isnan(E));
-% L = L(~isnan(L));
-% U = U(~isnan(U));
+tic
+x = x(~isnan(E));
+y = y(~isnan(E));
+L = L(~isnan(L));
+U = U(~isnan(U));
 
 Xcoords = [x x(end:-1:1)];
 Ycoords = [U L(end:-1:1)];
-% lw=.01;
 
-% remove indices with nans as they don't play nice w/ patch
-keepIndex = ~isnan(Xcoords) & ~isnan(Ycoords);
-Xcoords = Xcoords(keepIndex);
-Ycoords = Ycoords(keepIndex);
-
-Pa = patch(Xcoords,Ycoords',PatchColor,'FaceAlpha',.4);
-set(Pa,'linestyle','none');
-% hold on;
-% Li = plot(x,y,'color',LineColor,'linewidth',lw);
+Pa = patch(Xcoords,Ycoords,PatchColor);
+set(Pa,'linestyle','none','linewidth',2);
+hold on;
+Li = plot(x,y,'color',LineColor,'linewidth',2);
+hold on;
+t = toc;
 
 
 

@@ -9,7 +9,7 @@ trainError = [];
 testError = [];
 
 whichT = 1:50:1200;
-verbose = false;
+verbose = true;
 
 
 whichCV = 'hard';
@@ -20,31 +20,28 @@ else
     cprintf('yellow','Using soft Cross Validation');
 end
 for m = 1:2
-
-
+    
+    
     monkey = monkeys{m};
-
+    
     switch(monkey)
-
+        
         case 'o'
-            %    olafV = [13 24:26 30 33 36 38 40 41 43 44 45 46 47 48 49 50 52 53 54 55 56 61 62 63 70];
-
             olafV = [13 24:26 30 33 36 38 41 43 45 46 47 49 52 53 54 55 56 61 70];
-
             whichSess = olafV;
             [Sessions, remoteDir, remoteScratch] = validOlafSessions('PMd');
         case 't'
-
+            
             whichSess = setdiff(52:75, 57);
-            %             whichSess = 58:75
+            
             [Sessions, remoteDir, remoteScratch] = validSessions('PMd');
-            % whichSess = 52
+            
     end
-
-
+    
+    
     for sId = whichSess
         fprintf('\n %d',sId);
-
+        
         [forTCA,nL, nR] = getTCAdata(sId, 'monkey',monkey,'reMake',0);
         forRRR = cat(3, forTCA.dataStruct.RawData.Left, forTCA.dataStruct.RawData.Right);
         RTs = [forTCA.dataStruct.Info.Left.goodRTs'; forTCA.dataStruct.Info.Right.goodRTs'];
@@ -52,14 +49,14 @@ for m = 1:2
         nSquares = abs([nSquares-(225-nSquares)]./225);
         choiceV = [ones(1, forTCA.nL) 2*ones(1,forTCA.nR)];
         tAxis = forTCA.dataStruct.RawData.timeAxis;
-
+        
         tValues = tAxis < 0;
         Y = forRRR(whichT,:,:);
         Y = permute(Y,[2 1 3]);
-
+        
         Yt = tensor(Y);
         Yr = ones(size(Yt));
-
+        
         switch(whichCV)
             case 'hard'
                 for n=1:size(Yr,3)
@@ -73,14 +70,14 @@ for m = 1:2
                 Yr(Yr > 0.2) = 1;
                 Yr(Yr <=0.2) = 0;
         end
-
-
+        
+        
         rTemp = [];
         dId = 1;
         for d = [1:4]
-
+            
             [model, U0,out] = cp_wopt(Yt, Yr, d,'verbosity',0);
-
+            
             if sId == 52 & monkey == 't' & d == 4
                 %  [model, U0, out] = cp_als(Yt, 4);
                 modelToUse = model;
@@ -88,22 +85,22 @@ for m = 1:2
                     'Plottype', {'bar', 'line', 'scatter'}, ...
                     'Modetitles', {'neurons', 'time', 'trials'})
             end
-
+            
             fullData = full(model);
             fullData = fullData.data(find(Yr));
             Ydata = Yt.data(find(Yr));
-
+            
             trainError(cnt, dId) = 1 - norm(fullData - Ydata,'fro').^2/norm(Ydata - mean(Ydata),'fro').^2;
             RCs(cnt,dId, 1) = norm(fullData - Ydata, 'fro')./norm(Ydata,'fro');
-
+            
             fullData = full(model);
             fullData = fullData.data(find(~Yr));
             Ydata = Yt.data(find(~Yr));
-
+            
             testError(cnt, dId) = 1 - norm(fullData - Ydata,'fro').^2/norm(Ydata - mean(Ydata),'fro').^2;
             RCs(cnt,dId, 2) = norm(fullData - Ydata, 'fro')./norm(Ydata,'fro');
-
-
+            
+            
             Yproj = [];
             X1 = model.u;
             ix = [1:d];
@@ -113,23 +110,21 @@ for m = 1:2
             tAll = tAxis(whichT);
             [rTemp,p] = corr(model.u{3}, RTs, 'type','spearman');
             [b,bi,c,ci,st(cnt,dId,:)] = regress(RTs, [nanmean(Yproj(:,:,tAll < 0),3)' nSquares ones(size(RTs,1),1)]);
-
             [b,bi,c,ci,stR(cnt,dId,:)] = regress(RTs(randperm(length(RTs))), [nanmean(Yproj(:,:,tAll < 0),3)' nSquares ones(size(RTs,1),1)]);
-
             [b,bi,c,ci,st1(cnt,dId,:)] = regress(RTs, [nSquares ones(size(RTs,1),1)]);
-
-
+            
+            
             sessStats(cnt,:) = [sId size(Yt)];
             dId = dId + 1;
-
-
+            
+            
         end
         if verbose
             cprintf('red',sprintf('\n Train Error: %3.3f, \n test Error: %3.3f, \n R2: %3.3f', trainError(cnt,:), testError(cnt,:), st(cnt,:)));
         end
         cnt = cnt + 1;
-
-
+        
+        
     end
 end
 
@@ -143,7 +138,7 @@ for i=1:10
     allData = randperm(length(groups));
     trainIdx = allData(1:ceil(0.7*length(allData)));
     testIdx = setdiff(allData, trainIdx);
-
+    
     classPred = classify(classifydata(testIdx,:), classifydata(trainIdx,:), groups(trainIdx,:));
     actual(i) = nanmean(classPred == groups(testIdx));
 end
@@ -242,7 +237,7 @@ for i=1:length(Vl)
     hold on;
     currT = currT + 4;
     plot3(Y1(Vl(i),:)', Y2(Vl(i),:)', Y3(Vl(i),:)', 'b-');
-
+    
 end
 
 
@@ -257,8 +252,8 @@ for i=1:length(Vr)
         plot3(Y1(Vr(i),1:currT)', Y2(Vr(i),1:currT)', Y3(Vr(i),1:currT)', 'm-');
         plot3(Y1(Vr(i),currT)', Y2(Vr(i),currT)', Y3(Vr(i),currT)', 'mo','markerfacecolor','m','markeredgecolor','none','markersize',12);
     end
-
-
+    
+    
 end
 tAll = find(tAll >= 0,1,'first');
 plot3(Y1(Vl,tAll)', Y2(Vl,tAll)', Y3(Vl,tAll)', 'bo','markerfacecolor','b','markeredgecolor','none','markersize',12);
