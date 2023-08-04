@@ -1,17 +1,31 @@
-function Fig3Neurons(unit)
+function Fig3Neurons(unit,varargin)
+
+% choose the smoothing - 'gauss30', 'gauss15', 'box50'
+smoothing='gauss30';
+% choose RT ('RT') coherence ('Coh') for main figure
+cond='RT';
+assignopts(who, varargin);
 
 %Load in data for the neuron
 load('HetNeurons.mat','Data')
 Data=Data(unit).Unit;
 
+
+FR_Cue=getfield(Data.FRs.Cue,smoothing);
+FR_Move=getfield(Data.FRs.Cue,smoothing);
+
+
 %Figure creation with title
 figure('units','normalized','outerposition',[0.1 0.1 0.6 0.6])
+
+
 center_title=sgtitle(['Monkey ', Data.Monkey,'; ',Data.Date, '; Channel ' num2str(Data.Ch), ', Unit ', num2str(Data.Unit)]);
 center_title.FontWeight = 'bold';
 center_title.FontSize = 12;
 
 %Top left plot - FR by coherence; cue aligned
-tLeftHand=subplot(2,2,1);[y]=plotConv(Data.CueAlignFR,Data.Choice,Data.Coherence,Data.RT,'Coh',Data.bound1,Data.bound2,'Cue');
+tLeftHand=subplot(2,2,1);
+[y]=plotConv(FR_Cue,Data.Choice,Data.Coherence,Data.RT,'Coh',Data.bound1,Data.bound2,'Cue');
 hold on;
 set(gca,'visible','off');
 tc = getTextLabel(0,{'Cue'},{'b'});
@@ -19,19 +33,22 @@ axis tight
 
 
 %Top right plot - FR by RT; cue aligned
-tRightHand=subplot(2,2,2);[~,y2]=plotConv(Data.CueAlignFR,Data.Choice,Data.Coherence,Data.RT,'RT',Data.bound1,Data.bound2,'Cue');
+tRightHand=subplot(2,2,2);
+[~,y2]=plotConv(FR_Cue,Data.Choice,Data.Coherence,Data.RT,'RT',Data.bound1,Data.bound2,'Cue');
 set(gca,'visible','off');
 axis tight
 
 
 %Bottom right plot - FR by coherence; movement aligned
-bLeftHand=subplot(2,2,3);[y3]=plotConv(Data.MovAlignFR,Data.Choice,Data.Coherence,Data.RT,'Coh',Data.bound1,Data.bound2,'Mov');
+bLeftHand=subplot(2,2,3);
+[y3]=plotConv(FR_Move,Data.Choice,Data.Coherence,Data.RT,'Coh',Data.bound1,Data.bound2,'Mov');
 set(gca,'visible','off');
 tm = getTextLabel(0,{'Move'},{'b'});
 axis tight
 
 %Bottom left plot - FR by RT; movement aligned
-bRightHand=subplot(2,2,4);[~,y4]=plotConv(Data.MovAlignFR,Data.Choice,Data.Coherence,Data.RT,'RT',Data.bound1,Data.bound2,'Mov');
+bRightHand=subplot(2,2,4);
+[~,y4]=plotConv(FR_Move,Data.Choice,Data.Coherence,Data.RT,'RT',Data.bound1,Data.bound2,'Mov');
 set(gca,'visible','off');
 axis tight
 
@@ -95,5 +112,21 @@ newMap=custColorBar(Params.cohColors_gs,tLeftHand,cbPos,cbSize,fSize,cbLyPos,...
 % RT color bar
 cbPos2=[0.65 .94];
 custColorBar(Params.posterColors,tRightHand,cbPos2,cbSize,fSize,cbLyPos);
+
+% For figure saving
+
+fig=figure('units','normalized','outerposition',[0 0 1 1]);
+plotConv(FR_Cue,Data.Choice,Data.Coherence,Data.RT,cond,Data.bound1,Data.bound2,'Cue');
+set(gca,'visible','off');
+tc = getTextLabel(0,{'Cue'},{'b'});
+axis tight;
+offset=0;
+getAxesP(cxLims,cxTicks,hlaboff,-1, 'Time (ms)', [0 y_max-offset],[0 y_max-offset],10,-110, 'Firing rate (Spikes /s)',[1 1], tc);
+drawRestrictedLines(0,[0 y_max-offset]);
+
+ax = gca;
+ax.SortMethod='childorder'; % Makes the figure print properly
+print(fig,'-painters','-depsc',['~/Dropbox/BU/ChandImages/',cond,'/Cue/', [Data.Monkey,'_',Data.Date, '_C' num2str(Data.Ch), 'U', num2str(Data.Unit),'_',smoothing],'.eps'])
+
 
 end

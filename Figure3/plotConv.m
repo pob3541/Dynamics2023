@@ -14,6 +14,8 @@ switch(txt)
     case 'Coh'
         
         uniqC=unique(C);
+        uniqC=uniqC(1:7);
+     
         y2=0;
         
         % Change plotting style for left/right reaches
