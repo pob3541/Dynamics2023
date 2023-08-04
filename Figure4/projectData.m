@@ -8,7 +8,7 @@ latV = [];
 actSlope = [];
 
 bigD = [];
-% 
+%
 for p=1:size(M.rt.bsFR,4)
     cprintf('yellow',sprintf('\n Bootstrap: %d', p));
     [temp] = r.calculatePCs(permute(squeeze(M.rt.bsFR(r.metaData.neuronIdx,:,:,p,:)),[2 3 1 4]));
@@ -30,7 +30,7 @@ for p=1:size(M.rt.bsFR,4)
     
     latV(p,:,:) = bV(:,:,1);
     actSlope(p,:,:) = bV(:,:,3);
-
+    
     
     bs(p,:) = [metaData.avgSel.rIC metaData.avgSel.rCoh metaData.latency.rIC metaData.latency.rCoh metaData.slope.rIC metaData.slope.rCoh];
     bigD = [bigD; forBigCorr];
@@ -52,27 +52,23 @@ for p=1:size(M.rt.bsFR,4)
     
     
 end
-
 %%
-figure;
-subplot(1,3,1);
-Xnew = nanmean(latV,3);
-cV = repmat(cohValues, size(Xnew,1),1);
-[r,p] = corr(Xnew(:), cV(:))
 
-errorbar(cohValues, nanmean(Xnew), 2*nanstd(Xnew));
-
-subplot(1,3,2);
-Xnew = nanmean(slopeV,3);
-cV = repmat(cohValues, size(Xnew,1),1);
-[r,p] = corr(Xnew(:), cV(:))
-
-errorbar(cohValues, nanmean(Xnew), 2*nanstd(Xnew));
+cprintf('green','\n ---- For average selectivity');
+X1 = [corrValues.avgSel];
+reportMeanAndCI(X1)
+cprintf('green','\n ---- ');
 
 
-subplot(1,3,3);
-Xnew = nanmean(actSlope,3);
-cV = repmat(cohValues, size(Xnew,1),1);
-[r,p] = corr(Xnew(:), cV(:))
 
-errorbar(cohValues, nanmean(Xnew), 2*nanstd(Xnew));
+cprintf('green','\n ---- For latency');
+X1 = [corrValues.latency];
+reportMeanAndCI(X1)
+cprintf('green','\n ---- ');
+
+
+
+cprintf('green','\n ---- For slope');
+X1 = [corrValues.slope];
+reportMeanAndCI(X1)
+cprintf('green','\n ---- ');

@@ -81,7 +81,7 @@ for n=1:7
         xLims = [-400 500];
         xTicks = [-400 200 400];
         cTextLabels = getTextLabel(0,{'Cue'},{'b'});
-        yTicks = [yLims(1) yLims(2)];
+        yTicks = [yLims(1):25:yLims(2)];
         getAxesP(xLims, xTicks, 12.5, yLims(1), 'Time (ms)', yLims, yTicks, 100, xLims(1)-20, 'High D Distance',[1 1],cTextLabels);
         drawRestrictedLines(0,yLims,'lineStyle','--');
         axis tight; axis square;
@@ -141,11 +141,11 @@ ColVals = repmat([0 0.5 0.55 0.6 0.65 0.72 0.84]',1,3);
 D = floor(linspace(1,size(p.posterColors,1),length(r.perCoh(1).pcaData.TrajIn)));
 
 
-% forBigCorr = F(:,1);
-% forBigCorr(:,2) = Yave;
-% forBigCorr(:,3) = Ylatency;
-% forBigCorr(:,4) = Yslope;
-% forBigCorr(:,5) = idV;
+forBigCorr = F(:,1);
+forBigCorr(:,2) = Yave;
+forBigCorr(:,3) = Ylatency;
+forBigCorr(:,4) = Yslope;
+forBigCorr(:,5) = idV;
 % 
 % 
 % [r11,pp11] = corr(Yave', X1(:,3),'type','spearman')
@@ -167,7 +167,7 @@ end
 set(gca,'visible','off');
 % setLineColors(li);
 hold on;
-getAxesP([-20 20],[-20 0 20],6,-2,'Initial Condition',[0 60],[0 60],2,-22,'Average',[1 1]);
+getAxesP([-20 20],[-20 0 20],6,-2,'Initial Condition',[0 60],[0:15:60],2,-22,'Average',[1 1]);
 axis square;
 axis tight;
 text(-10,70,'Average Rate');
@@ -201,7 +201,7 @@ end
 set(gca,'visible','off');
 % setLineColors(li);
 hold on;
-getAxesP([-20 20],[-20 0 20],20,-2,'Initial Condition',[0 250],[0 125 250],5,-22,'Latency (ms)',[1 1]);
+getAxesP([-20 20],[-20 0 20],20,-2,'Initial Condition',[0 250],[0:62.5:250],5,-22,'Latency (ms)',[1 1]);
 axis square;
 axis tight;
 
