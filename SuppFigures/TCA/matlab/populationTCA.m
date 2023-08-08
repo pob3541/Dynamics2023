@@ -202,7 +202,7 @@ drawLines(13);
 figure
 
 sId = 52;
-[forTCA,nL, nR] = getGPFAdata(sId, 'monkey',monkey,'reMake',0);
+[forTCA,nL, nR] = getTCAdata(sId, 'monkey',monkey,'reMake',0);
 forRRR = cat(3, forTCA.dataStruct.RawData.Left, forTCA.dataStruct.RawData.Right);
 RTs = [forTCA.dataStruct.Info.Left.goodRTs'; forTCA.dataStruct.Info.Right.goodRTs'];
 nSquares = [forTCA.dataStruct.Info.Left.nSquares'; forTCA.dataStruct.Info.Right.nSquares'];
