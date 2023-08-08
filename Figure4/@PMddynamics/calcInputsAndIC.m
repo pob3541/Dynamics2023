@@ -1,4 +1,4 @@
-function [slopeV, bV, cohValues, forBigCorr, metaData] = calcInputsAndIC(r, varargin)
+function [slopeV, bV, cohValues, forBigCorr, metaData, dataTable] = calcInputsAndIC(r, varargin)
 % calcInputsAndIC calculates the effect of inputs and initial conditions on
 % the choice-related dynamics.
 %
@@ -24,6 +24,8 @@ FitQuality = [];
 Loc = [];
 cnt = 1;
 nDim = numDim;
+
+bigD = [];
 for n=1:7
     if ismember(n,[1 3 7])
         subplot(3,2,2*cnt-1);
@@ -44,12 +46,19 @@ for n=1:7
         iX = find(tV > 0.125 & tV < 0.375);
         
         if plotData
-            %             tNew = (tV < .375);
-            %             li(m) = plot(tV(tNew)*1000, dist{m}(tNew),'-');
             li(m) = plot(tV*1000, dist{m},'-');
+            
+            currD = [tV'*1000 dist{m}];
+            currD(:,end+1) = n;
+            currD(:,end+1) = m;
+            
+            
+            
         end
+        
+        bigD = [bigD; currD];
+        
         slopeV(n,m) = nanmean(Y(iX(1:10:end)));
-        % slopeV(n,m) = Y(iX(end)) - Y(iX(1));
         
         
         tS = r.perCoh(n).pcaData.tData{m}*1000;
@@ -57,21 +66,16 @@ for n=1:7
         [R,goodness] = fit(tS(tVals)',squeeze(double(Y(tVals))),g,'StartPoint',[100 3 0.0001]);
         if plotData & n==1
             hold on
-            % %                         plot(R,'r-');
+            
+            
+            
+            
         end
         
         FitQuality(n,m) = goodness.rsquare;
         bV(n,m,:) = coeffvalues(R);
         bVI(n,m,:,:) = confint(R);
         
-        
-        %         L = diff(Y(tS > -100 & tS < 400));
-        %         allSeq = FindMeAllSequencesOfStep(find(L > 0.1*prctile(L,99))', 1, 50);
-        %         bV(n,m,1) =  allSeq{1}(1);
-        %
-        %         Ycurr = Y(tS > -100 & tS < 400);
-        %         bV(n,m,3) = Ycurr(bV(n,m,1)+50)-Ycurr(bV(n,m,1));
-        %
         
     end
     if plotData
@@ -91,6 +95,8 @@ for n=1:7
     end
     
 end
+
+dataTable.distances = array2table(bigD, 'VariableNames', {'time','distance','id_coh','id_rt'});
 
 %%
 figure;
@@ -146,14 +152,8 @@ forBigCorr(:,2) = Yave;
 forBigCorr(:,3) = Ylatency;
 forBigCorr(:,4) = Yslope;
 forBigCorr(:,5) = idV;
-% 
-% 
-% [r11,pp11] = corr(Yave', X1(:,3),'type','spearman')
-% [r12,p12] = corr(Ylatency', X1(:,3), 'type','spearman')
-% [r13,p13] = corr(Yslope', X1(:,3), 'type','spearman')
 
-
-
+rawData = [];
 for b=[1 3 5 7]
     a1 = F(id==b,1);
     a2 = Y(id==b);
@@ -163,7 +163,13 @@ for b=[1 3 5 7]
         plot(a1(k),a2(k),'o','markerfacecolor',p.posterColors(D(k),:), 'markersize',12,'markeredgecolor','none');
     end
     hold on
+    rawData = [rawData; a1 a2' b*ones(length(a1),1)];
+    
+    
 end
+
+dataTable.avgSel = array2table(rawData,'VariableNames',{'IC','AvgSel','Id'});
+
 set(gca,'visible','off');
 % setLineColors(li);
 hold on;
@@ -188,6 +194,7 @@ metaData.avgSel.rCoh = r2;
 
 subplot(3,1,2);
 li = [];
+rawData = [];
 for b=[1 3 5 7]
     a1 = F(id==b,1);
     a2 = Ylatency(id==b);
@@ -197,7 +204,13 @@ for b=[1 3 5 7]
         plot(a1(k),a2(k),'o','markerfacecolor',p.posterColors(D(k),:), 'markersize',12,'markeredgecolor','none');
     end
     hold on
+    
+     rawData = [rawData; a1 a2' b*ones(length(a1),1)];
+    
 end
+
+dataTable.avgLatency = array2table(rawData,'VariableNames',{'IC','Latency','Id'});
+
 set(gca,'visible','off');
 % setLineColors(li);
 hold on;
@@ -222,6 +235,8 @@ metaData.latency.rCoh = r2;
 
 subplot(3,1,3);
 li = [];
+
+rawData = [];
 for b=[1 3 5 7]
     a1 = F(id==b,1);
     a2 = Yslope(id==b);
@@ -231,6 +246,8 @@ for b=[1 3 5 7]
         plot(a1(k),a2(k),'o','markerfacecolor',p.posterColors(D(k),:), 'markersize',12,'markeredgecolor','none');
     end
     hold on
+    
+    rawData = [rawData; a1 a2' b*ones(length(a1),1)];
 end
 set(gca,'visible','off');
 % setLineColors(li);
@@ -239,6 +256,7 @@ getAxesP([-20 20],[-20 0 20],0.0005,-0.0005,'Initial Condition',[0 0.003],[0:0.0
 axis square;
 axis tight;
 
+dataTable.avgSlope  = array2table(rawData,'VariableNames',{'IC','AvgSel','Id'});
 
 [r1,p1] = partialcorr(Yslope',X1(:,1),X1(:,2));
 S1 = sprintf('Corr:%3.2f( p = %3.2e)',r1,p1);

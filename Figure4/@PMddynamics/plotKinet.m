@@ -1,4 +1,4 @@
-function plotKinet(r, varargin)
+function dataTable = plotKinet(r, varargin)
 %
 %   plots the results from the KiNeT analysis developed in the Jazayeri Lab
 %   uses the kinet results computed previously in the class constructor.
@@ -38,10 +38,19 @@ speedE = squeeze(nanstd(r.kinet.speed));
 subplot(2,3,4);
 pa = [];
 li = [];
+vNames1 = {};
+vNames2 = {};
 for n=1:size(V,2)
     [pa(n), li(n)] = ShadedError([tVect]*1000, squeeze(V(:,n))', squeeze(Ve(:,n)'));
     hold on;
+    vNames1{n} = sprintf('RTbin%d',n);
+    vNames2{n} = sprintf('RTbinE%d',n);
 end
+
+
+dataTable.velocity = array2table([tVect'*1000 V Ve],'VariableNames',['time' vNames1 vNames2]);
+
+
 setLineColors(li);
 set(pa,'FaceAlpha',0.3);
 set(gca,'visible','on');
@@ -69,6 +78,10 @@ for n=1:size(V,2)
     [pa(n), li(n)] = ShadedError([tVect]*1000, squeeze(distancesAll(:,n))', squeeze(distancesE(:,n))');
     hold on;
 end
+
+dataTable.distance = array2table([tVect'*1000 distancesAll distancesE],'VariableNames',['time' vNames1 vNames2]);
+
+
 setLineColors(li);
 set(pa,'FaceAlpha',0.3);
 
@@ -87,19 +100,6 @@ if ~r.processingFlags.useNonOverlapping
 end
 
 
-subplot(2,3,6);
-for p=1:size(speed,2)
-    [pa(p), L(p)] = ShadedError(tSpeed, squeeze(speed(:,p))', squeeze(speedE(:,p))');
-    set(pa(p),'FaceAlpha',0.5);
-    hold on
-end
-setLineColors(L);
-set(gca,'visible','off');
-hold on;
-drawRestrictedLines(0,[0 400]);
-getAxesP([-0.4 0.5]*1000,[-0.4:0.2:0.5]*1000,50,-.1,'t (ms)',[0 4]*100,[0:4]*100,100,-420,'Speed (spks/s/s)',[1 1]);
-axis square;
-axis tight;
 
 
 subplot(2,3,5);
@@ -113,10 +113,10 @@ plot([RTl+RTh]/2, speedS,'k-');
 for n=1:length(speedS)
     hold on;
     eF = errorbar([RTl(n)+RTh(n)]/2, speedS(n), speedSE(n),'o-','markersize',12,'markerfacecolor',params.posterColors(n,:),'markeredgecolor','none','color',params.posterColors(n,:));
+    sData(n,:) = [[RTl(n)+RTh(n)]/2  speedS(n)  speedSE(n)];
 end
 hold on
-
-
+dataTable.speed = array2table(sData,'VariableNames',{'RT','Speed','SpeedE'});
 
 hold on
 set(gca,'visible','off');
@@ -143,6 +143,9 @@ hold on;
 set(gca,'visible','off');
 getAxesP([-0.4 0.5]*1000,[-0.4:0.2:0.5]*1000,10,-.1,'t (ms)',[0 180],[0 90 180],100,-420,'Angle',[1 1]);
 
+dataTable.subspace = array2table([tVect'*1000 angleS' angleSE'],'VariableNames',{'time','Angle','AngleSEM'});
+
+
 
 subplot(2,3,3)
 angleS = squeeze(nanmean(r.kinet.meanVectorAngle))*180/pi;
@@ -158,6 +161,26 @@ axis tight;
 ylim([0 180]);
 set(gca,'visible','off');
 
+dataTable.align = array2table([tVect'*1000 angleS' angleSE'],'VariableNames',{'time','Angle','AngleSEM'});
 getAxesP([-0.4 0.5]*1000,[-0.4:0.2:0.5]*1000,10,-.1,'t (ms)',[0 180],[0 90 180],100,-420,'Angle',[1 1]);
+
+
+
+
+
+% subplot(2,3,6);
+% for p=1:size(speed,2)
+%     [pa(p), L(p)] = ShadedError(tSpeed, squeeze(speed(:,p))', squeeze(speedE(:,p))');
+%     set(pa(p),'FaceAlpha',0.5);
+%     hold on
+% end
+% setLineColors(L);
+% set(gca,'visible','off');
+% hold on;
+% drawRestrictedLines(0,[0 400]);
+% getAxesP([-0.4 0.5]*1000,[-0.4:0.2:0.5]*1000,50,-.1,'t (ms)',[0 4]*100,[0:4]*100,100,-420,'Speed (spks/s/s)',[1 1]);
+% axis square;
+% axis tight;
+
 
 end

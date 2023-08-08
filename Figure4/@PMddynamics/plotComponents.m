@@ -1,4 +1,4 @@
-function plotComponents(r, varargin)
+function [dataTable] = plotComponents(r, varargin)
 % plots specified components and also euclidean distance for choice
 %
 % Chand, 30 Mar 2022
@@ -23,7 +23,10 @@ MinMax = [];
 
 
 tData = r.signalplusnoise.tData;
+bigData = [];
+bigDist = [];
 
+vNames = {'time'};
 for z=1:length(tData)
     compCnt = 1;
     
@@ -41,7 +44,25 @@ for z=1:length(tData)
         %                     if z==1
         %                         text(20,12.5,sprintf('%3.2f%%',V(f)));
         %                     end
+        if z==1
+            vNames{compCnt} = sprintf('Dim%d',f);
+            
+        end
     end
+    
+    currData1 = [tData{z}' TrajIn{z}(:,dimsToShow)];
+    currData1(:,end+1) = z;
+    currData1(:,end+1) = 1;
+    
+    
+    currData2 = [tData{z}' TrajIn{z}(:,dimsToShow)];
+    currData2(:,end+1) = z;
+    currData2(:,end+1) = 2;
+    
+    
+    bigData = [bigData; currData1; currData2];
+    
+    
     
     DistV = r.distance(z).V;
     DistV(DistV > 300) = NaN;
@@ -57,8 +78,22 @@ for z=1:length(tData)
     dVal(z) = nanmean(nanmean(DistV(:,tIds)),2);
     
     Dist{z} = nanmean(DistV);
+    
+    currD = [Dist{z}' tData{z}'];
+    currD(:,end+1) = z;
+    
+    bigDist = [bigDist; currD];
     distMinMax(z,:) = [min(Dist{z}), max(Dist{z})];
 end
+vNames{end+1} = 'Id';
+vNames{end+1} = 'Choice';
+
+
+
+dataTable.components = array2table(bigData, 'VariableNames',vNames);
+dataTable.distance = array2table(bigDist, 'VariableNames',{'time','Distance','Id'});
+
+
 [rV,pV, rL, rU] = corrcoef(nanmean(r.metaData.RTlims(:,r.metaData.whichConds))', dVal');
 
 fprintf('\n %3.2f (%3.2f - %3.2f), p = %3.4e', rV(1,2), rL(1,2), rU(1,2), pV(1,2));

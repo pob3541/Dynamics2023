@@ -83,14 +83,14 @@ classdef PMddynamics < handle
         dataV = calcSpeed(r, PCoutput, varargin)
         PCoutput = calculatePCs(r,FR, varargin)
         temp = calculatePCsfromEachBS(r,FR, varargin);
-        [slopeV, bV, cohValues,  forBigCorr,  netaData] = calcInputsAndIC(r, varargin)
+        [slopeV, bV, cohValues,  forBigCorr,  netaData, dataTable] = calcInputsAndIC(r, varargin)
         plotTrialCounts(r)
         
         % Plotting functions
-        plotKinet(r)
-        plotTrajectories(r,varargin)
+        dataTable = plotKinet(r)
+        dataTable = plotTrajectories(r,varargin)
         plotVariance(r, varargin)
-        plotComponents(r)
+        dataTable = plotComponents(r)
         
         function plotKinetAverage(r)
             
