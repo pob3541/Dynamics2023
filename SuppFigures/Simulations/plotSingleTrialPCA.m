@@ -36,7 +36,7 @@ hLimits = [1,10];
 hTickLocations = 1:1:10;
 hLabOffset = 0.05;
 hAxisOffset = yLower-0.01;
-hLabel = "Time: ms";
+hLabel = "PC";
 
 vLimits = ylimit;
 vTickLocations = [yLower (yLower + yUpper)/2 yUpper];

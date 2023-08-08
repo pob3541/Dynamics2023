@@ -1,4 +1,4 @@
-function drawRTboxplot(summary, whichPlot, varargin)
+function T = drawRTboxplot(summary, whichPlot, varargin)
 %
 %
 %
@@ -24,7 +24,9 @@ axes(whichPlot)
 
 RT = rawData(:,3);
 V = (RT > minRT & RT < maxRT);
-boxplot(RT(V), cueV(V),'symbol','ko');
+h = boxplot(RT(V), cueV(V),'symbol','ko');
+
+T = table(cueV(V), RT(V));
 
 
 X = [];  

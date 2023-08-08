@@ -30,14 +30,14 @@ bigMatrix = bigMatrix'./repmat(sqrt(prctile(bigMatrix',99)),[size(bigMatrix,2) 1
 [coeff, score, V] = pca(bigMatrix);
 
 score = bigMatrix*coeff;
-figure(2);
-I1 = reshape(score, [sum(tFinal) length(RTl) 2 size(score,2)]);
-li1 = plot(tNew(tFinal), squeeze(I1(:,:,1,4)),'-');
-hold on
-li2 = plot(tNew(tFinal), squeeze(I1(:,:,2,4)),'-');
-hold on
-setLineColors(li1);
-setLineColors(li2);
+% figure(2);
+% I1 = reshape(score, [sum(tFinal) length(RTl) 2 size(score,2)]);
+% li1 = plot(tNew(tFinal), squeeze(I1(:,:,1,4)),'-');
+% hold on
+% li2 = plot(tNew(tFinal), squeeze(I1(:,:,2,4)),'-');
+% hold on
+% setLineColors(li1);
+% setLineColors(li2);
 
 
 I1 = reshape(score, [sum(tFinal) length(RTl) 2 nNeurons]);
@@ -81,4 +81,4 @@ Tv = ThreeVector(gca);
 ax = gca;
 ax.SortMethod = 'ChildOrder';
 
-view([8 77])
+view([-7 72])

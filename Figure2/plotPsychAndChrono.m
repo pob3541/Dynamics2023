@@ -1,16 +1,16 @@
-function plotPsychAndChrono(summary)
+function forExcel = plotPsychAndChrono(summary)
 %
 %   plotPsychAndChrono(summary)
 %
 %
 %   Plots the psychometric and chronometric curves given a summary data
-%   structure. 
-% 
+%   structure.
+%
 %   summary contains field rawdata that contains pRed and RT as
 %   fields.
-% 
-%   summary also contains a field params that is useful for drawing 
-%   the axes 
+%
+%   summary also contains a field params that is useful for drawing
+%   the axes
 %
 % Pierre Boucher and Chand Chandrasekaran, July 2023
 %
@@ -57,6 +57,10 @@ setAxes(aH, pos);
 
 text(-100,104,['Monkey:' summary.monkey],'color','k','fontsize',12);
 
+tablePsych = table(summary.signedColorCoherence, summary.pRed', params.CI*summary.pRedError',...
+    'VariableNames',{'SC','pRed','CI'});
+
+
 
 pos = [0.55 0.55 width width];
 aH = getAxes(pos);
@@ -78,6 +82,13 @@ errorbar(summary.signedColorCoherence, summary.RT, params.CI*summary.RTe,'o-','c
 line([0 0],vLims,'color','k','linestyle','--');
 set(gcf, 'DefaultAxesFontName', 'Arial');
 setAxes(aH, pos);
+
+
+tableChrono = table(summary.signedColorCoherence, summary.RT', params.CI*summary.RTe',...
+    'VariableNames',{'SC','pRed','CI'});
+
+forExcel.tablePsych = tablePsych;
+forExcel.tableChrono= tableChrono;
 
 
 function aH = getAxes(pos)

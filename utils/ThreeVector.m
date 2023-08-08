@@ -356,7 +356,7 @@ classdef ThreeVector < handle
                     axh.YRuler.Visible = 'on';
                     axh.ZRuler.Visible = 'on';
                 end
-                axh.Color = [0.92 0.92 0.95];
+                axh.Color = [0.92 0.92 0.95]-0.1;
                 axh.GridColor = [1 1 1];
                 axh.GridAlpha = 1;
                 axh.GridLineStyle = '-';

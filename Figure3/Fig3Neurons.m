@@ -1,7 +1,8 @@
-function Fig3Neurons(unit,varargin)
+function [y,y2,t,t2]=Fig3Neurons(unit,varargin)
 
 % choose the smoothing - 'gauss30', 'gauss15', 'box50'
 smoothing='gauss30';
+offset=0;
 % choose RT ('RT') coherence ('Coh') for main figure
 cond='RT';
 assignopts(who, varargin);
@@ -25,7 +26,7 @@ center_title.FontSize = 12;
 
 %Top left plot - FR by coherence; cue aligned
 tLeftHand=subplot(2,2,1);
-[y]=plotConv(FR_Cue,Data.Choice,Data.Coherence,Data.RT,'Coh',Data.bound1,Data.bound2,'Cue');
+[y,~,t]=plotConv(FR_Cue,Data.Choice,Data.Coherence,Data.RT,'Coh',Data.bound1,Data.bound2,'Cue');
 hold on;
 set(gca,'visible','off');
 tc = getTextLabel(0,{'Cue'},{'b'});
@@ -34,7 +35,7 @@ axis tight
 
 %Top right plot - FR by RT; cue aligned
 tRightHand=subplot(2,2,2);
-[~,y2]=plotConv(FR_Cue,Data.Choice,Data.Coherence,Data.RT,'RT',Data.bound1,Data.bound2,'Cue');
+[~,y2,t2]=plotConv(FR_Cue,Data.Choice,Data.Coherence,Data.RT,'RT',Data.bound1,Data.bound2,'Cue');
 set(gca,'visible','off');
 axis tight
 
@@ -120,9 +121,8 @@ plotConv(FR_Cue,Data.Choice,Data.Coherence,Data.RT,cond,Data.bound1,Data.bound2,
 set(gca,'visible','off');
 tc = getTextLabel(0,{'Cue'},{'b'});
 axis tight;
-offset=0;
-getAxesP(cxLims,cxTicks,hlaboff,-1, 'Time (ms)', [0 y_max-offset],[0 y_max-offset],10,-110, 'Firing rate (Spikes /s)',[1 1], tc);
-drawRestrictedLines(0,[0 y_max-offset]);
+getAxesP(cxLims,cxTicks,hlaboff,-1, 'Time (ms)', [0 y_max+offset],[0 y_max+offset],10,-110, 'Firing rate (Spikes /s)',[1 1], tc);
+drawRestrictedLines(0,[0 y_max+offset]);
 
 ax = gca;
 ax.SortMethod='childorder'; % Makes the figure print properly
