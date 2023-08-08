@@ -1,3 +1,4 @@
+clear; close all; clc
 time = [0:1:200]/100;
 nNeurons = 200;
 
@@ -9,7 +10,7 @@ RT = [200+100*gamrnd(5,0.5,nTrials,1)]./1000;
 
 baseline = 5;
 
-% baseline firing rate of
+% baseline firing rate of 2 choices
 nF = 5 + 7*rand(1,nNeurons);
 nF2 = 2 + 1*rand(1,nNeurons);
 spikes = [];
@@ -18,7 +19,7 @@ tStart = 0.6;
 % Latency
 tLatency = 0.1;
 CISmult = 15;
-kernel = 0.03;
+kernel = 0.02;
 
 whichType = 'RT';
 
@@ -63,9 +64,9 @@ parfor neuronId = 1:nNeurons
                     
                     switch(nChoice)
                         case 1
-                            rate = baseline + 2*rand + max(CISmult*(time-tLag),0) + nF(neuronId)*max((time-tLag)./RT(nTrials),0);
+                            rate = baseline + max(CISmult*(time-tLag),0) + nF(neuronId)*max((time-tLag)./RT(nTrials),0);
                         case 2
-                            rate = baseline + 2*rand + max(CISmult*(time-tLag),0)- nF2(neuronId)*max((time-tLag)./RT(nTrials),0);
+                            rate = baseline + max(CISmult*(time-tLag),0)- nF2(neuronId)*max((time-tLag)./RT(nTrials),0);
                             rate(rate < 0) = 0;
                     end
                     
@@ -118,14 +119,12 @@ parfor_progress(0);
 
 
 %% Combine neurons into one big FR matrix.
-% Creates decreased neurons by using the 
 
-figure;
+% Creates decreased neurons
 nNeurons = size(FRsim2,1);
-
 FRtemp = max(10-FRsim2(1:nNeurons/2,:,:,:),0);
+FR = [];
 FR = cat(1, FRsim2, FRtemp);
-
 FR = cat(1, FR, FR2);
 
 % FR: firing rate of 3 combined simulated neurons
@@ -140,6 +139,7 @@ FRc(2:2:nNeurons,:,:,:) = FR(2:2:nNeurons,:,[1 2],:);
 
 
 %% Plot the average FR of the neurons.
+figure;
 plot(squeeze(nanmean(FR(:,:,1,:),2))','k-');
 hold on;
 plot(squeeze(nanmean(FR(:,:,2,:),2))','m--');
@@ -148,9 +148,10 @@ plot(squeeze(nanmean(FR(:,:,2,:),2))','m--');
 %% Now create Binned Firing rates.
 [V, score] = plotPCA(FRc, RT, tNew, nNeurons); 
 
-%% single trial pca
+%% plot variance explained by average vs single trial pca
 plotSingleTrialPCA(FRc, tNew, nNeurons,V);
-
+hold on 
+yline(0.9, '--')
 
 %% Now do regression to RT
 plotRegressionToRT(FR, RT, nTrials);
@@ -158,3 +159,5 @@ plotRegressionToRT(FR, RT, nTrials);
 
 %% decoding choice
 plotChoiceDecoding(FR, RT, nTrials);
+
+% print('-painters','-depsc',['~/Desktop/', 'simPMd_RT','.eps'], '-r300');

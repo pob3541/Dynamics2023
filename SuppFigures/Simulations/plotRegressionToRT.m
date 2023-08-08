@@ -9,15 +9,17 @@ before = 500;
 after = 1000;
 
 yLower = 0.0;
-yUpper = 0.6;
+yUpper = 0.8;
 
 assignopts(who, varargin);
 temp = cat(2,squeeze(FR(:,:,1,:)),squeeze(FR(:,:,2,:)));
 FRmatrix = permute(temp,[1,3,2]);
 
-
+% choose random 50 neurons for regression
+load('s.mat');
+rng(s);
 whichNeurons = randperm(size(FR,1));
-binnedFRmatrix = FRmatrix(whichNeurons(1:30),[1:10:end-2],:);
+binnedFRmatrix = FRmatrix(whichNeurons(1:50),[1:10:end-2],:);
 
 rt = [RT;RT];
 decision = [zeros(nTrials,1); ones(nTrials,1)];

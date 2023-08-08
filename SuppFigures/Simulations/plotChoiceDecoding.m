@@ -51,6 +51,10 @@ title('Prediction accuracy')
 % plot slow trials decoding accuracy
 plot(t, accuracy_g,'linewidth', 3)
 
+
+yline(0.5, 'k--')
+xline(0, 'color', [0.5 0.5 0.5], 'linestyle', '--')
+
 xlabel('Time (ms)')
 ylabel('Accuracy')
 title('Prediction accuracy')
