@@ -1,4 +1,4 @@
-function [y,y2,t,t2]=Fig3Neurons(unit,varargin)
+function [y,y2,t,t2,SEM,SEM2]=Fig3Neurons(unit,varargin)
 
 % choose the smoothing - 'gauss30', 'gauss15', 'box50'
 smoothing='gauss30';
@@ -26,7 +26,7 @@ center_title.FontSize = 12;
 
 %Top left plot - FR by coherence; cue aligned
 tLeftHand=subplot(2,2,1);
-[y,~,t]=plotConv(FR_Cue,Data.Choice,Data.Coherence,Data.RT,'Coh',Data.bound1,Data.bound2,'Cue');
+[y,~,t,SEM]=plotConv(FR_Cue,Data.Choice,Data.Coherence,Data.RT,'Coh',Data.bound1,Data.bound2,'Cue');
 hold on;
 set(gca,'visible','off');
 tc = getTextLabel(0,{'Cue'},{'b'});
@@ -35,7 +35,7 @@ axis tight
 
 %Top right plot - FR by RT; cue aligned
 tRightHand=subplot(2,2,2);
-[~,y2,t2]=plotConv(FR_Cue,Data.Choice,Data.Coherence,Data.RT,'RT',Data.bound1,Data.bound2,'Cue');
+[~,y2,t2,SEM2]=plotConv(FR_Cue,Data.Choice,Data.Coherence,Data.RT,'RT',Data.bound1,Data.bound2,'Cue');
 set(gca,'visible','off');
 axis tight
 

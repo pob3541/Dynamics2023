@@ -14,10 +14,11 @@ cnt = 1;
 
 % adjust flags
 projectFromMean=false;
-numConds=r.metaData.whichConds;
+numConds=length(r.metaData.whichConds);
 RTlims=r.metaData.RTlims(1,:);
 RTspace=[];
 moveAlign=false;
+pcaCohRT = false;
 assignopts(who, varargin)
 
 % change time based on if movement or cue aligned
@@ -30,11 +31,15 @@ else
 end
 
 % sets RT limits
-O = RTlims - r.metaData.removeTime;
+if pcaCohRT
+    O = repmat([300,425,600],[1,3]);
+else
+    O = RTlims - r.metaData.removeTime;
+end
 
 
 % prepare dataset for pca
-for b= numConds
+for b= 1:numConds
     tV = find(t > tMin & t < O(b)./1000);
     X = squeeze(TinRates(b,:,tV));
     XallIn = [XallIn; X'];
