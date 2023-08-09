@@ -21,7 +21,7 @@ for i = 1:4
     hold on;
     
     %plot KiNeT velocity results
-    line(r.kinet.tVect,r.kinet.V(:,i)*1000-400, ...
+    line(r.kinet.tVect,y*1000-400, ...
         'Color',lineColor(i,:),'LineWidth',2);
 end
 
@@ -50,7 +50,7 @@ for i = 1:4
     hold on;
 
     %plot KiNeT distance results
-    line(r.kinet.tVect,-r.kinet.distancesAll(:,i), ...
+    line(r.kinet.tVect,y, ...
         'Color',lineColor(i,:),'LineWidth',2);
 end
 

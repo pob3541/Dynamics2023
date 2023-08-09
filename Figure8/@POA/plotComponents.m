@@ -8,8 +8,10 @@ TrajIn = r.signalplusnoise.TrajIn;
 TrajOut = r.signalplusnoise.TrajOut;
 % outcome=true;
 moveAlign=0;
-assignopts(who,varargin)
+numConds=length(r.metaData.condColors);
 cValues = r.metaData.condColors;
+assignopts(who,varargin)
+
 dimsToShow = 1:5;
 
 % adjust variables whether data is to be cue or movement aligned
@@ -17,10 +19,10 @@ if moveAlign ==0
     V = r.signalplusnoise.varExplained;
     tData = r.signalplusnoise.tData;
 else
-    TrajIn = r.MoveAlignsignalplusnoise.TrajIn;
-    TrajOut = r.MoveAlignsignalplusnoise.TrajOut;
-    V = r.MoveAlignsignalplusnoise.varExplained;
-    tData = r.MoveAlignsignalplusnoise.tData;
+    TrajIn = r.signalplusnoise.moveAlign.TrajIn;
+    TrajOut = r.signalplusnoise.moveAlign.TrajOut;
+    V = r.signalplusnoise.moveAlign.varExplained;
+    tData = r.signalplusnoise.moveAlign.tData;
 end
 
 % set up axes
@@ -36,7 +38,7 @@ MinMax = [];
 
 
 % plot components on the axes
-for z=1:length(r.metaData.condColors)
+for z=1:numConds
     compCnt = 1;
 
     % plot distance either aligned to cue or movement
@@ -44,7 +46,7 @@ for z=1:length(r.metaData.condColors)
         DistV = r.distance(z).V;
         tempEnd=size(TrajIn{z},1);
     else
-        DistV = r.distance(z).VmoveAlign;
+        DistV = r.distance(z).moveAlign;
         tempEnd=700;
         tscore = tinv([0.025 0.975],length(1:tempEnd)-1);
     end
@@ -67,8 +69,8 @@ for z=1:length(r.metaData.condColors)
 
     axes(aX(6));
     hold on;
-    if isfield(r.distance,'VmoveAlign_Boot') &&  moveAlign ==1
-        DistV_boot=squeeze(r.distance(z).VmoveAlign_Boot);
+    if isfield(r.distance,'moveAlign_Boot') &&  moveAlign ==1
+        DistV_boot=squeeze(r.distance(z).moveAlign_Boot);
         DistV_boot(DistV_boot > 300) = NaN;
         avgDistV=mean(DistV_boot,2,'omitnan');
         stdDistV=std(DistV_boot','omitnan');

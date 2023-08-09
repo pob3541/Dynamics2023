@@ -11,6 +11,7 @@ classdef POA < handle
         distance
         kinet
         decode
+        noise
 
 
         % parameters
@@ -27,8 +28,9 @@ classdef POA < handle
             useSingleNeurons = false;
             trials ='CC_EC'; % 'trials', 'CCE_ECC'
             iterSize=size(outcome.outcomePCA_trunc_Boot,5);
+            iterSizeM = size(outcome.PCAm.outcomePCAm_trunc_Boot,5);
             assignopts(who, varargin);
-            
+
             %initialize parameters
             r.initializeProcessingFlags(useSingleNeurons);
             r.initializeMetaData();
@@ -64,7 +66,7 @@ classdef POA < handle
 
             % calculate KiNeT velocity and distance from trajectories
             r.kinet=r.calcSpeed(r.signalplusnoise,'nDimensions',6);
-            
+
             % Calculating bootstrap KiNeT to plot SEM on KiNeT
             for iter = 1: iterSize
                 pcData = r.calculatePCs(permute(outcome.outcomePCA_trunc_Boot(:,:,:,:,iter), [3 4 2 1]));
@@ -73,10 +75,30 @@ classdef POA < handle
                 r.kinet.BootDist(:,:,iter)=dataV.distancesAll;
             end
 
-
             % prepare data for decoding analysis
             r.decode=outcome.decode;
 
+            % noise PCA
+            r.noise.varExplained = outcome.noise.varExplained;
+
+            % movement-aligned Euclidean distance calculation with 95% CI
+            [r.signalplusnoise.moveAlign] = r.calculatePCs(permute(outcome.PCAm.outcomePCAm_trunc, [3 4 2 1]),'moveAlign',1);
+            TrajIn = r.signalplusnoise.moveAlign.TrajIn;
+            TrajOut = r.signalplusnoise.moveAlign.TrajOut;
+            for z=1:length(TrajIn)
+                r.distance(z).moveAlign = [sqrt(sum([TrajIn{z}(:,whichDim) - TrajOut{z}(:,whichDim)].^2,2))]';
+            end
+            
+         % for calculating the 95% CI for movement-aligned Euclidean
+         % distance
+            for iter = 1: iterSizeM 
+                pcData = r.calculatePCs(permute(outcome.PCAm.outcomePCAm_trunc_Boot(:,:,:,:,iter), [3 4 2 1]),'moveAlign',1);
+                TrajIn = pcData.TrajIn;
+                TrajOut = pcData.TrajOut;
+                for z=1:length(TrajIn)
+                    r.distance(z).moveAlign_Boot(:,:,iter) = [sqrt(sum([TrajIn{z}(:,whichDim) - TrajOut{z}(:,whichDim)].^2,2))]';
+                end
+            end
         end
 
         %Outside functions
@@ -86,7 +108,8 @@ classdef POA < handle
         plotKinet(r);
         dataV = calcSpeed(r,temp, varargin);
         calcDecode(r,outcome);
-        plotDecoder(r)
+        plotDecoder(r);
+        plotVariance(r,varargin);
 
 
         function initializeProcessingFlags(r, useSingleUnits)
