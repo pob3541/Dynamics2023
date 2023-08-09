@@ -146,11 +146,11 @@ plot(squeeze(nanmean(FR(:,:,2,:),2))','m--');
 
 
 %% Now create Binned Firing rates.
-[V, score, simData.PCA] = plotPCA(FRc, RT, tNew, nNeurons); 
+[V, score, simData.PCA] = plotPCA(FRc, RT, tNew, nNeurons);
 
 %% plot variance explained by average vs single trial pca
-plotSingleTrialPCA(FRc, tNew, nNeurons,V);
-hold on 
+simTable.variance = plotSingleTrialPCA(FRc, tNew, nNeurons,V);
+hold on
 line(get(gca,'xlim'),0.9,'linestyle','--')
 
 %% Now do regression to RT
