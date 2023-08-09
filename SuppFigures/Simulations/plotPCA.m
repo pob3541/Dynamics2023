@@ -1,4 +1,4 @@
-function [V, score] = plotPCA(FRc, RT, tNew, nNeurons)
+function [V, score, pcs] = plotPCA(FRc, RT, tNew, nNeurons)
 
 
 % RT at different percentile
@@ -58,11 +58,23 @@ I1(:,:,:,2:3) = -I1(:,:,:,2:3);
 
 
 subplot(1,3,1)
+bigD = [];
 for nR = 1:length(RTl)
     plot3(squeeze(I1(:,nR,1,orderX(1))), squeeze(I1(:,nR,1,orderX(2))), squeeze(I1(:,nR,1,orderX(3))),'-','color',colV(nR,:));
     hold on
     plot3(squeeze(I1(:,nR,2,orderX(1))), squeeze(I1(:,nR,2,orderX(2))), squeeze(I1(:,nR,2,orderX(3))),'--','color',colV(nR,:));
     
+    currD1 = squeeze(I1(:,nR,1,orderX));
+    currD1(:,end+1) = 1;
+    currD1(:,end+1) = nR;
+    
+    
+    currD2 = squeeze(I1(:,nR,2,orderX));
+    currD2(:,end+1) = 2;
+    currD2(:,end+1) = nR;
+    
+    
+    bigD = [bigD; currD1; currD2];
     
     hold on
     plot3(squeeze(I1(t0,nR,:,orderX(1))), squeeze(I1(t0,nR,:,orderX(2))),squeeze(I1(t0,nR,:,orderX(3))),'o','markerfacecolor','r','markeredgecolor','none','markersize',12);
@@ -71,6 +83,8 @@ for nR = 1:length(RTl)
     plot3(squeeze(I1(end,nR,:,orderX(1))), squeeze(I1(end,nR,:,orderX(2))),squeeze(I1(end,nR,:,orderX(3))),'d','markerfacecolor',colV(nR,:),'markeredgecolor','none','markersize',12);
     
 end
+
+pcs = array2table(bigD, 'VariableNames',{'PC1','PC2','PC3','Choice','RT');
 
 xlabel('PC_1');
 ylabel('PC_2');
@@ -81,4 +95,4 @@ Tv = ThreeVector(gca);
 ax = gca;
 ax.SortMethod = 'ChildOrder';
 
-view([-7 72])
+% view([-7 72])

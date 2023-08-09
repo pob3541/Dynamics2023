@@ -142,6 +142,7 @@ for timeperiods = 1:2
 end
 %%
 figure;
+types = {'pre','post'};
 for n=1:2
     R2actual = dualPeriod(n).R2actual;
     R2shuffle = dualPeriod(n).R2shuffle;
@@ -174,6 +175,16 @@ for n=1:2
     getAxesP([2 10],[2:2:10],'Dimensions',-1,1,[0 40],[0:10:40],'Variance (%)',1,1,[1 1]);
     axis square;
     axis tight;
+    
+    
+    dataV = [nanmean(R2actual)' nanstd(R2actual)'./sqrt(size(Rall,1)) nanmean(R2shuffle)' nanstd(R2shuffle)'./sqrt(size(R2shuffle,1))];
+    dataV = [dataV nanmean(100*Rall)' nanstd(100*Rall)'./sqrt(size(Rall,1)) ];
+    dataV(:,end+1) = nanmean(Rorig(:,1));
+    dataV(:,end+1) = nanmean(Rorig(:,2));
+    varNames = {'R2','R2e','R2s','R2se','R2RT','R2RTe','R2full','R2coh'};
+    ldsTable.(types{n}) = array2table(dataV,'VariableNames',varNames);
+    
+    
 end
 %%
 

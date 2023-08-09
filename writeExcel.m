@@ -65,6 +65,7 @@ writetable(nonOverlapping.avgSlope, fileName,'FileType','spreadsheet','Sheet','F
 cprintf('yellow','\nFigure S5');
 writetable(dataTable.varExplained,fileName,'FileType','spreadsheet','Sheet','Fig.S5a');
 writetable(dataTable.var15ms,fileName,'FileType','spreadsheet','Sheet','Fig.S5b');
+writetable(dataTable.var50ms,fileName,'FileType','spreadsheet','Sheet','Fig.S5c');
 
 %% Figure S6
 cprintf('yellow','\nFigure S6');

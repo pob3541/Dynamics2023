@@ -1,4 +1,4 @@
-function plotChoiceDecoding(FR, RT, nTrials, varargin)
+function choiceTable = plotChoiceDecoding(FR, RT, nTrials, varargin)
 %
 %
 %
@@ -60,7 +60,7 @@ ylabel('Accuracy')
 title('Prediction accuracy')
 
 
-
+choiceTable = array2table([time' accuracy_l' accuracy_r'],'VariableNames',{'Time','Accuracy Fast','Accuracy Slow'});
 
 
 

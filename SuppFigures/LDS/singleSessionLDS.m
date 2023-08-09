@@ -59,9 +59,13 @@ for timeperiods = 1:2
     cla;
     tOrig = tV(whichTs);
     tPred = tOrig(2:end);
-    plot(tOrig, squeeze(origData(1:10:end,:,1))','-','color',[0.4 .4 0.4 0.4]);
+    
+    Xo = squeeze(origData(1:10:end,:,1));
+    Yp = squeeze(predData(1:10:end,:,1));
+
+    plot(tOrig, Xo','-','color',[0.4 .4 0.4 0.4]);
     hold on;
-    plot(tPred, squeeze(predData(1:10:end,:,1))','-','color',[1 .6 0.1 0.4],'linewidth',2)
+    plot(tPred, Yp','-','color',[1 .6 0.1 0.4],'linewidth',2)
 
     tLims = [tOrig(1) tPred(end)];
     set(gca,'visible','off');
@@ -72,5 +76,14 @@ for timeperiods = 1:2
     
     text(loc(timeperiods), 250, titles{timeperiods}); 
 
-
+    dataV = [Xo Yp];
+    tV = [tOrig tPred];
+    dataV = [tV' cat(1, ones(size(Xo,2),1), 2*ones(size(Yp,2),1))  dataV'];
+    
+    vNames = {'Time', 'Cond'};
+    for nT = 1:size(Xo,1)
+        vNames{nT+2} = sprintf('Trial%d',nT);
+    end
+    
+    ldsTable.(sprintf('data%d',timeperiods)) = array2table(dataV, 'VariableNames',vNames);
 end

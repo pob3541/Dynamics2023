@@ -19,7 +19,7 @@ tStart = 0.6;
 % Latency
 tLatency = 0.1;
 CISmult = 15;
-kernel = 0.02;
+kernel = 0.03;
 
 whichType = 'RT';
 
@@ -146,18 +146,18 @@ plot(squeeze(nanmean(FR(:,:,2,:),2))','m--');
 
 
 %% Now create Binned Firing rates.
-[V, score] = plotPCA(FRc, RT, tNew, nNeurons); 
+[V, score, simData.PCA] = plotPCA(FRc, RT, tNew, nNeurons); 
 
 %% plot variance explained by average vs single trial pca
 plotSingleTrialPCA(FRc, tNew, nNeurons,V);
 hold on 
-yline(0.9, '--')
+line(get(gca,'xlim'),0.9,'linestyle','--')
 
 %% Now do regression to RT
-plotRegressionToRT(FR, RT, nTrials);
+[simData.R2] = plotRegressionToRT(FR, RT, nTrials);
 
 
 %% decoding choice
-plotChoiceDecoding(FR, RT, nTrials);
+[simData.choice] = plotChoiceDecoding(FR, RT, nTrials);
 
 % print('-painters','-depsc',['~/Desktop/', 'simPMd_RT','.eps'], '-r300');

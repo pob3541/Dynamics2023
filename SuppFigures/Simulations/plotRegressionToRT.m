@@ -1,4 +1,4 @@
-function plotRegressionToRT(FR, RT, nTrials, varargin)
+function regressTable = plotRegressionToRT(FR, RT, nTrials, varargin)
 %
 %
 %
@@ -16,8 +16,8 @@ temp = cat(2,squeeze(FR(:,:,1,:)),squeeze(FR(:,:,2,:)));
 FRmatrix = permute(temp,[1,3,2]);
 
 % choose random 50 neurons for regression
-load('s.mat');
-rng(s);
+% load('s.mat');
+% rng(s);
 whichNeurons = randperm(size(FR,1));
 binnedFRmatrix = FRmatrix(whichNeurons(1:50),[1:10:end-2],:);
 
@@ -53,6 +53,8 @@ end
 upper = prctile(shuffledR2,99,2);
 lower = prctile(shuffledR2,1,2);
 
+
+
 figure(1);
 subplot(1,3,2)
 
@@ -63,6 +65,7 @@ plot(t, R2);
 plot(t, upper, 'k--');
 plot(t,lower, 'k--');
 
+regressTable = array2table([t' R2' upper' lower',{'time','R2','Upper','Lower'});
 
 ylimit = [yLower, yUpper];
 

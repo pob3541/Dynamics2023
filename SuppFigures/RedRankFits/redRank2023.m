@@ -202,6 +202,9 @@ axis square;
 axis tight
 
 
+rrrData.single = array2table([tAxis(timeValues)'*1000 Sv' Svs'],'VariableNames',{'Time','Real','Shuffled'});
+
+
 
 subplot(222);
 ix = find(~(sum(AllRsquare < 0 | AllRsquare > 1,2)));
@@ -226,6 +229,7 @@ axis tight
 
 text(-400,22,sprintf('%d sessions',size(AllRsquare(ix,:),1)));
 
+rrrData.average = array2table([tAxis(timeValues)'*1000 Sv' Sve'],'VariableNames',{'Time','Real','Shuffled'});
 
 
 
@@ -233,14 +237,17 @@ subplot(223)
 
 tNew = tAxis(timeValues)*1000;
 
-errorbar(tNew(2:end), nanmean(alignAngles(:,2:end,1)*180/pi), nanstd(alignAngles(:,2:end,1)*180/pi)/sqrt(size(alignAngles,1)));
+alignAngle = squeeze(nanmean(alignAngles(:,2:end,:)*180/pi));
+alignAngleE = squeeze(nanstd(alignAngles(:,2:end,:)*180/pi)/sqrt(size(alignAngles,1)));
+
+errorbar(tNew(2:end), alignAngle(:,1), alignAngleE(:,1));
 hold on
 
-errorbar(tNew(2:end), nanmean(alignAngles(:,2:end,2)*180/pi), nanstd(alignAngles(:,2:end,2)*180/pi)/sqrt(size(alignAngles,1)));
+errorbar(tNew(2:end), alignAngle(:,2), alignAngleE(:,2));
 hold on
 
 drawRestrictedLines(0,[10 90]);
-l = yline(90);
+l = refline([0 90]);
 l.Parent.XLim = [-600 1000];
 l.LineStyle = '--';
 % drawLines(tAxis(whichTimePoint));
@@ -248,6 +255,10 @@ set(gca,'visible','off');
 getAxesP([-600 1000],[-600:200:1000],'Time (ms)',10,5,[10 95],[10:20:90],'R^2 (%)',-625,10);
 axis square;
 axis tight;
+
+rrrData.angle = array2table([tNew(2:end)' alignAngle alignAngleE],'VariableNames',{'Time','Angle','AngleS','Error','ErrorS'});
+
+
 
 subplot(224);
 
