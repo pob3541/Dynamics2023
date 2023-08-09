@@ -1,4 +1,4 @@
-function plotTrialCounts(r)
+function dataTable = plotTrialCounts(r)
 %
 %
 % CC, Aug 1 2023
@@ -17,6 +17,9 @@ set(gca,'visible','off');
 axis square;
 axis tight;
 
+RT1 = r.metaData.RTlims(:,[1 13 11],:)';
+dataTable.nonOverlappping = array2table(horzcat(RT1, nanmean(Z(:,[1 13 11]))', nanstd(Z(:,[1 13 11]))'),'VariableNames',{'RTl','RTr','Mean','SD'});
+
 subplot(122);
 for n=1:11
     hold on
@@ -28,3 +31,5 @@ getAxesP([1 11], [1:11], 'Conditions', -2, 1, [0 400],[0:100:400],'Trial Counts'
 set(gca,'visible','off');
 axis square;
 axis tight;
+RT1 = r.metaData.RTlims(:,[1:11])';
+dataTable.Overlappping = array2table(horzcat(RT1, nanmean(Z(:,[1:11]))', nanstd(Z(:,[1:11]))'),'VariableNames',{'RTl','RTr','Mean','SD'});

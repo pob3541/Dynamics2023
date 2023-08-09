@@ -36,7 +36,9 @@ classdef PMddynamics < handle
             r.initializeProcessingFlags(useSingleNeurons, useNonOverlapping);
             r.initializeMetaData(M);
             
-            r.trialCounts = M.rt.TrialCounts;
+            if isfield(M.rt,'TrialCounts')
+                r.trialCounts = M.rt.TrialCounts;
+            end
             
             r.rtFR = M.rt.FR;
             
@@ -83,14 +85,16 @@ classdef PMddynamics < handle
         dataV = calcSpeed(r, PCoutput, varargin)
         PCoutput = calculatePCs(r,FR, varargin)
         temp = calculatePCsfromEachBS(r,FR, varargin);
-        [slopeV, bV, cohValues,  forBigCorr,  netaData, dataTable] = calcInputsAndIC(r, varargin)
-        plotTrialCounts(r)
+        
+        
         
         % Plotting functions
         dataTable = plotKinet(r)
         dataTable = plotTrajectories(r,varargin)
-        plotVariance(r, varargin)
+        dataTable = plotVariance(r, varargin)
         dataTable = plotComponents(r)
+        dataTable = plotTrialCounts(r)
+        [slopeV, bV, cohValues,  forBigCorr,  metaData, dataTable] = calcInputsAndIC(r, varargin)
         
         function plotKinetAverage(r)
             

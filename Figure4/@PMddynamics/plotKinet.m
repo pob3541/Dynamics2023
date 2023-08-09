@@ -5,6 +5,8 @@ function dataTable = plotKinet(r, varargin)
 %
 % Chand, March 30th 2022
 % 
+
+faceAlpha = .5;
 assignopts(who,varargin)
 
 figure('color',[1 1 1]);
@@ -52,7 +54,7 @@ dataTable.velocity = array2table([tVect'*1000 V Ve],'VariableNames',['time' vNam
 
 
 setLineColors(li);
-set(pa,'FaceAlpha',0.3);
+set(pa,'FaceAlpha',faceAlpha);
 set(gca,'visible','on');
 drawRestrictedLines(0,[-400 500]);
 line([-400 400],[0 0],'color','k','linestyle','--');
@@ -83,7 +85,7 @@ dataTable.distance = array2table([tVect'*1000 distancesAll distancesE],'Variable
 
 
 setLineColors(li);
-set(pa,'FaceAlpha',0.3);
+set(pa,'FaceAlpha',faceAlpha);
 
 % X = plot(1000*[tVect], squeeze(distancesAll));
 % setLineColors(X);
@@ -132,7 +134,7 @@ subplot(2,3,2)
 angleS = squeeze(nanmean(r.kinet.spaceAngle))*180/pi;
 angleSE = squeeze(nanstd(r.kinet.spaceAngle))*180/pi;
 [pa,li] = ShadedError(tVect*1000, angleS, angleSE);
-pa.FaceAlpha = 0.5;
+pa.FaceAlpha = faceAlpha;
 
 drawRestrictedLines(0,[0 180]);
 line([tVect(1) tVect(end)]*1000,[90 90],'color','k','linestyle','--');
@@ -151,7 +153,7 @@ subplot(2,3,3)
 angleS = squeeze(nanmean(r.kinet.meanVectorAngle))*180/pi;
 angleSE = squeeze(nanstd(r.kinet.meanVectorAngle))*180/pi;
 [pa,li] = ShadedError(tVect*1000, angleS, angleSE);
-pa.FaceAlpha = 0.5;
+pa.FaceAlpha = faceAlpha;
   
 line([tVect(1) tVect(end)]*1000,[90 90],'color','k','linestyle','--');
 drawRestrictedLines(0,[0 180]);
@@ -168,19 +170,19 @@ getAxesP([-0.4 0.5]*1000,[-0.4:0.2:0.5]*1000,10,-.1,'t (ms)',[0 180],[0 90 180],
 
 
 
-% subplot(2,3,6);
-% for p=1:size(speed,2)
-%     [pa(p), L(p)] = ShadedError(tSpeed, squeeze(speed(:,p))', squeeze(speedE(:,p))');
-%     set(pa(p),'FaceAlpha',0.5);
-%     hold on
-% end
-% setLineColors(L);
-% set(gca,'visible','off');
-% hold on;
-% drawRestrictedLines(0,[0 400]);
-% getAxesP([-0.4 0.5]*1000,[-0.4:0.2:0.5]*1000,50,-.1,'t (ms)',[0 4]*100,[0:4]*100,100,-420,'Speed (spks/s/s)',[1 1]);
-% axis square;
-% axis tight;
+subplot(2,3,6);
+for p=1:size(speed,2)
+    [pa(p), L(p)] = ShadedError(tSpeed, squeeze(speed(:,p))', squeeze(speedE(:,p))');
+    set(pa(p),'FaceAlpha',0.5);
+    hold on
+end
+setLineColors(L);
+set(gca,'visible','off');
+hold on;
+drawRestrictedLines(0,[0 400]);
+getAxesP([-0.4 0.5]*1000,[-0.4:0.2:0.5]*1000,50,-.1,'t (ms)',[0 4]*100,[0:4]*100,100,-420,'Speed (spks/s/s)',[1 1]);
+axis square;
+axis tight;
 
 
 end

@@ -341,9 +341,8 @@ classdef PMDdecoding < handle
             f = fieldnames(D.dataTable);
             for nF=1:length(f)
                 writetable(D.dataTable.(f{nF}),...
-                    'fig6data.xls','FileType',...
+                    '../SourceData/SourceData.xls','FileType',...
                     'spreadsheet','Sheet',f{nF});
-
             end
             
             

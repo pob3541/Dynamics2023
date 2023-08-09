@@ -1,7 +1,7 @@
 function dataTable = plotTrajectories(r, varargin)
 % plotTrajectories - plots 3D PCA trajectories for for the specified dimensions from PCA on firing rates organized by RT and choice
 %
-% Needed Inputs: 
+% Needed Inputs:
 %
 %   r - the object from the PMddynamics class.
 %
@@ -16,7 +16,7 @@ function dataTable = plotTrajectories(r, varargin)
 %     showPooled - show pooled or individual coherences
 %     hideAxes - hide or show axes
 %     showGrid - show the grid
-%     vectorLength - length of the three vector axes 
+%     vectorLength - length of the three vector axes
 %
 % see also PMddynamics
 % Chand, Mar 30th 2023
@@ -143,16 +143,19 @@ zlabel(str3);
 axis square;
 axis tight;
 clear ThreeVector;
-Tv = ThreeVector(gca);
-% Tv.positionFrozenCorner = [0.22 0.2];
 
-
-
-Tv.hideAxes = hideAxes;
-Tv.niceGrid = showGrid;
-Tv.vectorLength = vectorLength;
-Tv.axisInset = axisInset;
-
+try
+    Tv = ThreeVector(gca);
+    % Tv.positionFrozenCorner = [0.22 0.2];
+    
+    
+    
+    Tv.hideAxes = hideAxes;
+    Tv.niceGrid = showGrid;
+    Tv.vectorLength = vectorLength;
+    Tv.axisInset = axisInset;
+catch
+end
 set(gca,'CameraPosition',r.metaData.camPosition);
 
 % Allows proper exporting
