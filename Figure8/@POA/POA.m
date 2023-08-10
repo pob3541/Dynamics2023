@@ -12,6 +12,7 @@ classdef POA < handle
         kinet
         decode
         noise
+        CCE_ECC
 
 
         % parameters
@@ -42,18 +43,25 @@ classdef POA < handle
                 r.metaData.RT2=vertcat(r.metaData.RT1{:});
                 r.metaData.RTlims = median(r.metaData.RT2);
             else
-                for sess =1:length(outcome.CCE_ECC)
-                    for st= 1:length(outcome.CCE_ECC{sess,1})
-                        r.metaData.RT0{sess,1}{st,1}=outcome.b{sess,1}{st,1}(outcome.CCE_ECC{sess,1}{st,1});
+                for sess =1:length(outcome.CCE_ECC.trials)
+                    for st= 1:length(outcome.CCE_ECC.trials{sess,1})
+                        r.metaData.RT0{sess,1}{st,1}=outcome.b{sess,1}{st,1}(outcome.CCE_ECC.trials{sess,1}{st,1});
                     end
                 end
                 r.metaData.RT1=vertcat(r.metaData.RT0{:});
                 r.metaData.RT2=vertcat(r.metaData.RT1{:});
                 r.metaData.RTlims = median(r.metaData.RT2);
+                % calculate PCs for CCE_ECC 
+%                 [r.CCE_ECC] = r.calculatePCs(permute(outcome.CCE_ECC.outcomePCA_trunc, [3 4 2 1]));
+
             end
 
             % calculate PCs to plot for components and trajectories
-            PCAoutcome=outcome.outcomePCA_trunc(:,r.metaData.neuronIdx,:,:);
+            if strcmp(trials, 'CC_EC')
+                PCAoutcome=outcome.outcomePCA_trunc(:,r.metaData.neuronIdx,:,:);
+            else
+                PCAoutcome=outcome.CCE_ECC.outcomePCA_trunc(:,r.metaData.neuronIdx,:,:);
+            end
             [r.signalplusnoise] = r.calculatePCs(permute(PCAoutcome, [3 4 2 1]));
 
             % calculate Euclidean distance between left and right trajs
@@ -67,7 +75,14 @@ classdef POA < handle
             % calculate KiNeT velocity and distance from trajectories
             r.kinet=r.calcSpeed(r.signalplusnoise,'nDimensions',6);
 
-            % Calculating bootstrap KiNeT to plot SEM on KiNeT
+            % Calculating SEM for bootstraped KiNeT 
+                %
+%             if strcmp(trials, 'CC_EC')
+%                 PCAoutcome_Boot=outcome.outcomePCA_trunc_Boot;
+%             else
+%                 PCAoutcome_Boot=outcome.CCE_ECC.outcomePCA_trunc_Boot;
+%             end
+
             for iter = 1: iterSize
                 pcData = r.calculatePCs(permute(outcome.outcomePCA_trunc_Boot(:,:,:,:,iter), [3 4 2 1]));
                 dataV = r.calcSpeed(pcData);
@@ -89,8 +104,7 @@ classdef POA < handle
                 r.distance(z).moveAlign = [sqrt(sum([TrajIn{z}(:,whichDim) - TrajOut{z}(:,whichDim)].^2,2))]';
             end
             
-         % for calculating the 95% CI for movement-aligned Euclidean
-         % distance
+         % for calculating the 95% CI for movement-aligned Euclidean dist.
             for iter = 1: iterSizeM 
                 pcData = r.calculatePCs(permute(outcome.PCAm.outcomePCAm_trunc_Boot(:,:,:,:,iter), [3 4 2 1]),'moveAlign',1);
                 TrajIn = pcData.TrajIn;
@@ -99,11 +113,13 @@ classdef POA < handle
                     r.distance(z).moveAlign_Boot(:,:,iter) = [sqrt(sum([TrajIn{z}(:,whichDim) - TrajOut{z}(:,whichDim)].^2,2))]';
                 end
             end
-        end
 
+
+         end
+% 
         %Outside functions
         [pcData] = calculatePCs(r,FR,varargin);
-        plotComponents(r,varargin);
+        [CI,meanDist]=plotComponents(r,varargin);
         plotTrajectories(r, varargin);
         plotKinet(r);
         dataV = calcSpeed(r,temp, varargin);
