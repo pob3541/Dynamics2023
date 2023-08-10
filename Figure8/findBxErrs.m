@@ -85,7 +85,7 @@ CCEC_RT=CCEC_RT_filt;
 case 'CCE_ECC'
 
 for sess=1:141
-    Errs{sess,1}=find(~Y_logic{sess,1}); %& ST_Logic{sess,1});
+    Errs{sess,1}=find(~Y_logic{sess,1} & ST_Logic{sess,1});
 end
 
 for sess=1:141
@@ -137,11 +137,14 @@ end
 
 
 for sess=1:length(CCE_BxLocs)
-    CCE_trials=CCE_BxLocs{sess,1}(CCE_STs_Errs{sess,1},:);
-    ECC_trials=ECC_BxLocs{sess,1}(ECC_STs_Errs{sess,1},:);
-    CCE_RT{sess,1}=RT{sess,1}(CCE_trials);
-    ECC_RT{sess,1}=RT{sess,1}(ECC_trials);
+    CCE_trials{sess,1}=CCE_BxLocs{sess,1}(CCE_STs_Errs{sess,1},:);
+    ECC_trials{sess,1}=ECC_BxLocs{sess,1}(ECC_STs_Errs{sess,1},:);
+    CCE_RT{sess,1}=RT{sess,1}(CCE_trials{sess,1});
+    ECC_RT{sess,1}=RT{sess,1}(ECC_trials{sess,1});
 end
+
+CCE_trials2=vertcat(CCE_trials{:});
+ECC_trials2=vertcat(ECC_trials{:});
 
 
 CCE_RT2=vertcat(CCE_RT{:});
@@ -152,10 +155,12 @@ ECC_RT2=vertcat(ECC_RT{:});
 CCE_fastInd=find(sum(CCE_RT2<200,2));
 CCE_RT_filt=CCE_RT2;
 CCE_RT_filt(CCE_fastInd,:)=[];
+CCE_trials2(CCE_fastInd,:)=[];
 
 ECC_fastInd=find(sum(ECC_RT2<200,2));
 ECC_RT_filt=ECC_RT2;
 ECC_RT_filt(ECC_fastInd,:)=[];
+ECC_trials2(ECC_fastInd,:)=[];
 
 numWeak=length(ECC_RT_filt)-length(CCE_RT_filt);
 % remove numWeak randomly from ECC_RT_filt so columns can be same size 

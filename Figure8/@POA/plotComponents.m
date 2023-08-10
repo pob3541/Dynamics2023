@@ -7,6 +7,7 @@ function [CI, meanDist]=plotComponents(r, varargin)
 TrajIn = r.signalplusnoise.TrajIn;
 TrajOut = r.signalplusnoise.TrajOut;
 % outcome=true;
+project=false;
 moveAlign=0;
 numConds=length(r.metaData.condColors);
 cValues = r.metaData.condColors;
@@ -122,8 +123,12 @@ for z=1:5
     end
 
     strValue = 'Check';
-
+    
+    if project == 0
     text(20,yLims(2)-0.5,sprintf('%3.2f%%',V(z)));
+    else
+        %
+    end
 
     cTextLabels = getTextLabel(0,{strValue},{'b'});
 

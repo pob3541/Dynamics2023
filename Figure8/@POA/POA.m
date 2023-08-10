@@ -12,7 +12,8 @@ classdef POA < handle
         kinet
         decode
         noise
-        CCE_ECC
+        project
+        %CCE_ECC
 
 
         % parameters
@@ -51,12 +52,10 @@ classdef POA < handle
                 r.metaData.RT1=vertcat(r.metaData.RT0{:});
                 r.metaData.RT2=vertcat(r.metaData.RT1{:});
                 r.metaData.RTlims = median(r.metaData.RT2);
-                % calculate PCs for CCE_ECC 
-%                 [r.CCE_ECC] = r.calculatePCs(permute(outcome.CCE_ECC.outcomePCA_trunc, [3 4 2 1]));
-
             end
 
-            % calculate PCs to plot for components and trajectories
+            % calculate PCs to plot for components and trajectories - CC_EC
+            % or CCE_ECC
             if strcmp(trials, 'CC_EC')
                 PCAoutcome=outcome.outcomePCA_trunc(:,r.metaData.neuronIdx,:,:);
             else
@@ -75,20 +74,32 @@ classdef POA < handle
             % calculate KiNeT velocity and distance from trajectories
             r.kinet=r.calcSpeed(r.signalplusnoise,'nDimensions',6);
 
-            % Calculating SEM for bootstraped KiNeT 
-                %
-%             if strcmp(trials, 'CC_EC')
-%                 PCAoutcome_Boot=outcome.outcomePCA_trunc_Boot;
-%             else
-%                 PCAoutcome_Boot=outcome.CCE_ECC.outcomePCA_trunc_Boot;
-%             end
+            % Calculating SEM for bootstraped KiNeT - CC_EC
+            % or CCE_ECC
+            if strcmp(trials, 'CC_EC')
+                PCAoutcome_Boot=outcome.outcomePCA_trunc_Boot;
+            else
+                PCAoutcome_Boot=outcome.CCE_ECC.outcomePCA_trunc_Boot;
+            end
 
             for iter = 1: iterSize
-                pcData = r.calculatePCs(permute(outcome.outcomePCA_trunc_Boot(:,:,:,:,iter), [3 4 2 1]));
+                pcData = r.calculatePCs(permute(PCAoutcome_Boot(:,:,:,:,iter), [3 4 2 1]));
                 dataV = r.calcSpeed(pcData);
                 r.kinet.BootV(:,:,iter)=dataV.V;
                 r.kinet.BootDist(:,:,iter)=dataV.distancesAll;
             end
+
+            % Shuffles for CCE_ECC
+        if strcmp(trials, 'CCE_ECC')
+            for iter = 1: size(outcome.CCE_ECC.outcomePCA_trunc_Shuf,5)
+                pcData = r.calculatePCs(permute(outcome.CCE_ECC.outcomePCA_trunc_Shuf(:,:,:,:,iter), [3 4 2 1]));
+                dataV = r.calcSpeed(pcData);
+                r.kinet.shuffV(:,:,iter)=dataV.V;
+                r.kinet.shuffDist(:,:,iter)=dataV.distancesAll;
+            end
+        else
+            % do nothing
+        end
 
             % prepare data for decoding analysis
             r.decode=outcome.decode;
@@ -114,6 +125,10 @@ classdef POA < handle
                 end
             end
 
+         % for calculating subspace projection 
+        [r.project] = r.calculatePCs(permute(outcome.outcomePCA_trunc, [3 4 2 1]),'projectFromMean',true,'RTspace',outcome.projRT.RTPCAeigenVs,'RTcov',outcome.projRT.RTcovMatrix,'RTlatents',outcome.projRT.RTlatents);
+
+
 
          end
 % 
@@ -126,6 +141,7 @@ classdef POA < handle
         calcDecode(r,outcome);
         plotDecoder(r);
         plotVariance(r,varargin);
+        plotBiplot(r);
 
 
         function initializeProcessingFlags(r, useSingleUnits)

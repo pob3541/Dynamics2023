@@ -17,6 +17,8 @@ projectFromMean=false;
 numConds=length(r.metaData.whichConds);
 RTlims=r.metaData.RTlims(1,:);
 RTspace=[];
+RTcov=[];
+RTlatents=[];
 moveAlign=false;
 pcaCohRT = false;
 assignopts(who, varargin)
@@ -59,6 +61,41 @@ Ye(isnan(Ye)) = mean(Ye(:),'omitnan');
 
 [eigenVectors, score,latentActual] = pca(Ye);
 pcData.varExplained = 100*latentActual./sum(latentActual);
+
+
+if projectFromMean
+    
+    % project outcome into RT space
+    reducedRTspace=RTspace(:,1:6);
+    score = Ye*reducedRTspace;
+    [TrajIn, TrajOut] = chopScoreMatrix(score, Lens);
+
+
+    %random projection
+    randInd=randperm(length(reducedRTspace));
+    randRTspace=reducedRTspace(randInd,:);
+    scoreRandom=Ye*randRTspace;
+    [RandTrajIn, RandTrajOut] = chopScoreMatrix(scoreRandom, Lens);
+
+    pcData.varExplained = [];
+    pcData.TrajIn = TrajIn;
+    pcData.TrajOut = TrajOut;
+    pcData.RandTrajIn = RandTrajIn;
+    pcData.RandTrajOut = RandTrajOut;
+    pcData.randRTspace=randRTspace;
+
+    pcData.eigenVectors = [];
+    pcData.RTspace=RTspace;
+    pcData.score = score;
+    pcData.scoreRandom = scoreRandom;
+    pcData.OutcomeLatents = latentActual;
+    pcData.RTLatents = RTlatents;
+    pcData.tData = tData;
+    pcData.OutcomeCov = cov(Ye);
+    pcData.RTcov = RTcov;
+    return;
+end
+
 [TrajIn, TrajOut] = chopScoreMatrix(score, Lens);
 
 % save the data in a structure
@@ -71,41 +108,6 @@ pcData.latentActual = latentActual;
 pcData.tData = tData;
 pcData.covMatrix = cov(Ye);
 
-
-%
-% if projectFromMean
-%
-%     reducedRTspace=RTspace(:,1:6);
-%
-%     score = Ye*reducedRTspace;
-%
-%     %randomize rows
-%     randInd=randperm(length(reducedRTspace));
-%     randRTspace=reducedRTspace(randInd,:);
-%
-%     scoreRandom=Ye*randRTspace;
-%
-%     [TrajIn, TrajOut] = chopScoreMatrix(score, Lens);
-%     [RandTrajIn, RandTrajOut] = chopScoreMatrix(scoreRandom, Lens);
-%
-%     pcData.varExplained = [];
-%     pcData.TrajIn = TrajIn;
-%     pcData.TrajOut = TrajOut;
-%     pcData.RandTrajIn = RandTrajIn;
-%     pcData.RandTrajOut = RandTrajOut;
-%     pcData.randRTspace=randRTspace;
-%
-%     pcData.eigenVectors = [];
-%     pcData.RTspace=RTspace;
-%     pcData.score = score;
-%     pcData.scoreRandom = scoreRandom;
-%     pcData.OutcomeLatents = latentActual;
-%     pcData.RTLatents = [];
-%     pcData.tData = tData;
-%     pcData.OutcomeCov = cov(Ye);
-%     pcData.RTcov = [];
-%     return;
-% end
 
 
 end
