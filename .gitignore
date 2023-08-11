@@ -1,4 +1,5 @@
 *.eps
 *.asv
 *.m~
+*.DS_Store
 @eaDir/
