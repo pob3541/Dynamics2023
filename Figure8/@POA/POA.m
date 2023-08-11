@@ -13,7 +13,6 @@ classdef POA < handle
         decode
         noise
         project
-        %CCE_ECC
 
 
         % parameters

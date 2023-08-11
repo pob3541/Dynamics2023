@@ -69,6 +69,7 @@ if projectFromMean
     reducedRTspace=RTspace(:,1:6);
     score = Ye*reducedRTspace;
     [TrajIn, TrajOut] = chopScoreMatrix(score, Lens);
+    
 
 
     %random projection
@@ -80,6 +81,7 @@ if projectFromMean
     pcData.varExplained = [];
     pcData.TrajIn = TrajIn;
     pcData.TrajOut = TrajOut;
+   
     pcData.RandTrajIn = RandTrajIn;
     pcData.RandTrajOut = RandTrajOut;
     pcData.randRTspace=randRTspace;

@@ -40,14 +40,14 @@ set(gca,'visible','off');
 axis tight
 
 
-%Bottom right plot - FR by coherence; movement aligned
+%Bottom left plot - FR by coherence; movement aligned
 bLeftHand=subplot(2,2,3);
 [y3]=plotConv(FR_Move,Data.Choice,Data.Coherence,Data.RT,'Coh',Data.bound1,Data.bound2,'Mov');
 set(gca,'visible','off');
 tm = getTextLabel(0,{'Move'},{'b'});
 axis tight
 
-%Bottom left plot - FR by RT; movement aligned
+%Bottom right plot - FR by RT; movement aligned
 bRightHand=subplot(2,2,4);
 [~,y4]=plotConv(FR_Move,Data.Choice,Data.Coherence,Data.RT,'RT',Data.bound1,Data.bound2,'Mov');
 set(gca,'visible','off');
