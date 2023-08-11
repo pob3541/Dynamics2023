@@ -9,7 +9,7 @@ trainError = [];
 testError = [];
 
 whichT = 1:50:1200;
-verbose = true;
+verbose = false;
 
 
 whichCV = 'hard';
@@ -19,6 +19,8 @@ if whichCV == 'hard'
 else
     cprintf('yellow','Using soft Cross Validation');
 end
+
+rng(1);
 for m = 1:2
     
     
@@ -74,6 +76,8 @@ for m = 1:2
         
         rTemp = [];
         dId = 1;
+        localTrainError = [];
+        localTestError = [];
         for d = [1:4]
             
             [model, U0,out] = cp_wopt(Yt, Yr, d,'verbosity',0);
@@ -81,23 +85,23 @@ for m = 1:2
             if sId == 52 & monkey == 't' & d == 4
                 %  [model, U0, out] = cp_als(Yt, 4);
                 modelToUse = model;
-                viz_ktensor(model, ...
-                    'Plottype', {'bar', 'line', 'scatter'}, ...
-                    'Modetitles', {'neurons', 'time', 'trials'})
+%                 viz_ktensor(model, ...
+%                     'Plottype', {'bar', 'line', 'scatter'}, ...
+%                     'Modetitles', {'neurons', 'time', 'trials'})
             end
             
             fullData = full(model);
             fullData = fullData.data(find(Yr));
             Ydata = Yt.data(find(Yr));
             
-            trainError(cnt, dId) = 1 - norm(fullData - Ydata,'fro').^2/norm(Ydata - mean(Ydata),'fro').^2;
+            localTrainError(dId) = 1 - norm(fullData - Ydata,'fro').^2/norm(Ydata - mean(Ydata),'fro').^2;
             RCs(cnt,dId, 1) = norm(fullData - Ydata, 'fro')./norm(Ydata,'fro');
             
             fullData = full(model);
             fullData = fullData.data(find(~Yr));
             Ydata = Yt.data(find(~Yr));
             
-            testError(cnt, dId) = 1 - norm(fullData - Ydata,'fro').^2/norm(Ydata - mean(Ydata),'fro').^2;
+            localTestError(dId) = 1 - norm(fullData - Ydata,'fro').^2/norm(Ydata - mean(Ydata),'fro').^2;
             RCs(cnt,dId, 2) = norm(fullData - Ydata, 'fro')./norm(Ydata,'fro');
             
             
@@ -109,8 +113,8 @@ for m = 1:2
             end
             tAll = tAxis(whichT);
             [rTemp,p] = corr(model.u{3}, RTs, 'type','spearman');
-            [b,bi,c,ci,st(cnt,dId,:)] = regress(RTs, [nanmean(Yproj(:,:,tAll < 0),3)' nSquares ones(size(RTs,1),1)]);
-            [b,bi,c,ci,stR(cnt,dId,:)] = regress(RTs(randperm(length(RTs))), [nanmean(Yproj(:,:,tAll < 0),3)' nSquares ones(size(RTs,1),1)]);
+            [~,~,~,~,st(cnt,dId,:)] = regress(RTs, [nanmean(Yproj(:,:,tAll < 0),3)' nSquares ones(size(RTs,1),1)]);
+            [~,~,~,~,stR(cnt,dId,:)] = regress(RTs(randperm(length(RTs))), [nanmean(Yproj(:,:,tAll < 0),3)' nSquares ones(size(RTs,1),1)]);
             [b,bi,c,ci,st1(cnt,dId,:)] = regress(RTs, [nSquares ones(size(RTs,1),1)]);
             
             
@@ -119,6 +123,9 @@ for m = 1:2
             
             
         end
+        trainError(cnt,:) = localTrainError;
+        testError(cnt,:) = localTestError;
+        
         if verbose
             cprintf('red',sprintf('\n Train Error: %3.3f, \n test Error: %3.3f, \n R2: %3.3f', trainError(cnt,:), testError(cnt,:), st(cnt,:)));
         end
@@ -178,7 +185,17 @@ axis square;
 axis tight;
 yline(nanmean(st1(:,1,1))*100)
 
+%%
+M1 = nanmean(trainError);
+M1e = nanstd(trainError)./sqrt(size(trainError,1));
+M2 = nanmean(testError);
+M2e = nanstd(testError)./sqrt(size(testError,1));
 
+TCAtable.TCA_hard = array2table([M1' M1e' M2' M2e'],'VariableNames',{'TrainError','TrainE','TestError','TestE'});
+
+M1 = nanmean(st(:,:,1)*100);
+M1e = nanstd(st(:,:,1)*100)./sqrt(sum(~isnan(testError)))
+TCAtable.TCA_hard_regress =  array2table([M1' M1e'],'VariableNames',{'R2','R2e'});
 
 %%
 
@@ -186,7 +203,7 @@ figure;
 model = modelToUse;
 fullData = full(model);
 Xticks = {[1:5:size(fullData,1)],[tAxis(whichT)],[1:100:size(fullData,3)]};
-Info = viz_ktensor(model, ...
+[Info, dataV] = viz_ktensor(model, ...
     'Plottype', {'bar', 'line', 'scatter'}, ...
     'Modetitles', {'neurons', 'time', 'trials'},'PlotColors',{[0.6 0.6 0.6],[0 0 0],[0.8 0.8 0.8]});
 
@@ -196,6 +213,14 @@ ax = Info.FactorAxes(2,4);
 axes(ax);
 drawLines(13);
 
+fNames = {'Neurons','Time','Trials'};
+
+vNames = {'ID1','D1','ID2','D2','ID3','D3','ID4','D4'};
+for nF = 1:3
+   currD = [dataV(nF).Factors];
+   TCAtable.(fNames{nF}) =  array2table(horzcat(currD.V), 'VariableNames',vNames);
+end
+    
 
 
 %%
@@ -210,6 +235,8 @@ nSquares = abs([nSquares-(225-nSquares)]./225);
 choiceV = [ones(1, forTCA.nL) 2*ones(1,forTCA.nR)];
 tAxis = forTCA.dataStruct.RawData.timeAxis;
 
+
+%%
 X1 = modelToUse.u;
 Vl = choiceV' == 1 & RTs < 350;
 Vl = find(Vl);
@@ -218,7 +245,7 @@ Vr = choiceV' == 1 & RTs > 600;
 Vr = find(Vr);
 Vr = Vr(1:1:min(length(Vr),50));
 
-ix = [2 :4];
+ix = [2 3 4];
 Y1 = X1{3}(:,ix(1)).*X1{2}(:,ix(1))';
 Y2 = X1{3}(:,ix(2)).*X1{2}(:,ix(2))';
 Y3 = X1{3}(:,ix(3)).*X1{2}(:,ix(3))';
@@ -228,6 +255,8 @@ Y3 = X1{3}(:,ix(3)).*X1{2}(:,ix(3))';
 tId = 1:size(Y1,2);
 hold on
 tAll = tAxis(whichT);
+bigD = [];
+
 for i=1:length(Vl)
     currT = find(tAll*1000 >= RTs(Vl(i)),1,'first');
     if isempty(currT) | currT > length(tAll)
@@ -238,7 +267,12 @@ for i=1:length(Vl)
     currT = currT + 4;
     plot3(Y1(Vl(i),:)', Y2(Vl(i),:)', Y3(Vl(i),:)', 'b-');
     
+    currD1 = [Y1(Vl(i),:); Y2(Vl(i),:); Y3(Vl(i),:)]';
+    currD1(:,end+1) = 1;
+    currD1(:,end+1) = Vl(i);
+    bigD = [bigD; currD1];
 end
+
 
 
 tAll = tAxis(whichT);
@@ -252,9 +286,15 @@ for i=1:length(Vr)
         plot3(Y1(Vr(i),1:currT)', Y2(Vr(i),1:currT)', Y3(Vr(i),1:currT)', 'm-');
         plot3(Y1(Vr(i),currT)', Y2(Vr(i),currT)', Y3(Vr(i),currT)', 'mo','markerfacecolor','m','markeredgecolor','none','markersize',12);
     end
-    
+    currD1 = [Y1(Vr(i),:); Y2(Vr(i),:); Y3(Vr(i),:)]';
+    currD1(:,end+1) = 2;
+    currD1(:,end+1) = Vr(i);
+    bigD = [bigD; currD1];
     
 end
+
+TCAtable.Trajectories = bigD;
+
 tAll = find(tAll >= 0,1,'first');
 plot3(Y1(Vl,tAll)', Y2(Vl,tAll)', Y3(Vl,tAll)', 'bo','markerfacecolor','b','markeredgecolor','none','markersize',12);
 hold on
@@ -267,7 +307,7 @@ zlabel('S_4');
 ThreeVector(gca);
 
 ax = gca;
-set(ax,'CameraPosition', [0.0652 0.0435 0.0367]);
-set(ax,'CameraTarget', [0.0063 0.0040 0.0100]);
+set(ax,'CameraPosition', [0.0592 0.0475 0.0455]);
+set(ax,'CameraTarget', [0.0055 0.0040 0.0100]);
 
 

@@ -1,7 +1,7 @@
-function plotTrajectories(r, varargin)
+function dataTable = plotTrajectories(r, varargin)
 % plotTrajectories - plots 3D PCA trajectories for for the specified dimensions from PCA on firing rates organized by RT and choice
 %
-% Needed Inputs: 
+% Needed Inputs:
 %
 %   r - the object from the PMddynamics class.
 %
@@ -16,7 +16,7 @@ function plotTrajectories(r, varargin)
 %     showPooled - show pooled or individual coherences
 %     hideAxes - hide or show axes
 %     showGrid - show the grid
-%     vectorLength - length of the three vector axes 
+%     vectorLength - length of the three vector axes
 %
 % see also PMddynamics
 % Chand, Mar 30th 2023
@@ -62,6 +62,7 @@ cValues = cValues(cIds,:);
 % Create a new figure
 f = figure('units','normalized','position',[0.2049 0.1292 0.6026 0.6394],'color',[1 1 1]);
 
+AllD = {};
 for k=1:length(r.signalplusnoise.tData)
     
     timePts = tData{k};
@@ -75,6 +76,10 @@ for k=1:length(r.signalplusnoise.tData)
     end
     S3 = TrajIn{k}(:,dimsToShow(3));
     
+    
+    cData1 = [S1 S2 S3];
+    cData1(:,end+1) = k;
+    cData1(:,end+1) = 1;
     
     % Plot the left trajectories
     X = 1:step:length(S1);
@@ -102,6 +107,10 @@ for k=1:length(r.signalplusnoise.tData)
     S3 = TrajOut{k}(:,dimsToShow(3));
     
     
+    cData2 = [S1 S2 S3];
+    cData2(:,end+1) = k;
+    cData2(:,end+1) = 2;
+    
     
     plot3(S1(ixV),S2(ixV),S3(ixV),'color',cValues(k,:),'color', cValues(k,:),  'linewidth',lW,'linestyle','--');
     plot3(S1(X),S2(X),S3(X),'color',cValues(k,:),'MarkerFaceColor', cValues(k,:),'MarkerEdgeColor',mEdgeColor,'marker',marker,'markersize',mSize, 'linestyle','none');
@@ -111,7 +120,18 @@ for k=1:length(r.signalplusnoise.tData)
         plot3(S1(movePt),S2(movePt),S3(movePt),'color',cValues(k,:),'marker','d','markerFaceColor',cValues(k,:),'markersize',m300size);
     end
     
+    AllD{k} = [cData1; cData2];
+    
 end
+
+for b=1:length(dimsToShow)
+    vNames{b} = sprintf('Dim%d',dimsToShow(b));
+end
+vNames{end+1} = 'Id';
+vNames{end+1} = 'Choice';
+
+dataTable = array2table(vertcat(AllD{:}), 'VariableNames',vNames);
+
 
 % Plot with nice data
 str1 = sprintf('X%d', dimsToShow(1));
@@ -123,16 +143,19 @@ zlabel(str3);
 axis square;
 axis tight;
 clear ThreeVector;
-Tv = ThreeVector(gca);
-% Tv.positionFrozenCorner = [0.22 0.2];
 
-
-
-Tv.hideAxes = hideAxes;
-Tv.niceGrid = showGrid;
-Tv.vectorLength = vectorLength;
-Tv.axisInset = axisInset;
-
+try
+    Tv = ThreeVector(gca);
+    % Tv.positionFrozenCorner = [0.22 0.2];
+    
+    
+    
+    Tv.hideAxes = hideAxes;
+    Tv.niceGrid = showGrid;
+    Tv.vectorLength = vectorLength;
+    Tv.axisInset = axisInset;
+catch
+end
 set(gca,'CameraPosition',r.metaData.camPosition);
 
 % Allows proper exporting

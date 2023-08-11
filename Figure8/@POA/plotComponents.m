@@ -7,9 +7,14 @@ function [CI, meanDist]=plotComponents(r, varargin)
 TrajIn = r.signalplusnoise.TrajIn;
 TrajOut = r.signalplusnoise.TrajOut;
 % outcome=true;
+project=false;
 moveAlign=0;
-assignopts(who,varargin)
+numConds=length(r.metaData.condColors);
 cValues = r.metaData.condColors;
+LineColor=cValues;
+PatchColor=cValues;
+assignopts(who,varargin)
+
 dimsToShow = 1:5;
 
 % adjust variables whether data is to be cue or movement aligned
@@ -17,10 +22,10 @@ if moveAlign ==0
     V = r.signalplusnoise.varExplained;
     tData = r.signalplusnoise.tData;
 else
-    TrajIn = r.MoveAlignsignalplusnoise.TrajIn;
-    TrajOut = r.MoveAlignsignalplusnoise.TrajOut;
-    V = r.MoveAlignsignalplusnoise.varExplained;
-    tData = r.MoveAlignsignalplusnoise.tData;
+    TrajIn = r.signalplusnoise.moveAlign.TrajIn;
+    TrajOut = r.signalplusnoise.moveAlign.TrajOut;
+    V = r.signalplusnoise.moveAlign.varExplained;
+    tData = r.signalplusnoise.moveAlign.tData;
 end
 
 % set up axes
@@ -36,7 +41,7 @@ MinMax = [];
 
 
 % plot components on the axes
-for z=1:length(r.metaData.condColors)
+for z=1:numConds
     compCnt = 1;
 
     % plot distance either aligned to cue or movement
@@ -44,7 +49,7 @@ for z=1:length(r.metaData.condColors)
         DistV = r.distance(z).V;
         tempEnd=size(TrajIn{z},1);
     else
-        DistV = r.distance(z).VmoveAlign;
+        DistV = r.distance(z).moveAlign;
         tempEnd=700;
         tscore = tinv([0.025 0.975],length(1:tempEnd)-1);
     end
@@ -67,12 +72,14 @@ for z=1:length(r.metaData.condColors)
 
     axes(aX(6));
     hold on;
-    if isfield(r.distance,'VmoveAlign_Boot') &&  moveAlign ==1
-        DistV_boot=squeeze(r.distance(z).VmoveAlign_Boot);
+    %CI = zeros(tempEnd, 2, numConds);
+    %meanDist = zeros(tempEnd,numConds);
+    if isfield(r.distance,'moveAlign_Boot') &&  moveAlign ==1
+        DistV_boot=squeeze(r.distance(z).moveAlign_Boot);
         DistV_boot(DistV_boot > 300) = NaN;
         avgDistV=mean(DistV_boot,2,'omitnan');
         stdDistV=std(DistV_boot','omitnan');
-        [~,li] = ShadedError(tData{z}(1:tempEnd)*1000, avgDistV(1:tempEnd)',stdDistV(1:tempEnd)*tscore(2));
+        [~,li] = ShadedError(tData{z}(1:tempEnd)*1000, avgDistV(1:tempEnd)',stdDistV(1:tempEnd)*tscore(2),LineColor(z,:),PatchColor(z,:));
         CI(:,:,z) = avgDistV(1:tempEnd)+stdDistV(1:tempEnd)'*tscore;
         meanDist(:,z)=avgDistV(1:tempEnd);
 
@@ -116,8 +123,12 @@ for z=1:5
     end
 
     strValue = 'Check';
-
+    
+    if project == 0
     text(20,yLims(2)-0.5,sprintf('%3.2f%%',V(z)));
+    else
+        %
+    end
 
     cTextLabels = getTextLabel(0,{strValue},{'b'});
 
@@ -149,24 +160,11 @@ axis tight; axis square;
 set(gca,'visible','off');
 
 
-% if outcome == 0
-%     [rV,pV] = corr(mean(r.metaData.RTlims,'omitnan'), dVal');
-%     text(-380,95,sprintf('r = %3.2f',rV));
-%     text(-380,90,sprintf('p = %3.2e',pV));
-% 
-%     cbPos=[0.405 0.965];
-%     cbSize=[0.1 0.01];
-%     fSize=10;
-%     cbLyPos=1.8;
-% 
-%     custColorBar(r,cbPos,cbSize,fSize,cbLyPos)
-% else
-    axes(aX(2));
-    text(-400, 68,'Correct','Color',cValues(1,:))
-    text(-400, 64,'Post-correct','Color',cValues(2,:))
-    text(-200, 68,'Error','Color',cValues(3,:))
-    text(-200, 64,'Post-error','Color',cValues(4,:))
-% end
+axes(aX(2));
+text(-400, 68,'Correct','Color',cValues(1,:))
+text(-400, 64,'Post-correct','Color',cValues(2,:))
+text(-200, 68,'Error','Color',cValues(3,:))
+text(-200, 64,'Post-error','Color',cValues(4,:))
 
 
 

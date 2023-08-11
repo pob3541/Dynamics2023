@@ -1,10 +1,12 @@
-function plotVariance(r, varargin)
+function dataTable = plotVariance(r, varargin)
 %
 %
 % plots variance for signal and signal plus noise as in Machens
 % et al.
 n = r.metaData.nComponents;
 assignopts(who, varargin);
+
+
 
 figure;
 ShadedError(1:n,nanmean(r.signalerror.varExplained(:,1:n)),1*nanstd(r.signalerror.varExplained(:,1:n))); %,'o-','markerfacecolor','m','markersize',12);
@@ -18,6 +20,9 @@ line([1 n],[1 1],'color','k','linestyle','--');
 
 cprintf('magenta', 'Variance from the first 6 components: %3.2f%% \n', sum(r.signalplusnoise.varExplained(1:6)))
 
+
+dataTable = array2table([ [1:n]' nanmean(r.signalerror.varExplained(:,1:n))' nanstd(r.signalerror.varExplained(:,1:n))'],...
+            'VariableNames',{'Dimensions','Variance','SEM'});
 
 
 end

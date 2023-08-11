@@ -76,7 +76,7 @@ switch(nargin)
         L = y - E;
         U = y + E;
         LineColor = 'k';
-        PatchColor = [0.85 0.85 0.85];
+        PatchColor = [0.85 0.85 0.85]-0.3;
     case 4,
         % If there are 4 inputs it means they entered the Lower and upper
         % bounds

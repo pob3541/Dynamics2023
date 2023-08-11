@@ -1,4 +1,4 @@
-function info = viz_ktensor(K, varargin)
+function [info, dataV] = viz_ktensor(K, varargin)
 %VIZ_KTENSOR Visualize a ktensor
 %
 % Xticks = cell array (one per mode)
@@ -76,6 +76,7 @@ end
 
 %% Plot each factor
 h = gobjects(nd,nc);
+dataV = [];
 for k = 1 : nd
     
     if res.Plotsize(k) == -1
@@ -111,6 +112,12 @@ for k = 1 : nd
                 hh = bar(FactorAxes(k,j), xx, yy, 'EdgeColor', cc, 'FaceColor', cc);
         end
         
+        dataV(k).Factors(j).V = [xx(:) yy(:)];
+        
+        
+
+        
+        
         xlim(FactorAxes(k,j),xl);
         if res.Sameylims(j)
             ylim(FactorAxes(k,j),yl);
@@ -130,6 +137,8 @@ for k = 1 : nd
         set(FactorAxes(k,j),'FontSize',14,'box','off','tickdir','out', 'ticklength',[0.03 0.03])
     end
 end
+
+
 
 %% Title for each mode
 htitle = gobjects(nd,1);
