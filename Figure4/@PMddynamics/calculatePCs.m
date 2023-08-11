@@ -6,6 +6,8 @@ function [pcData] = calculatePCs(r,FR,varargin)
 
 removeTime = r.metaData.removeTime;
 projectFromMean = false;
+projectToOutcome = false;
+outSpace = [];
 nDims = 8;
 assignopts(who, varargin);
 t = r.metaData.t;
@@ -43,6 +45,7 @@ Ndimensions = 200;
 Ye = Data;
 Ye(isnan(Ye)) = nanmean(Ye(:));
 [eigenVectors, score,latentActual] = pca(Ye);
+
 if projectFromMean
     eigenVectors = r.signalplusnoise.eigenVectors;
     score = Ye*eigenVectors;
@@ -50,6 +53,16 @@ if projectFromMean
     trace(D'*cov(Ye)*D)./sum(latentActual(1:nDims))
     sum(latentActual(1:nDims))./sum(latentActual)
 end
+
+if projectToOutcome
+    % project RT data into outcome space
+    reducedOutSpace=outSpace(:,1:6);
+    scoreProjRT = Ye*reducedOutSpace;
+    [TrajInProjRT, TrajOutProjRT] = chopScoreMatrix(scoreProjRT, Lens);
+    pcData.TrajInProjRT = TrajInProjRT;
+    pcData.TrajOutProjRT = TrajOutProjRT;
+end
+
 [TrajIn, TrajOut] = chopScoreMatrix(score, Lens);
 
 pcData.TrajIn = TrajIn;

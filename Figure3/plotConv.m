@@ -37,7 +37,7 @@ switch(txt)
                     ai=(length(uniqC)-i)+1;
                     medianRT(ai)=round(median(RT(C==uniqC(i))))+50;
                     t{:,ai,j}=(-medianRT(ai):base);
-                    y{:,ai,j}=mean(convMat(((abs(b)*1000-medianRT(ai)):(abs(b)*1000+base)),choice==j & C==uniqC(i,1)),2);
+                    y{:,ai,j}=mean(convMat(((abs(b)*1000-medianRT(ai)):(abs(b)*1000+base)),choice==j & C==uniqC(i,1)),2,'omitnan');
                     convVec{:,ai,j}= convMat(((abs(b)*1000-medianRT(ai)):(abs(b)*1000+base)),choice==j & C==uniqC(i,1));
 
                     SEM{:,ai,j}=sem(convVec{:,ai,j},'omitnan'); %include

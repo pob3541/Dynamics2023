@@ -4,6 +4,7 @@ function [dataTable] = plotComponents(r, varargin)
 % Chand, 30 Mar 2022
 TrajIn = r.signalplusnoise.TrajIn;
 TrajOut = r.signalplusnoise.TrajOut;
+project=0;
 assignopts(who,varargin)
 cValues = r.metaData.condColors;
 dimsToShow = [1:5];
@@ -118,7 +119,11 @@ for z=1:5
     xLims = [tMin*1000 r.metaData.tMax*1000];
     strValue = 'Check';
     
+    if project ==0
     text(20,yLims(2)-0.5,sprintf('%3.2f%%',V(z)));
+    else
+        %
+    end
     
     cTextLabels = getTextLabel(0,{strValue},{'b'});
     

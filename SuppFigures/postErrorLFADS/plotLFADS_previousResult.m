@@ -48,6 +48,15 @@ correctness2 = correctness(Locb);
 
 %% plot previous correct or wrong but current correct trials
 
+preC_x = struct;
+preC_y = struct;
+preC_z = struct;
+preW_x = struct;
+preC_y = struct;
+preW_z = struct;
+
+
+
 % define which coherence to plot
 coh = [1:7];
 isCoh = ismember([data2.condId], coh);
@@ -74,7 +83,7 @@ idx = randperm(length(preCorrectTrials));
 extract = sort(idx(1:round(length(idx)*portion)));
 preCorrectTrials = preCorrectTrials(extract);
 
-
+cnt = 1;
 % plot previously correct trials for targeted coh (trial sequence same as data)
 for id = 1:length(preCorrectTrials)
     trial1 = preCorrectTrials(id);
@@ -90,10 +99,19 @@ for id = 1:length(preCorrectTrials)
         plot3(orthF(1,60,trial1), orthF(2,60,trial1),orthF(3,60,trial1), 'o', 'markeredgecolor', 'none', 'markerfacecolor', 'b', 'markersize', 8);
         % plot end dot
         plot3(orthF(1,lastPt,trial1), orthF(2,lastPt,trial1),orthF(3,lastPt,trial1), 'd', 'markeredgecolor', 'none', 'markerfacecolor', 'b', 'markersize', 10);    
+    
+    
+        % generate source excel data
+        preC_x(cnt).traj = orthF(1,40:lastPt,trial1);
+        preC_y(cnt).traj = orthF(2,40:lastPt,trial1);
+        preC_z(cnt).traj = orthF(3,40:lastPt,trial1);
+        cnt = cnt+1;
     end
 end
 
 
+
+cnt = 1;
 % plot previously wrong trials for targeted coh (trial sequence same as data)
 for id = 1:length(preWrongTrials)
     trial1 = preWrongTrials(id);
@@ -109,7 +127,19 @@ for id = 1:length(preWrongTrials)
         plot3(orthF(1,60,trial1), orthF(2,60,trial1),orthF(3,60,trial1), 'o', 'markeredgecolor', 'none', 'markerfacecolor', 'm', 'markersize', 8);
         % plot end dot
         plot3(orthF(1,lastPt,trial1), orthF(2,lastPt,trial1),orthF(3,lastPt,trial1), 'd', 'markeredgecolor', 'none', 'markerfacecolor', 'm', 'markersize', 10);    
+    
+        
+        
+        % generate source excel data
+        preW_x(cnt,:).traj = orthF(1,40:lastPt,trial1);
+        preW_y(cnt,:).traj = orthF(2,40:lastPt,trial1);
+        preW_z(cnt,:).traj = orthF(3,40:lastPt,trial1);    
+        cnt = cnt+1;
     end
+    
+    
+    
+    
 end
 
 

@@ -12,7 +12,7 @@ classdef PMddynamics < handle
         perCoh
         signalerror
         noise
-        
+        project
         excursion
         
         
@@ -42,11 +42,13 @@ classdef PMddynamics < handle
             
             r.rtFR = M.rt.FR;
             
-            
-            
+
             
             [r.signalplusnoise] = r.calculatePCs(M.rt.FR(:,:,r.metaData.neuronIdx,:));
             [r.noise] = r.calculatePCs(M.rt.FRnoise(:,:,r.metaData.neuronIdx,:));
+            [r.project] = r.calculatePCs(M.rt.FR(:,:,r.metaData.neuronIdx,:),'outSpace',M.rt.outSpace,'projectToOutcome','true');
+
+
  
             whichDim = 1:6;
             
@@ -92,7 +94,7 @@ classdef PMddynamics < handle
         dataTable = plotKinet(r)
         dataTable = plotTrajectories(r,varargin)
         dataTable = plotVariance(r, varargin)
-        dataTable = plotComponents(r)
+        dataTable = plotComponents(r, varargin)
         dataTable = plotTrialCounts(r)
         [slopeV, bV, cohValues,  forBigCorr,  metaData, dataTable] = calcInputsAndIC(r, varargin)
         

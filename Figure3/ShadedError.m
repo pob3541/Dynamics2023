@@ -119,9 +119,8 @@ Ycoords = Ycoords(keepIndex);
 
 Pa = patch(Xcoords,Ycoords',PatchColor,'FaceAlpha',.4);
 set(Pa,'linestyle','none');
-hold on;
-Li = plot(x,y,'color',LineColor,'linewidth', 2);
-
+% hold on;
+% Li = plot(x,y,'color',LineColor,'linewidth',lw);
 
 
 

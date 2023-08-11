@@ -3,7 +3,7 @@
 
 clear all; close all;clc
 
-lfadsR = load('~/Desktop/multiSession/Tsess1.mat');
+lfadsR = load('~/Desktop/multiSessionLFADS/Tsess1.mat');
 
 rates = lfadsR.rates;
 validInds = lfadsR.validInds;
@@ -41,7 +41,12 @@ psth = psth(:,:,validChoice == 1);
 t = linspace(-600,1200,size(rates,2));
 
 
-unit = 4;
+psthAll = [];
+psthMean = [];
+ratesAll = [];
+ratesMean = [];
+
+
 figure; 
 cnt = 1;
 gt = getTextLabel(0,{'Cue'},{'b'});
@@ -56,8 +61,28 @@ for unit = [1,6,10,11]
     hold on
     set(gca,'visible','off');
     getAxesP([-600 1200],setdiff([-600:200:1200],0), 'Time (ms)', -5,0,[0 150],[0:50:150],'FR (Spks/s)',-625,-625,[1 1], gt);
-    cnt = cnt + 1;
     axis tight;
     drawRestrictedLines(0,[-5 150]);
+    
+    % generate source excel data
+    psthAll = [psthAll; [squeeze(psth(unit,:,1:5:end)), unit.*ones(size(psth,2),1),t']];
+    psthMean = [psthMean; mean(squeeze(psth(unit,:,:)),2)];
+    
+    ratesAll = [ratesAll; squeeze(validRates(unit,:,1:5:end))];
+    ratesMean = [ratesMean; mean(squeeze(validRates(unit,:,:)),2)];
+    
+    
+    
+    cnt = cnt + 1;
+
+    
 end
 
+
+
+%% 
+
+
+LFADSFR = [psthAll, psthMean, ratesAll ratesMean];
+
+% save('~/Desktop/sourceData/LFADS_analysis/LFADSFR.mat', 'LFADSFR');
