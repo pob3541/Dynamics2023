@@ -36,7 +36,7 @@ reflinecc([0 1]);
 
 text([-600],50,'Hard Coherences, 2 RT bins');
 
-choiceTable = array2table([tV(idx)' Mu1' Mu2' Mu3'],'VariableNames',{'Time','AllFastChoice','AllSlowChoice','HardRT'});
+choiceTable = array2table([tV(idx)' Mu1' Mu2' Mu3' SE1' SE2' SE3' ],'VariableNames',{'Time','AllFastChoice','AllSlowChoice','HardRT','FastE','SlowE','HardRTe'});
 
 %%
 subplot(2,2,2);
@@ -64,4 +64,9 @@ reflinecc([0 1]);
 
 text([-600],100,'All Coherences, RT and Choice');
 
-allCoh = array2table([tV(idx)' Mu4' SE4' Mu5' SE5'],'VariableNames',{'Time','RT','Choice','RTe','ChoiceE'})
+allCoh = array2table([tV(idx)' Mu4' Mu5'  SE4' SE5'],'VariableNames',{'Time','RT','Choice','RTe','ChoiceE'})
+%%
+cprintf('yellow','\nFigure S17');
+fileName = '../../SourceData/FigS17.xls'
+writetable(choiceTable,fileName,'FileType','spreadsheet','Sheet','Fig.S17c');
+writetable(allCoh,fileName,'FileType','spreadsheet','Sheet','Fig.S17d');

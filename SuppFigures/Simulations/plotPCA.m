@@ -84,7 +84,7 @@ for nR = 1:length(RTl)
     
 end
 
-pcs = array2table(bigD, 'VariableNames',{'PC1','PC2','PC3','Choice','RT');
+pcs = array2table(bigD, 'VariableNames',{'PC1','PC2','PC3','Choice','RT'});
 
 xlabel('PC_1');
 ylabel('PC_2');

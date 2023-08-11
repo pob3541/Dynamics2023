@@ -27,7 +27,7 @@ trialVar = cumsum(Vsingle)./sum(Vsingle);
 figure; hold on
 plot(aveVar(1:10), '.-', 'MarkerSize', 20);
 plot(trialVar(1:10), '.-', 'markersize', 20);
-% (0.9, 'k--')
+yline(0.9, 'k--')
 
 
 varTable = array2table([(1:10)' aveVar(1:10) trialVar(1:10)],'VariableNames',{'Dim','Averaged','Single'});

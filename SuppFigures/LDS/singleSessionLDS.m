@@ -87,3 +87,10 @@ for timeperiods = 1:2
     
     ldsTable.(sprintf('data%d',timeperiods)) = array2table(dataV, 'VariableNames',vNames);
 end
+
+
+%%
+baseDir = '/net/home/chand/code/Dynamics2023/'
+fileName = fullfile(baseDir, 'SourceData/FigS13.xls');
+writetable(ldsTable.data1,fileName,'FileType','spreadsheet','Sheet','fig.S13a-left');
+writetable(ldsTable.data2,fileName,'FileType','spreadsheet','Sheet','fig.S13a-right');

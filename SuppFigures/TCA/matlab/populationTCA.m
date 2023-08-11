@@ -20,30 +20,30 @@ else
     cprintf('yellow','Using soft Cross Validation');
 end
 
-rng(1);
+rng(20);
 for m = 1:2
-    
-    
+
+
     monkey = monkeys{m};
-    
+
     switch(monkey)
-        
+
         case 'o'
             olafV = [13 24:26 30 33 36 38 41 43 45 46 47 49 52 53 54 55 56 61 70];
             whichSess = olafV;
             [Sessions, remoteDir, remoteScratch] = validOlafSessions('PMd');
         case 't'
-            
+
             whichSess = setdiff(52:75, 57);
-            
+
             [Sessions, remoteDir, remoteScratch] = validSessions('PMd');
-            
+
     end
-    
-    
+
+
     for sId = whichSess
         fprintf('\n %d',sId);
-        
+
         [forTCA,nL, nR] = getTCAdata(sId, 'monkey',monkey,'reMake',0);
         forRRR = cat(3, forTCA.dataStruct.RawData.Left, forTCA.dataStruct.RawData.Right);
         RTs = [forTCA.dataStruct.Info.Left.goodRTs'; forTCA.dataStruct.Info.Right.goodRTs'];
@@ -51,14 +51,14 @@ for m = 1:2
         nSquares = abs([nSquares-(225-nSquares)]./225);
         choiceV = [ones(1, forTCA.nL) 2*ones(1,forTCA.nR)];
         tAxis = forTCA.dataStruct.RawData.timeAxis;
-        
+
         tValues = tAxis < 0;
         Y = forRRR(whichT,:,:);
         Y = permute(Y,[2 1 3]);
-        
+
         Yt = tensor(Y);
         Yr = ones(size(Yt));
-        
+
         switch(whichCV)
             case 'hard'
                 for n=1:size(Yr,3)
@@ -69,42 +69,42 @@ for m = 1:2
                 end
             case 'soft'
                 Yr = rand(size(Yt));
-                Yr(Yr > 0.2) = 1;
-                Yr(Yr <=0.2) = 0;
+                Yr(Yr > 0.25) = 1;
+                Yr(Yr <=0.25) = 0;
         end
-        
-        
+
+
         rTemp = [];
         dId = 1;
         localTrainError = [];
         localTestError = [];
         for d = [1:4]
-            
+
             [model, U0,out] = cp_wopt(Yt, Yr, d,'verbosity',0);
-            
+
             if sId == 52 & monkey == 't' & d == 4
                 %  [model, U0, out] = cp_als(Yt, 4);
                 modelToUse = model;
-%                 viz_ktensor(model, ...
-%                     'Plottype', {'bar', 'line', 'scatter'}, ...
-%                     'Modetitles', {'neurons', 'time', 'trials'})
+                %                 viz_ktensor(model, ...
+                %                     'Plottype', {'bar', 'line', 'scatter'}, ...
+                %                     'Modetitles', {'neurons', 'time', 'trials'})
             end
-            
+
             fullData = full(model);
             fullData = fullData.data(find(Yr));
             Ydata = Yt.data(find(Yr));
-            
+
             localTrainError(dId) = 1 - norm(fullData - Ydata,'fro').^2/norm(Ydata - mean(Ydata),'fro').^2;
             RCs(cnt,dId, 1) = norm(fullData - Ydata, 'fro')./norm(Ydata,'fro');
-            
+
             fullData = full(model);
             fullData = fullData.data(find(~Yr));
             Ydata = Yt.data(find(~Yr));
-            
+
             localTestError(dId) = 1 - norm(fullData - Ydata,'fro').^2/norm(Ydata - mean(Ydata),'fro').^2;
             RCs(cnt,dId, 2) = norm(fullData - Ydata, 'fro')./norm(Ydata,'fro');
-            
-            
+
+
             Yproj = [];
             X1 = model.u;
             ix = [1:d];
@@ -116,22 +116,22 @@ for m = 1:2
             [~,~,~,~,st(cnt,dId,:)] = regress(RTs, [nanmean(Yproj(:,:,tAll < 0),3)' nSquares ones(size(RTs,1),1)]);
             [~,~,~,~,stR(cnt,dId,:)] = regress(RTs(randperm(length(RTs))), [nanmean(Yproj(:,:,tAll < 0),3)' nSquares ones(size(RTs,1),1)]);
             [b,bi,c,ci,st1(cnt,dId,:)] = regress(RTs, [nSquares ones(size(RTs,1),1)]);
-            
-            
+
+
             sessStats(cnt,:) = [sId size(Yt)];
             dId = dId + 1;
-            
-            
+
+
         end
         trainError(cnt,:) = localTrainError;
         testError(cnt,:) = localTestError;
-        
+
         if verbose
             cprintf('red',sprintf('\n Train Error: %3.3f, \n test Error: %3.3f, \n R2: %3.3f', trainError(cnt,:), testError(cnt,:), st(cnt,:)));
         end
         cnt = cnt + 1;
-        
-        
+
+
     end
 end
 
@@ -145,7 +145,7 @@ for i=1:10
     allData = randperm(length(groups));
     trainIdx = allData(1:ceil(0.7*length(allData)));
     testIdx = setdiff(allData, trainIdx);
-    
+
     classPred = classify(classifydata(testIdx,:), classifydata(trainIdx,:), groups(trainIdx,:));
     actual(i) = nanmean(classPred == groups(testIdx));
 end
@@ -183,7 +183,8 @@ set(gca,'visible','off');
 getAxesP([1 4],[1:4],'Rank',5,5,[.05 0.4]*100,[0.05:0.10:0.4]*100,'Variance (%)',0.65,0.85,[1 1]);
 axis square;
 axis tight;
-yline(nanmean(st1(:,1,1))*100)
+base = nanmean(st1(:,1,1))*100;
+line([1 4],[base base],'color','k','linestyle','--','linewidth',1)
 
 %%
 M1 = nanmean(trainError);
@@ -191,11 +192,11 @@ M1e = nanstd(trainError)./sqrt(size(trainError,1));
 M2 = nanmean(testError);
 M2e = nanstd(testError)./sqrt(size(testError,1));
 
-TCAtable.TCA_hard = array2table([M1' M1e' M2' M2e'],'VariableNames',{'TrainError','TrainE','TestError','TestE'});
+TCAtable.TCA = array2table([(1:4)' M1' M1e' M2' M2e'],'VariableNames',{'Rank', 'TrainError','TrainE','TestError','TestE'});
 
 M1 = nanmean(st(:,:,1)*100);
 M1e = nanstd(st(:,:,1)*100)./sqrt(sum(~isnan(testError)))
-TCAtable.TCA_hard_regress =  array2table([M1' M1e'],'VariableNames',{'R2','R2e'});
+TCAtable.TCAregress =  array2table([(1:4)' M1' M1e'],'VariableNames',{'Rank','R2','R2e'});
 
 %%
 
@@ -217,10 +218,10 @@ fNames = {'Neurons','Time','Trials'};
 
 vNames = {'ID1','D1','ID2','D2','ID3','D3','ID4','D4'};
 for nF = 1:3
-   currD = [dataV(nF).Factors];
-   TCAtable.(fNames{nF}) =  array2table(horzcat(currD.V), 'VariableNames',vNames);
+    currD = [dataV(nF).Factors];
+    TCAtable.(fNames{nF}) =  array2table(horzcat(currD.V), 'VariableNames',vNames);
 end
-    
+
 
 
 %%
@@ -237,6 +238,7 @@ tAxis = forTCA.dataStruct.RawData.timeAxis;
 
 
 %%
+figure;
 X1 = modelToUse.u;
 Vl = choiceV' == 1 & RTs < 350;
 Vl = find(Vl);
@@ -266,7 +268,7 @@ for i=1:length(Vl)
     hold on;
     currT = currT + 4;
     plot3(Y1(Vl(i),:)', Y2(Vl(i),:)', Y3(Vl(i),:)', 'b-');
-    
+
     currD1 = [Y1(Vl(i),:); Y2(Vl(i),:); Y3(Vl(i),:)]';
     currD1(:,end+1) = 1;
     currD1(:,end+1) = Vl(i);
@@ -290,10 +292,10 @@ for i=1:length(Vr)
     currD1(:,end+1) = 2;
     currD1(:,end+1) = Vr(i);
     bigD = [bigD; currD1];
-    
+
 end
 
-TCAtable.Trajectories = bigD;
+TCAtable.Trajectories = array2table(bigD,'VariableNames',{'X','Y','Z','Type','ID'});
 
 tAll = find(tAll >= 0,1,'first');
 plot3(Y1(Vl,tAll)', Y2(Vl,tAll)', Y3(Vl,tAll)', 'bo','markerfacecolor','b','markeredgecolor','none','markersize',12);
@@ -310,4 +312,35 @@ ax = gca;
 set(ax,'CameraPosition', [0.0592 0.0475 0.0455]);
 set(ax,'CameraTarget', [0.0055 0.0040 0.0100]);
 
+%%
 
+
+
+if whichCV == 'hard'
+    cprintf('magenta','Using Hard Cross Validation');
+
+        cprintf('yellow','Using soft Cross Validation');
+    fileName = '/net/home/chand/code/Dynamics2023/SourceData/FigS12.xls'
+    cprintf('yellow','\nFigure S12');
+
+
+    writetable(TCAtable.TCA, fileName,'FileType','spreadsheet','Sheet','Fig.S12d-bottom');
+    writetable(TCAtable.TCAregress, fileName,'FileType','spreadsheet','Sheet','Fig.S12e-bottom');
+else
+    cprintf('yellow','Using soft Cross Validation');
+    fileName = '/net/home/chand/code/Dynamics2023/SourceData/FigS12.xls'
+    cprintf('yellow','\nFigure S12');
+    
+    
+    writetable(TCAtable.Neurons, fileName,'FileType','spreadsheet','Sheet','Fig.S12b-left');
+    writetable(TCAtable.Time, fileName,'FileType','spreadsheet','Sheet','Fig.S12b-middle');
+    writetable(TCAtable.Trials, fileName,'FileType','spreadsheet','Sheet','Fig.S12b-right');
+   
+    writetable(TCAtable.Trajectories, fileName,'FileType','spreadsheet','Sheet','Fig.S12c');
+   
+
+    writetable(TCAtable.TCA, fileName,'FileType','spreadsheet','Sheet','Fig.S12d-top');
+    writetable(TCAtable.TCAregress, fileName,'FileType','spreadsheet','Sheet','Fig.S12e-top');
+
+
+end

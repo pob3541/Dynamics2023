@@ -65,7 +65,8 @@ plot(t, R2);
 plot(t, upper, 'k--');
 plot(t,lower, 'k--');
 
-regressTable = array2table([t' R2' upper' lower',{'time','R2','Upper','Lower'});
+
+regressTable = array2table([t' R2' upper lower],'VariableNames',{'time','R2','Upper','Lower'});
 
 ylimit = [yLower, yUpper];
 

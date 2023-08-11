@@ -59,8 +59,7 @@ xlabel('Time (ms)')
 ylabel('Accuracy')
 title('Prediction accuracy')
 
-
-choiceTable = array2table([time' accuracy_l' accuracy_r'],'VariableNames',{'Time','Accuracy Fast','Accuracy Slow'});
+choiceTable = array2table([t' accuracy_l accuracy_g],'VariableNames',{'Time','Accuracy Fast','Accuracy Slow'});
 
 
 

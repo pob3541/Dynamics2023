@@ -19,7 +19,7 @@ tStart = 0.6;
 % Latency
 tLatency = 0.1;
 CISmult = 15;
-kernel = 0.03;
+kernel = 0.02;
 
 whichType = 'RT';
 

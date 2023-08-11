@@ -3,11 +3,9 @@
 N30 = PMddynamics(M);
 N30.calcWinCoh(M);
 
-%% Plot Figure 4A-H
 dataTable = N30.plotComponents
 sgt = sgtitle('Figure 4A, H');
 
-%% Now plot trajectories
 dataTable.trajectories = N30.plotTrajectories('showPooled',1,'showGrid',0,'hideAxes',1);
 sgtitle('Figure 4B');
 
@@ -18,13 +16,13 @@ sgtitle('Fig. 4C-G');
 
 %% Calculate within coh trajectories (Figure 7c)
 dataTable.trajectories1 = N30.plotTrajectories('showPooled',0,'whichCoh',1, 'showGrid',0, 'hideAxes',1);
-sgtitle('Fig. 7C: 90%');
+ sgtitle('Fig. 7C: 90%');
 
 dataTable.trajectories2 = N30.plotTrajectories('showPooled',0,'whichCoh',4, 'showGrid',0, 'hideAxes',1);
-sgtitle('Fig. 7C: 31%');
+ sgtitle('Fig. 7C: 31%');
 
 dataTable.trajectories3 = N30.plotTrajectories('showPooled',0,'whichCoh',7,'showGrid',0, 'hideAxes',1);
-sgtitle('Fig. 7C: 4%');
+ sgtitle('Fig. 7C: 4%');
 
 
 %% Figure 7d-g
@@ -42,7 +40,7 @@ dataTable.trialCounts = N30.plotTrialCounts
 %% Replicate Supplemental Figure
 N30.plotTrajectories('showPooled',1,'showGrid',1,'hideAxes',0);
 axis equal
-sgtitle('Figure S7');
+ sgtitle('Figure S7');
 
 %% Replicate Figure that uses single neurons (Figure S9)
 NSU = PMddynamics(M,'useSingleNeurons',1);

@@ -1,85 +1,82 @@
 classdef ThreeVector < handle
-% This class draws three vectors in the lower, left corner of an axis which
-% indicate the orientation of the x, y, and z axes using a three pronged
-% symbol. The ends of the vectors are labeled according to the axis xlabel,
-% ylabel, zlabel. It installs callback methods to update these axes vectors 
-% when the plot is zoomed, rotated, panned, or resized. It also updates the
-% vector labels when xlabel, ylabel, zlabel are set, or xlim, ylim, or zlim
-% are changed. ThreeVector also deals gracefully with figure save and load
-% by appropriatelyf finding and updating internal graphics objects handles
-% on load.
-%
-% Usage:
-%
-%   tv = ThreeVector() 
-%       install for current axis
-% 
-%   tv = ThreeVector(axh)
-%       install for specific axis. if already installed,
-%       returns the handle to the previously installed instance after
-%       calling update()
-%
-%   tv.update() 
-%       force an update on the axis associated with tv
-%
-%   ThreeVector.updateFigure(figh [== gcf])
-%       update all axes with ThreeVector installed within figure figh.
-%
-%   ThreeVector.updateAxes(axh [== gca])
-%       update axis axh if ThreeVector installed
-%
-%   ThreeVector.demo()
-%       plot a demo surface and install ThreeVector
-%
-%   Properties: setting these will automatically result in an update()
-%
-%        fontSize  : font size used for axis labels, defaults to get(axh, 'FontSize')
-%
-%        fontColor : 3 x 1 color vector or plot-color-string (e.g. 'k')
-%          used to label axes, defaults to 0.1 gray
-%
-%        lineWidth : line width used for axis vectors
-%
-%        lineColor : 3 x 1 color vector or plot-color-string (e.g. 'k') for
-%          axis vector lines, defaults to 0.4 gray
-%
-%        vectorLength : scalar length of all axis vectors in cm
-%
-%        textVectorNormalizedPosition : position of axis labels along vectors
-%          in units normalized to the vector length. E.g. 1 is end of vector, 
-%          0.5 is halfway along vector, 1.5 is 1.5 times the length of the vector.
-%
-%        axisInset: 2 x 1 vector of offsets in cm from bottom left corner.
-%          in the form [offsetFromLeft, offsetFromBottom]
-% 
-% Author: Dan O'Shea, {my first name} AT djoshea.com (c) 2014
-%
-% NOTE: This class graciously utilizes code from the following authors:
-%
-% MinLong Kwong: For computing the data to figure space coordinate 
-%   transformation matrix.
-%   http://www.mathworks.com/matlabcentral/fileexchange/43896
-%
-% Malcolm Lidierth: For the isMultipleCall utility to prevent callback
-%   re-entrancy
-%   http://undocumentedmatlab.com/blog/controlling-callback-re-entrancy/
-%
-
+    % This class draws three vectors in the lower, left corner of an axis which
+    % indicate the orientation of the x, y, and z axes using a three pronged
+    % symbol. The ends of the vectors are labeled according to the axis xlabel,
+    % ylabel, zlabel. It installs callback methods to update these axes vectors
+    % when the plot is zoomed, rotated, panned, or resized. It also updates the
+    % vector labels when xlabel, ylabel, zlabel are set, or xlim, ylim, or zlim
+    % are changed. ThreeVector also deals gracefully with figure save and load
+    % by appropriatelyf finding and updating internal graphics objects handles
+    % on load.
+    %
+    % Usage:
+    %
+    %   tv = ThreeVector()
+    %       install for current axis
+    %
+    %   tv = ThreeVector(axh)
+    %       install for specific axis. if already installed,
+    %       returns the handle to the previously installed instance after
+    %       calling update()
+    %
+    %   tv.update()
+    %       force an update on the axis associated with tv
+    %
+    %   ThreeVector.updateFigure(figh [== gcf])
+    %       update all axes with ThreeVector installed within figure figh.
+    %
+    %   ThreeVector.updateAxes(axh [== gca])
+    %       update axis axh if ThreeVector installed
+    %
+    %   ThreeVector.demo()
+    %       plot a demo surface and install ThreeVector
+    %
+    %   Properties: setting these will automatically result in an update()
+    %
+    %        fontSize  : font size used for axis labels, defaults to get(axh, 'FontSize')
+    %
+    %        fontColor : 3 x 1 color vector or plot-color-string (e.g. 'k')
+    %          used to label axes, defaults to 0.1 gray
+    %
+    %        lineWidth : line width used for axis vectors
+    %
+    %        lineColor : 3 x 1 color vector or plot-color-string (e.g. 'k') for
+    %          axis vector lines, defaults to 0.4 gray
+    %
+    %        vectorLength : scalar length of all axis vectors in cm
+    %
+    %        textVectorNormalizedPosition : position of axis labels along vectors
+    %          in units normalized to the vector length. E.g. 1 is end of vector,
+    %          0.5 is halfway along vector, 1.5 is 1.5 times the length of the vector.
+    %
+    %        axisInset: 2 x 1 vector of offsets in cm from bottom left corner.
+    %          in the form [offsetFromLeft, offsetFromBottom]
+    %
+    % Author: Dan O'Shea, {my first name} AT djoshea.com (c) 2014
+    %
+    % NOTE: This class graciously utilizes code from the following authors:
+    %
+    % MinLong Kwong: For computing the data to figure space coordinate
+    %   transformation matrix.
+    %   http://www.mathworks.com/matlabcentral/fileexchange/43896
+    %
+    % Malcolm Lidierth: For the isMultipleCall utility to prevent callback
+    %   re-entrancy
+    %   http://undocumentedmatlab.com/blog/controlling-callback-re-entrancy/
+    %
+    
     properties
         hideAxes logical = true;
         niceGrid logical = false;
         axisInset = [0.2 0.2]; % in cm [left bottom]
         vectorLength = 1; % in cm
-
-        enableUpdates = true;
         
         flipAxis = [false false false];
         
         % position of axis labels along vectors in units normalized to the
-        % vector length. 1 is end of vector, 0.5 is halfway along vector, 
+        % vector length. 1 is end of vector, 0.5 is halfway along vector,
         % 1.5 is 1.5 times the length of the vector.
-        textVectorNormalizedPosition = 1.3; 
-        textMargin = 0.01;
+        textVectorNormalizedPosition = 1.3;
         
         fontSize % font size used for axis labels
         fontColor % font color used for axis labels
@@ -98,8 +95,6 @@ classdef ThreeVector < handle
         
         positionFrozen = false;
         positionFrozenCorner
-        
-        interpreter (1, 1) string = "none";
     end
     
     properties(SetAccess=protected)
@@ -143,17 +138,14 @@ classdef ThreeVector < handle
             
             tv = ThreeVector.createOrRecoverInstance(tv, axh);
             tv.update();
-        end        
+        end
         
         function update(tv)
             % reposition and redraw all ThreeVector annotations for axis
             
-            if ~tv.enableUpdates
-                return
-            end
             axh = tv.axh; %#ok<*PROP>
             axhOverlay = tv.axhOverlay;
-            if isempty(axh) || ~ishandle(axh) || (~isempty(axhOverlay) && ~ishandle(axhOverlay))
+            if ~ishandle(axh) || (~isempty(axhOverlay) && ~ishandle(axhOverlay))
                 delete(tv);
                 return;
             end
@@ -164,26 +156,25 @@ classdef ThreeVector < handle
             end
             
             % update the position of the overlay axis
-            %pos = get(axh, 'OuterPosition');
-            [pos, ~, posPaper] = tv.getTrueAxesPosition(true); % get outer position
+            pos = get(axh, 'OuterPosition');
             set(axhOverlay, 'Units', 'normalized', 'Position', pos);
             axis(axhOverlay, [pos(1) pos(1)+pos(3) pos(2) pos(2)+pos(4)]);
             
             % get data to paper conversion
-%             set(axhOverlay,  'Units', 'centimeters');
-%             posPaper = get(axhOverlay, 'Position');
-%             set(axhOverlay, 'Units', 'normalized');
+            set(axhOverlay,  'Units', 'centimeters');
+            posPaper = get(axhOverlay, 'Position');
+            set(axhOverlay, 'Units', 'normalized');
             
             axis(axhOverlay, 'off');
             set(axhOverlay, 'Color', 'none', 'HitTest', 'off');
-
+            
             xUnitsToNorm = pos(3) / posPaper(3);
-            yUnitsToNorm = pos(4) / posPaper(4);
+            yUnitsToNorm = pos(3) / posPaper(4);
             zUnitsToNorm = (xUnitsToNorm + yUnitsToNorm) / 2;
             
             % get data to points conversion
             tv.updateTransforms();
-
+            
             %daspect(tv.axhOverlay, [1 1 1]);
             
             % size of three vector box in axis units
@@ -204,7 +195,7 @@ classdef ThreeVector < handle
             
             % convert back to figure coordinates
             allPointsFig = tv.convertDataToFig(allPointsData);
-           
+            
             % then convert to paper units
             allPointsFigNorm = allPointsFig;
             allPointsFigNorm(1, :) = allPointsFigNorm(1, :) / xUnitsToNorm;
@@ -226,13 +217,13 @@ classdef ThreeVector < handle
             endZText = corner + (endZ-corner) * tv.textVectorNormalizedPosition;
             
             % assemble all the points again
-            allPointsFig = [corner endX endY endZ endXText endYText endZText];          
-
+            allPointsFig = [corner endX endY endZ endXText endYText endZText];
+            
             % convert back to figure units
             allPointsFig(1, :) = allPointsFig(1, :) * xUnitsToNorm;
             allPointsFig(2, :) = allPointsFig(2, :) * yUnitsToNorm;
             allPointsFig(3, :) = allPointsFig(3, :) * zUnitsToNorm;
-
+            
             % translate the axis indicators to avoid leaving the outer
             % position box + the axis inset
             set(tv.ht, 'Units', 'data');
@@ -247,7 +238,7 @@ classdef ThreeVector < handle
             allPointsFig(2, :) = allPointsFig(2, :) -yMin + pos(2)+offsetY+maxTextHeight/2;
             if ~tv.positionFrozen || isempty(tv.positionFrozenCorner)
                 tv.positionFrozenCorner = allPointsFig(1:2, 1);
-            else 
+            else
                 allPointsFig(1, :) = allPointsFig(1, :) - allPointsFig(1, 1) + tv.positionFrozenCorner(1);
                 allPointsFig(2, :) = allPointsFig(2, :) - allPointsFig(2, 1) + tv.positionFrozenCorner(2);
             end
@@ -255,11 +246,11 @@ classdef ThreeVector < handle
             % no need to convert back to data coordinates since we're
             % plotting in the overlay axis whose data coords match the
             % figure coordinates
-            allPoints = allPointsFig; 
-            % z coordinate doesn't matter, we want the projection into 
+            allPoints = allPointsFig;
+            % z coordinate doesn't matter, we want the projection into
             % the overlay axis
-            allPoints(3, :) = 0; 
-
+            allPoints(3, :) = 0;
+            
             corner = allPoints(:, 1);
             endX = allPoints(:, 2);
             endY = allPoints(:, 3);
@@ -267,7 +258,7 @@ classdef ThreeVector < handle
             endXText = allPoints(:, 5);
             endYText = allPoints(:, 6);
             endZText = allPoints(:, 7);
-
+            
             % update vectors
             set(tv.hv, 'XLimInclude', 'off', 'YLimInclude', 'off', ...
                 'ZLimInclude', 'off', 'Clipping', 'off', 'Color', tv.lineColor);
@@ -290,7 +281,7 @@ classdef ThreeVector < handle
             set(tv.ht(3), 'String', get(get(axh, 'ZLabel'), 'String'));
             
             set(tv.ht, 'Clipping', 'off', 'FontSize', tv.fontSize, 'Color', tv.fontColor, ...
-                'BackgroundColor', 'none', 'Interpreter', tv.interpreter, 'Margin', tv.textMargin);
+                'BackgroundColor', 'none', 'Interpreter', 'none');
             
             for iA = 1:3
                 tv.ht(iA).HorizontalAlignment = tv.labelHorizontalAlignment(iA);
@@ -334,7 +325,7 @@ classdef ThreeVector < handle
                 set(tv.hv(3), 'Visible', 'off');
                 set(tv.ht(3), 'Visible', 'off')
             end
-  
+            
             figh = ThreeVector.getParentFigure(axh);
             
             if tv.niceGrid
@@ -363,7 +354,7 @@ classdef ThreeVector < handle
                 axh.MinorGridColor =  [0.96 0.96 0.96];
                 axh.MinorGridAlpha = 1;
                 axh.MinorGridLineStyle = '-';
-
+                
                 grid(axh, 'on');
                 figh.InvertHardcopy = 'off';
             else
@@ -380,7 +371,7 @@ classdef ThreeVector < handle
                     axh.ZLabel.Visible = 'on';
                 end
             end
-
+            
             figh.CurrentAxes = axh;
         end
         
@@ -399,7 +390,7 @@ classdef ThreeVector < handle
             tv.update();
         end
         
-        function set.fontColor(tv, v) 
+        function set.fontColor(tv, v)
             tv.fontColor = ThreeVector.convertColor(v);
             tv.update();
         end
@@ -408,23 +399,23 @@ classdef ThreeVector < handle
             tv.lineWidth = v;
             tv.update();
         end
-
+        
         function set.lineColor(tv, v)
             tv.lineColor = ThreeVector.convertColor(v);
             tv.update();
         end
         
-        function set.vectorLength(tv, v) 
+        function set.vectorLength(tv, v)
             tv.vectorLength = v;
             tv.update();
         end
         
-        function set.textVectorNormalizedPosition(tv, v) 
+        function set.textVectorNormalizedPosition(tv, v)
             tv.textVectorNormalizedPosition = v;
             tv.update();
         end
         
-        function set.axisInset(tv, v) 
+        function set.axisInset(tv, v)
             tv.axisInset = v;
             tv.update();
         end
@@ -465,9 +456,9 @@ classdef ThreeVector < handle
             shading interp
             colormap hot
             view([322 39]);
-
-            hold on; 
-            axis off; 
+            
+            hold on;
+            axis off;
             axis tight;
             set(gca, 'LooseInset', [ 0 0 0 0 ]);
             xlabel('X');
@@ -538,7 +529,7 @@ classdef ThreeVector < handle
             if ThreeVector.isMultipleCall(), return, end
             ThreeVector.updateFigure(figh);
         end
-             
+        
         function preUpdateCallback(varargin)
             % callback called before update
             if ThreeVector.isMultipleCall(), return, end
@@ -564,7 +555,10 @@ classdef ThreeVector < handle
         function fig = getParentFigure(axh)
             % if the object is a figure or figure descendent, return the
             % figure. Otherwise return [].
-            fig = ancestor(axh, 'figure');
+            fig = axh;
+            while ~isempty(fig) && ~strcmp('figure', get(fig,'type'))
+                fig = get(fig,'parent');
+            end
         end
         
         function flag = isMultipleCall()
@@ -572,21 +566,21 @@ classdef ThreeVector < handle
             % fashion, which can help to avoid reentrancy.
             % Copied from Malcolm Lidierth's utility
             % http://undocumentedmatlab.com/blog/controlling-callback-re-entrancy/
-            flag = false; 
+            flag = false;
             % Get the stack
             s = dbstack();
             if numel(s) <= 2
                 % Stack too short for a multiple call
                 return
             end
-
+            
             % How many calls to the calling function are in the stack?
             names = {s(:).name};
             TF = strcmp(s(2).name,names);
             count = sum(TF);
             if count>1
                 % More than 1
-                flag = true; 
+                flag = true;
             end
         end
         
@@ -650,7 +644,7 @@ classdef ThreeVector < handle
                 ud.autoAxis = tv;
             end
             set(axh, 'UserData', ud);
-         end
+        end
         
         function initializeNewInstance(tv, axh)
             % set property values for new instance
@@ -676,7 +670,7 @@ classdef ThreeVector < handle
                 'XLim', [pos(1) pos(1)+pos(3)], 'YLim', [pos(2) pos(2)+pos(4)], ...
                 'Tag', tv.axhOverlayTag, 'HitTest', 'off', ...
                 'Parent', figh);
-
+            
             uistack(tv.axhOverlay, 'top');
             hold(tv.axhOverlay, 'on');
             
@@ -697,15 +691,15 @@ classdef ThreeVector < handle
             tv.hv(1) = plot([0 1], [0 1], '-', lineSmoothingArgs{:}, 'Parent', tv.axhOverlay);
             tv.hv(2) = plot([0 1], [0 1], '-', lineSmoothingArgs{:}, 'Parent', tv.axhOverlay);
             tv.hv(3) = plot([0 1], [0 1], '-', lineSmoothingArgs{:}, 'Parent', tv.axhOverlay);
-
+            
             if ~isempty(tv.ht)
                 delete(tv.ht);
             end
             
             tv.ht = gobjects(3, 1);
-            tv.ht(1) = text(0, 1, 'X', 'HorizontalAlign', 'Left', 'Parent', tv.axhOverlay, 'Units', 'Normalized', 'Margin', tv.textMargin);
-            tv.ht(2) = text(0, 2, 'Y', 'HorizontalAlign', 'Left', 'Parent', tv.axhOverlay, 'Units', 'Normalized', 'Margin', tv.textMargin);
-            tv.ht(3) = text(0, 3, 'Z', 'HorizontalAlign', 'Left', 'Parent', tv.axhOverlay, 'Units', 'Normalized', 'Margin', tv.textMargin);
+            tv.ht(1) = text(0, 1, 'X', 'HorizontalAlign', 'Left', 'Parent', tv.axhOverlay, 'Units', 'Normalized');
+            tv.ht(2) = text(0, 2, 'Y', 'HorizontalAlign', 'Left', 'Parent', tv.axhOverlay, 'Units', 'Normalized');
+            tv.ht(3) = text(0, 3, 'Z', 'HorizontalAlign', 'Left', 'Parent', tv.axhOverlay, 'Units', 'Normalized');
             
             axis(tv.axhOverlay, 'off');
             
@@ -767,11 +761,11 @@ classdef ThreeVector < handle
             addlistener(get(tv.axh, 'YLabel'), 'String', 'PostSet', @tv.localCallback);
             addlistener(get(tv.axh, 'ZLabel'), 'String', 'PostSet', @tv.localCallback);
             
-            addlistener(tv.axh, 'CameraPosition', 'PostSet', @tv.localViewChangeCallback);
-            addlistener(tv.axh, 'CameraTarget', 'PostSet', @tv.localViewChangeCallback);
-            addlistener(tv.axh, 'CameraUpVector', 'PostSet', @tv.localViewChangeCallback);
-            addlistener(tv.axh, 'Position', 'PostSet', @tv.localCallback);
-             addlistener(tv.axh, 'View', 'PostSet', @tv.localCallback);
+            %             addlistener(tv.axh, 'CameraPosition', 'PostSet', @tv.localViewChangeCallback);
+            %             addlistener(tv.axh, 'CameraTarget', 'PostSet', @tv.localViewChangeCallback);
+            %             addlistener(tv.axh, 'CameraUpVector', 'PostSet', @tv.localViewChangeCallback);
+            %addlistener(tv.axh, 'Position', 'PostSet', @tv.localCallback);
+            addlistener(tv.axh, 'View', 'PostSet', @tv.localCallback);
         end
         
         function localCallback(tv, varargin)
@@ -852,12 +846,12 @@ classdef ThreeVector < handle
     
     methods(Access=protected) % methods for computing positions of annotations
         function ptsData = convertFigToData(tv, ptsFig)
-             % ptsFig, ptsData are 3 x N matrices
-             % row 1 is X, row 2 is Y, row 3 is Z
-             ptsFig = [ptsFig; ones(1, size(ptsFig, 2))];
-             ptsData = tv.figToData * ptsFig;
-             ptsData = bsxfun(@rdivide, ptsData, ptsData(4, :));
-             ptsData = ptsData(1:3, :);
+            % ptsFig, ptsData are 3 x N matrices
+            % row 1 is X, row 2 is Y, row 3 is Z
+            ptsFig = [ptsFig; ones(1, size(ptsFig, 2))];
+            ptsData = tv.figToData * ptsFig;
+            ptsData = bsxfun(@rdivide, ptsData, ptsData(4, :));
+            ptsData = ptsData(1:3, :);
         end
         
         function ptsFig = convertDataToFig(tv, ptsData)
@@ -877,157 +871,6 @@ classdef ThreeVector < handle
             hasChanged = ~isequal(old, tv.dataToFig);
         end
         
-        function [posNorm, posPixels, posCm] = getTrueAxesPosition(tv, outer, args)
-            % based on plotboxpos by Kelly Kearney https://github.com/kakearney/plotboxpos-pkg
-            %PLOTBOXPOS Returns the position of the plotted axis region
-            %
-            % pos = plotboxpos(h)
-            %
-            % This function returns the position of the plotted region of an axis,
-            % which may differ from the actual axis position, depending on the axis
-            % limits, data aspect ratio, and plot box aspect ratio.  The position is
-            % returned in the same units as the those used to define the axis itself.
-            % This function can only be used for a 2D plot.  
-            %
-            % Input variables:
-            %
-            %   h:      axis handle of a 2D axis (if ommitted, current axis is used).
-            %
-            % Output variables:
-            %
-            %   pos:    four-element position vector, in same units as h
-            % Copyright 2010 Kelly Kearney
-            % Check input
-
-            arguments
-                tv
-                outer = false
-                args.normRelativeToFigure = true;
-            end
-
-            h = tv.axh;
-            
-            % Get position of axis in pixels
-            currunits = h.Units;
-            h.Units = 'Pixels';
-            if outer
-                axisPos = h.OuterPosition;
-            else
-                axisPos = h.Position;
-            end
-            
-            % Calculate box position based axis limits and aspect ratios
-            darismanual  = strcmpi(get(h, 'DataAspectRatioMode'),    'manual');
-            pbarismanual = strcmpi(get(h, 'PlotBoxAspectRatioMode'), 'manual');
-            if ~darismanual && ~pbarismanual
-                % simple case
-                posPixels = axisPos;
-                h.Units = 'normalized';
-                posNorm = h.Position;
-                h.Units = 'centimeters';
-                posCm = h.Position;
-                h.Units = currunits;
-                return;
-                
-            else
-                xlim = get(h, 'XLim');
-                ylim = get(h, 'YLim');
-
-                % Deal with axis limits auto-set via Inf/-Inf use
-
-                if any(isinf([xlim ylim]))
-                    hc = get(h, 'Children');
-                    hc(~arrayfun( @(h) isprop(h, 'XData' ) & isprop(h, 'YData' ), hc)) = [];
-                    xdata = get(hc, 'XData');
-                    if iscell(xdata)
-                        xdata = cellfun(@(x) x(:), xdata, 'uni', 0);
-                        xdata = cat(1, xdata{:});
-                    end
-                    ydata = get(hc, 'YData');
-                    if iscell(ydata)
-                        ydata = cellfun(@(x) x(:), ydata, 'uni', 0);
-                        ydata = cat(1, ydata{:});
-                    end
-                    isplotted = ~isinf(xdata) & ~isnan(xdata) & ...
-                                ~isinf(ydata) & ~isnan(ydata);
-                    xdata = xdata(isplotted);
-                    ydata = ydata(isplotted);
-                    if isempty(xdata)
-                        xdata = [0 1];
-                    end
-                    if isempty(ydata)
-                        ydata = [0 1];
-                    end
-                    if isinf(xlim(1))
-                        xlim(1) = min(xdata);
-                    end
-                    if isinf(xlim(2))
-                        xlim(2) = max(xdata);
-                    end
-                    if isinf(ylim(1))
-                        ylim(1) = min(ydata);
-                    end
-                    if isinf(ylim(2))
-                        ylim(2) = max(ydata);
-                    end
-                end
-                dx = diff(xlim);
-                dy = diff(ylim);
-                dar = get(h, 'DataAspectRatio');
-                pbar = get(h, 'PlotBoxAspectRatio');
-                limDarRatio = (dx/dar(1))/(dy/dar(2));
-                pbarRatio = pbar(1)/pbar(2);
-                axisRatio = axisPos(3)/axisPos(4);
-                if darismanual
-                    if limDarRatio > axisRatio
-                        pos(1) = axisPos(1);
-                        pos(3) = axisPos(3);
-                        pos(4) = axisPos(3)/limDarRatio;
-                        pos(2) = (axisPos(4) - pos(4))/2 + axisPos(2);
-                    else
-                        pos(2) = axisPos(2);
-                        pos(4) = axisPos(4);
-                        pos(3) = axisPos(4) * limDarRatio;
-                        pos(1) = (axisPos(3) - pos(3))/2 + axisPos(1);
-                    end
-                elseif pbarismanual
-                    if pbarRatio > axisRatio
-                        pos(1) = axisPos(1);
-                        pos(3) = axisPos(3);
-                        pos(4) = axisPos(3)/pbarRatio;
-                        pos(2) = (axisPos(4) - pos(4))/2 + axisPos(2);
-                    else
-                        pos(2) = axisPos(2);
-                        pos(4) = axisPos(4);
-                        pos(3) = axisPos(4) * pbarRatio;
-                        pos(1) = (axisPos(3) - pos(3))/2 + axisPos(1);
-                    end
-                end
-            end
-            % Convert plot box position to the units used by the axis
-            hparent = get(h, 'parent');
-            hfig = ancestor(hparent, 'figure'); % in case in panel or similar
-            currax = get(hfig, 'currentaxes');
-
-            temp = axes('Units', 'Pixels', 'Position', pos, 'Visible', 'off', 'parent', hfig);
-            posPixels = temp.Position;
-            temp.Units = 'Normalized';
-            posNorm = temp.Position;
-            temp.Units = 'centimeters';
-
-            if isa(hparent, 'matlab.graphics.layout.TiledChartLayout') && args.normRelativeToFigure
-                % posNorm is in units normalized to the tiled chart layout's position, not the figure, which is what we
-                % want
-                tiled_pos = hparent.Position;
-                posNorm = [tiled_pos(1) + posNorm(1), tiled_pos(2) + posNorm(2), tiled_pos(3) * posNorm(3), tiled_pos(4) * posNorm(4)];
-            end
-
-            posCm = temp.Position;
-            delete(temp);
-            h.Units = currunits;
-            set(hfig, 'currentaxes', currax);
-        end
-
         function matrixTransform = getDataToFigureCoordinateTransform(tv)
             % get transform matrix which transform axes coordinate to figure coordinate
             %
@@ -1037,7 +880,7 @@ classdef ThreeVector < handle
             
             hAxes = tv.axh;
             matrixTransform = [];
-
+            
             %%%% obtain data needed
             % camera
             viewAngle = get(hAxes, 'CameraViewAngle');
@@ -1054,26 +897,20 @@ classdef ThreeVector < handle
             if any(plotBoxRatio == 0), return, end
             % is perspective
             isPerspective = strcmp(get(hAxes, 'Projection'), 'perspective');
-            
-%             old = false;
-%             if old
-%                 % axes position
-%                 axesUnitsOriginal = get(hAxes, 'Units');
-%                 set(hAxes, 'Units', 'normalized'); 
-%                 positionNormal = get(hAxes, 'Position');
-%                 set(hAxes, 'Units', 'pixels'); 
-%                 positionPixel = get(hAxes, 'Position');
-%                 set(hAxes, 'Units', axesUnitsOriginal);
-%             else
-                [positionNormal, positionPixel] = tv.getTrueAxesPosition();
-%             end
+            % axes position
+            axesUnitsOriginal = get(hAxes, 'Units');
+            set(hAxes, 'Units', 'normalized');
+            positionNormal = get(hAxes, 'Position');
+            set(hAxes, 'Units', 'pixels');
+            positionPixel = get(hAxes, 'Position');
+            set(hAxes, 'Units', axesUnitsOriginal);
             % stretch
             stretchMode = strcmp(get(hAxes, {'CameraViewAngleMode', ...
                 'DataAspectRatioMode', 'PlotBoxAspectRatioMode'}), 'auto');
             stretchToFill = all(stretchMode);
             stretchToFit = ~stretchToFill && stretchMode(1);
             stretchNone = ~stretchToFill && ~stretchToFit;
-
+            
             %%%% model view matrix
             % move data space center to viewTarget point
             matrixTranslate = eye(4);
@@ -1095,15 +932,15 @@ classdef ThreeVector < handle
             yDirection = yVector / sqrt(dot(yVector, yVector));
             matrixRotate = blkdiag( ...
                 [cross(yDirection, zDirection), yDirection, zDirection]', 1);
-
+            
             %%%% projection matrix
-            % note: matlab will project the rotated 'PlotBox' to an area of 
+            % note: matlab will project the rotated 'PlotBox' to an area of
             %       [-0.5, 0.5; -0.5, 0.5]
             matrixProjection = eye(4);
             matrixProjection(4, 3) = -isPerspective / viewDistance;
             projectionArea = 2 * tan(viewAngle * pi / 360) * viewDistance;
             matrixProjection = diag([ones(1, 3), projectionArea]) * matrixProjection;
-
+            
             %%%% stretch matrix
             % stretch the projective 'PlotBox' into the position retangle of the axes
             % note: stretch will first detect data region
@@ -1143,21 +980,17 @@ classdef ThreeVector < handle
                 stretchFactor = [1, 1];
             end
             matrixStretch = diag([stretchFactor ./ dataRegion, 1, 1]);
-
+            
             %%%% view port matrix
             matrixViewPort = diag([positionNormal(3:4), 1, 1]);
             matrixViewPort(1:2, 4) = positionNormal(1:2) + positionNormal(3:4) / 2;
-
+            
             %%%% return transformation matrix
             matrixTransform = matrixViewPort * matrixStretch * matrixProjection * ...
                 matrixRotate * matrixRescale * matrixTranslate;
-            
-%              matrixTransform = matrixViewPort * matrixProjection * ...
-%                 matrixRotate * matrixRescale * matrixTranslate;
         end
         
     end
 end
-
 
 

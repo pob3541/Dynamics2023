@@ -213,3 +213,8 @@ hold on;
 plot(Xall','k-');
 
 %%
+cprintf('yellow','\nFigure S13');
+baseDir = '/net/home/chand/code/Dynamics2023/'
+fileName = fullfile(baseDir, 'SourceData/FigS13.xls');
+writetable(ldsTable.pre,fileName,'FileType','spreadsheet','Sheet','fig.S13b');
+writetable(ldsTable.post,fileName,'FileType','spreadsheet','Sheet','fig.S13c');
