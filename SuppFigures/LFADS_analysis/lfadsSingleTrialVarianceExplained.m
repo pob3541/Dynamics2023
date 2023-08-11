@@ -14,7 +14,7 @@ close all; clear; clc;
 
 
 %%
-folder = dir('~/Desktop/multiSession/*.mat');
+folder = dir('~/Desktop/multiSessionLFADS/*.mat');
 
 allR2 = [];
 allR2Shuffle = [];
@@ -199,3 +199,9 @@ axis square;
 axis tight;
 
 % print('-painters','-depsc',['~/Desktop/', 'lfadsRatesR2PSTH','.eps'], '-r300');
+
+
+% generate source excel data
+% lfadsr = [allR2Shuffle(:,1), allR2'];
+% T = array2table(lfadsr, 'VariableNames',{'shuffled','meanR'});
+% writetable(T, '~/Desktop/sourceData/LFADS_analysis/lfadsr.xlsx')

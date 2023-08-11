@@ -99,7 +99,9 @@ options.line_width = 2;
 options.error      = 'c99';
 options.handle     = figure(1);
 options.x_axis = linspace(-before, after, size(r2Matrix,2));
-plot_areaerrorbar(r2Matrix, options)
+
+% plot errorbar and generate source excel data
+[data_mean, upperBd, lowerBd] = plot_areaerrorbar(r2Matrix, options);
 
 % plot coh explained R2 
 yline(mean(r2CohAll), 'k--');
@@ -154,6 +156,11 @@ axis tight;
 
 % print('-painters','-depsc',['~/Desktop/', 'lfadsRatesR2RT','.eps'], '-r300');
 
+
+
+% errBarData = [data_mean', upperBd', lowerBd'];
+% T = array2table(errBarData, 'VariableNames',{'data_mean','upperBd','lowerBd'});
+% writetable(T, '~/Desktop/sourceData/LFADS_analysis/lfadsr2.xlsx')
 
 %% check max and min # of units a
 aa = struct;
