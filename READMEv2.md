@@ -10,12 +10,12 @@ Experimental data ([doi:10.5061/dryad.9cnp5hqn0](doi:10.5061/dryad.9cnp5hqn0)) a
 
 Download Github repository:        `git clone https://github.com/pob3541/Dynamics2023.git`
 
+For the repository to work on your computer please add the Dynamics2023 folder with all subfolders to your MATLAB path (add utils separately).
+
 Toolboxes needed: 
 - Curve Fitting Toolbox
 - Statistics and Machine Learning Toolbox
 - Bioinformatics Toolbox
-
-For the repository to work on your computer please add the Dynamics2023 folder with all subfolders to your MATLAB path (add utils separately).
 
 
 ## Description of the data and file structure
