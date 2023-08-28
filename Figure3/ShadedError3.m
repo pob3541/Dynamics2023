@@ -1,4 +1,4 @@
-function [Pa,Li,t] = ShadedError(varargin)
+function [Pa,Li,t] = ShadedError3(varargin)
 % JACKKNIFE plots jackknife errorbars around a given curve
 %
 %     [Pa,Li,t] = JACKKNIFE(x,y,L,U,'r','g')

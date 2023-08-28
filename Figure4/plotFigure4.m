@@ -1,5 +1,7 @@
 %% Create the object of class PMddynamics
 
+load Figure4_5_7data.mat
+
 N30 = PMddynamics(M);
 N30.calcWinCoh(M);
 

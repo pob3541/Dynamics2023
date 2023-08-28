@@ -20,9 +20,43 @@ Toolboxes needed:
 
 ## Description of the data and file structure
 
+To make replotting the figures as easy as possible a script entitled 'plotAllFigures.m' can be used as a guide to open scripts to plot specific figures (e.g., 'plotFigure2.m').
+
 ### Figure 2: Psychometric curves for the monkey, and RT and box plots
 
-Open figure2.m. Run this script to load behavioral data for both monkeys. Script then displays psychometric curves (percent responded red as a function of signed coherence), reaction time (RT) curves as a function of signed coherence, and boxplots of RTs organized by stimulus coherence for both monkeys.
+Open 'plotFigure2.m'. Run this script to load behavioral data for both monkeys. Script then displays psychometric curves (percent responded red as a function of signed coherence), reaction time (RT) curves as a function of signed coherence, and boxplots of RTs organized by stimulus coherence for both monkeys.
+
+### Figure 3: Heterogeneous and time-varying activity of PMd neurons 
+ 
+Open 'plotFigure3.m'. If you want to display the first unit presented in Figure 3 run the following command:
+ >Fig3Neurons(1)
+
+The number corresponds to the order of presentation in the figure. You can plot all 6 units in this manner (e.g., Fig3Neurons(2) will plot the second and so on). Plotted units are shown organized by coherence and RT, as well as aligned to cue and movement onset. Scaling may be slightly different between the figures in the paper and what is plotted from MATLAB.
+
+## Figure 4: Initial conditions predict subsequent dynamics and RT
+
+Load Figure4Data.mat from Dryad_Data. Open Figure4\plotFigure4.m.
+
+Running the following code will initialize the data to recreate all of the plots in Figure 4:
+> N = PMddynamics(M); 
+> N.calcWinCoh(M);
+
+
+ The following commands will plot all parts of Figure 4: 
+
+4A & H
+> N.plotComponents
+
+
+4B
+> N.plotTrajectories('showPooled',1,'showGrid',0,'hideAxes',1); 
+
+4C-G
+> N.plotKinet
+
+- A sister plot to the average raw speed plot is included here. This sister plot shows how the raw firing rate speed changes over the course of the trial organized by RT bin. In short, it's the Euclidean distance between each adjacent time points, so how firing rate changes in state space over time. In essence, firing rates associated with faster RT bins move through state space faster than firing rates in slower RT bins [This plot is used to computer the average prestimulus speed in Fig 4G.]
+
+plotFigure4.m
 
 
 ## Sharing/Access information

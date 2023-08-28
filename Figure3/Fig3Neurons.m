@@ -114,8 +114,8 @@ newMap=custColorBar(Params.cohColors_gs,tLeftHand,cbPos,cbSize,fSize,cbLyPos,...
 cbPos2=[0.65 .94];
 custColorBar(Params.posterColors,tRightHand,cbPos2,cbSize,fSize,cbLyPos);
 
-% For figure saving
-
+% % plot individual 
+% 
 fig=figure('units','normalized','outerposition',[0 0 1 1]);
 plotConv(FR_Cue,Data.Choice,Data.Coherence,Data.RT,cond,Data.bound1,Data.bound2,'Cue');
 set(gca,'visible','off');
@@ -123,10 +123,6 @@ tc = getTextLabel(0,{'Cue'},{'b'});
 axis tight;
 getAxesP(cxLims,cxTicks,hlaboff,-1, 'Time (ms)', [0 y_max+offset],[0 y_max+offset],10,-110, 'Firing rate (Spikes /s)',[1 1], tc);
 drawRestrictedLines(0,[0 y_max+offset]);
-
-ax = gca;
-ax.SortMethod='childorder'; % Makes the figure print properly
-print(fig,'-painters','-depsc',['~/Dropbox/BU/ChandImages/',cond,'/Cue/', [Data.Monkey,'_',Data.Date, '_C' num2str(Data.Ch), 'U', num2str(Data.Unit),'_',smoothing],'.eps'])
 
 
 end

@@ -41,7 +41,7 @@ switch(txt)
                     convVec{:,ai,j}= convMat(((abs(b)*1000-medianRT(ai)):(abs(b)*1000+base)),choice==j & C==uniqC(i,1));
 
                     SEM{:,ai,j}=sem(convVec{:,ai,j},'omitnan'); %include
-                    ShadedError(t{:,ai,j},y{:,ai,j}',1*SEM{:,ai,j}',colorsCoh(ai,:),colorsCoh(ai,:));
+                    ShadedError3(t{:,ai,j},y{:,ai,j}',1*SEM{:,ai,j}',colorsCoh(ai,:),colorsCoh(ai,:));
                     LineId(ai) = plot(t{:,ai,j},y{:,ai,j},'LineWidth',1.5,'LineStyle',LS);%,'Color',colors{i});
 
               
@@ -63,7 +63,7 @@ switch(txt)
                     convVec{:,ai,j}=convMat(((abs(b)*1000-base):(medianRT(ai)+abs(b)*1000)),choice==j & C==uniqC(i,1));
                     
                     SEM{:,ai,j}=sem(convVec{:,ai,j},'omitnan');
-                    ShadedError(t{:,ai,j},y{:,ai,j}',1*SEM{:,ai,j}',colorsCoh(ai,:),colorsCoh(ai,:));
+                    ShadedError3(t{:,ai,j},y{:,ai,j}',1*SEM{:,ai,j}',colorsCoh(ai,:),colorsCoh(ai,:));
                     LineId(ai) =plot(t{:,ai,j},y{:,ai,j},'LineWidth',1.5,'LineStyle',LS);
                     
                 end
@@ -114,7 +114,7 @@ switch(txt)
                     convVec{:,i,j}= convMat(((abs(b)*1000-cenRT):(abs(b)*1000+base)),choice==j & tmpRT==1);
                     
                     SEM{:,i,j}=sem(convVec{:,i,j},'omitnan'); %include
-                    ShadedError(t{:,i,j},y2{:,i,j}',1*SEM{:,i,j}',colorsRT(i,:),colorsRT(i,:));
+                    ShadedError3(t{:,i,j},y2{:,i,j}',1*SEM{:,i,j}',colorsRT(i,:),colorsRT(i,:));
                     LineId(i) = plot(t{:,i,j},y2{:,i,j},'LineWidth',1.5,'LineStyle',LS);
                     
                 end
@@ -146,7 +146,7 @@ switch(txt)
                     convVec{:,i,j}= convMat(((abs(b)*1000-base):(abs(b)*1000+cenRT)),choice==j & tmpRT==1);
                    
                     SEM{:,i,j}=sem(convVec{:,i,j},'omitnan'); %include
-                    ShadedError(t{:,i,j},y2{:,i,j}',1*SEM{:,i,j}',colorsRT(i,:),colorsRT(i,:));
+                    ShadedError3(t{:,i,j},y2{:,i,j}',1*SEM{:,i,j}',colorsRT(i,:),colorsRT(i,:));
                       LineId(i) = plot(t{:,i,j},y2{:,i,j},'LineWidth',1.5,'LineStyle',LS);
                     
                 end
