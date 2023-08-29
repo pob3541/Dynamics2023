@@ -1,12 +1,12 @@
 % General script to launch figure specific scripts
 
-% addpath inside of Dynamics2023
-% change directory to inside Dynamics2023
-addpath(genpath("."))
-
 % addpath inside of DryadData
 % change directory to inside DryadData
 addpath(genpath("."))
+
+% addpath inside of Dynamics2023
+% change directory to inside Dynamics2023
+genDynamicsPath()
 
 
 %% Figure 2
@@ -18,10 +18,10 @@ edit plotFigure3.m
 
 
 %% Figure 4
-edit plotFigure4.m
+edit plotFigure4_5_7.m
 
 %% Figure 5
-edit plotFigure5.m
+edit plotFigure4_5_7.m
 
 
 %% Figure 6
@@ -29,7 +29,7 @@ edit plotFigure6.m
 
 
 %% Figure 7
-edit plotFigure7.m
+edit plotFigure4_5_7.m
 
 
 %% Figure 8

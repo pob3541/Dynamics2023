@@ -1,22 +1,37 @@
-%% Create the object of class PMddynamics
-
+%% load in data set needed for all the following figures
 load Figure4_5_7data.mat
 
+%% Create object for recreating figure 4 and figure 7c-g
 N30 = PMddynamics(M);
 N30.calcWinCoh(M);
 
-dataTable = N30.plotComponents
+
+%% Figure 4,a-g
+
+dataTable = N30.plotComponents;
 sgt = sgtitle('Figure 4A, H');
 
 dataTable.trajectories = N30.plotTrajectories('showPooled',1,'showGrid',0,'hideAxes',1);
 sgtitle('Figure 4B');
 
-dataTable.kinet = N30.plotKinet
+dataTable.kinet = N30.plotKinet;
 sgtitle('Fig. 4C-G');
 
+%% Replicates figures that use non-overlapping bins (e.g., Figure 5, 7h-k);
+Nnon = PMddynamics(M,'useNonOverlapping',1);
+Nnon.calcWinCoh(M);
 
 
-%% Calculate within coh trajectories (Figure 7c)
+%% Figure 5, a-e
+dataTable.noTraj = Nnon.plotTrajectories('showPooled',1,'showGrid',0, 'hideAxes',1);
+sgtitle('Fig. 5A');
+
+dataTable.noKinet = Nnon.plotKinet;
+sgtitle('Fig. 5B-E');
+
+%% Figure 7, c-k
+
+% Calculate within coh trajectories (Figure 7c & 4b inset)
 dataTable.trajectories1 = N30.plotTrajectories('showPooled',0,'whichCoh',1, 'showGrid',0, 'hideAxes',1);
  sgtitle('Fig. 7C: 90%');
 
@@ -26,38 +41,30 @@ dataTable.trajectories2 = N30.plotTrajectories('showPooled',0,'whichCoh',4, 'sho
 dataTable.trajectories3 = N30.plotTrajectories('showPooled',0,'whichCoh',7,'showGrid',0, 'hideAxes',1);
  sgtitle('Fig. 7C: 4%');
 
+ % Figure 7,d-g
+[~, ~, ~, ~, ~, inputsAndIC] = N30.calcInputsAndIC;
 
-%% Figure 7d-g
-
-[~, ~, ~, ~, ~, inputsAndIC] = N30.calcInputsAndIC
+% Figure 7, h-k
+[~, ~, ~, ~, ~, nonOverlapping] = Nnon.calcInputsAndIC;
 
 
 %% Figure S5A
-dataTable.varExplained = N30.plotVariance
-
+dataTable.varExplained = N30.plotVariance;
 
 %% Replicate Figure S6, which plots Trial counts for various RT bins
-dataTable.trialCounts = N30.plotTrialCounts
+dataTable.trialCounts = N30.plotTrialCounts;
 
-%% Replicate Supplemental Figure
+%% Replicate Supplemental Figure S7
 N30.plotTrajectories('showPooled',1,'showGrid',1,'hideAxes',0);
 axis equal
- sgtitle('Figure S7');
+sgtitle('Figure S7');
 
 %% Replicate Figure that uses single neurons (Figure S9)
 NSU = PMddynamics(M,'useSingleNeurons',1);
 dataTable.SUtrajectories = NSU.plotTrajectories;
-dataTable.SUKinet = NSU.plotKinet
+dataTable.SUKinet = NSU.plotKinet;
 
 
-%% Replicates figure that uses non overlapping bins (Figure 5);
-
-Nnon = PMddynamics(M,'useNonOverlapping',1);
-Nnon.calcWinCoh(M);
-dataTable.noTraj = Nnon.plotTrajectories('showPooled',1,'showGrid',0, 'hideAxes',1);
-dataTable.noKinet = Nnon.plotKinet
-
-[~, ~, ~, ~, ~, nonOverlapping] = Nnon.calcInputsAndIC
 %% uses 15ms gaussian
 
 dataTable.traj15ms = N15.plotTrajectories;

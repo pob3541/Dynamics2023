@@ -35,29 +35,63 @@ The number corresponds to the order of presentation in the figure. You can plot 
 
 ## Figure 4: Initial conditions predict subsequent dynamics and RT
 
-Load Figure4Data.mat from Dryad_Data. Open Figure4\plotFigure4.m.
+Open 'plotFigure4_5_7.m'. Load Figure4_5_7data.mat from DryadData. 
 
 Running the following code will initialize the data to recreate all of the plots in Figure 4:
-> N = PMddynamics(M); 
-> N.calcWinCoh(M);
+> N30 = PMddynamics(M); 
+> N30.calcWinCoh(M);
 
 
- The following commands will plot all parts of Figure 4: 
+The following commands will plot all parts of Figure 4: 
 
 4A & H
-> N.plotComponents
-
+> N30.plotComponents;
 
 4B
-> N.plotTrajectories('showPooled',1,'showGrid',0,'hideAxes',1); 
+> N30.plotTrajectories('showPooled',1,'showGrid',0,'hideAxes',1); 
 
 4C-G
-> N.plotKinet
+> N30.plotKinet
 
-- A sister plot to the average raw speed plot is included here. This sister plot shows how the raw firing rate speed changes over the course of the trial organized by RT bin. In short, it's the Euclidean distance between each adjacent time points, so how firing rate changes in state space over time. In essence, firing rates associated with faster RT bins move through state space faster than firing rates in slower RT bins [This plot is used to computer the average prestimulus speed in Fig 4G.]
+- A sister plot to the average raw speed plot is included (bottom right). This plot shows change in firing rate (Euclidean distance between adjacent time points) averaged across trials and within RT bins.  Esentially, firing rates associated with faster RT bins move through state space faster than firing rates in slower RT bins.
 
-plotFigure4.m
+## Figure 5: Replicates main findings in Figure 4 using non-overlapping RT bins
 
+Open 'plotFigure4_5_7.m'. Load Figure4_5_7data.mat from DryadData. 
+
+Running the following code will initialize the data to recreate all of the plots in Figure 5:
+> Nnon = PMddynamics(M,'useNonOverlapping',1);
+> Nnon.calcWinCoh(M);
+
+The following commands will plot all parts of Figure 5: 
+
+5A
+> Nnon.plotTrajectories('showPooled',1,'showGrid',0, 'hideAxes',1);
+
+5B-E
+> Nnon.plotKinet;
+
+
+
+## Figure 6: Single-trial analysis and decoding
+Open 'plotFigure6.m'. Load regressions.mat from DryadData. 
+
+Running the following code will initialize the data to recreate all of the plots in Figure 6. 
+> D= PMddecoding(regressions) 
+
+The following commands will plot all parts of Figure 6: 
+
+6A
+>D.plotRTLFADS() 
+
+6B
+>D.plotChoiceLFADS()
+
+6C & E
+>D.plotR2() 
+
+6D & F
+>D.plotAcc() 
 
 ## Sharing/Access information
 

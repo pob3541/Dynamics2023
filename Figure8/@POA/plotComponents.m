@@ -79,7 +79,7 @@ for z=1:numConds
         DistV_boot(DistV_boot > 300) = NaN;
         avgDistV=mean(DistV_boot,2,'omitnan');
         stdDistV=std(DistV_boot','omitnan');
-        [~,li] = ShadedError(tData{z}(1:tempEnd)*1000, avgDistV(1:tempEnd)',stdDistV(1:tempEnd)*tscore(2),LineColor(z,:),PatchColor(z,:));
+        [~,li] = ShadedError8(tData{z}(1:tempEnd)*1000, avgDistV(1:tempEnd)',stdDistV(1:tempEnd)*tscore(2),LineColor(z,:),PatchColor(z,:));
         CI(:,:,z) = avgDistV(1:tempEnd)+stdDistV(1:tempEnd)'*tscore;
         meanDist(:,z)=avgDistV(1:tempEnd);
 
