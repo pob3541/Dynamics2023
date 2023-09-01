@@ -90,16 +90,16 @@ Running the following code will initialize the data to recreate all of the plots
 The following commands will plot all parts of Figure 6: 
 
 6A
->D.plotRTLFADS() 
+> D.plotRTLFADS() 
 
 6B
->D.plotChoiceLFADS()
+> D.plotChoiceLFADS()
 
 6C & E
->D.plotR2() 
+> D.plotR2() 
 
 6D & F
->D.plotAcc()
+> D.plotAcc()
 
 
 ## Figure 7: Initial conditions and inputs contribute to choice-related dynamics 
@@ -122,7 +122,7 @@ The following commands will plot all parts of Figure 7:
 > dataTable.trajectories3 = N30.plotTrajectories('showPooled',0,'whichCoh',7,'showGrid',0, 'hideAxes',1);
 
 7 D-G
->[~, ~, ~, ~, ~, inputsAndIC] = N30.calcInputsAndIC;
+> [~, ~, ~, ~, ~, inputsAndIC] = N30.calcInputsAndIC;
 
 7 H-K
 > [~, ~, ~, ~, ~, nonOverlapping] = Nnon.calcInputsAndIC;
@@ -136,20 +136,52 @@ Running the following command in POA.m will initialize the data to recreate all 
 >[r] = POA_plotting(outcome) 
 
 8A
->r.plotComponents()
+> r.plotComponents()
 
 8B
->r.plotTrajectories()
+> r.plotTrajectories()
 
 8C & E
->r.plotKinet()
+> r.plotKinet()
 
 8D
->r.plotDecoder()
+> r.plotDecoder()
 
-## Supplementary Figures 3-22
-'plotAllMainFigures.m'
-Please follow instructions in 'plotAllSupplementaryFigures.m' in order to recreate all supplementary figures except any schematic figures or Supplementary Figure 2. 
+## Figure S3
+
+3A
+> simulatePMdneurons('UnbiasedChoice');
+
+3B
+> simulatePMdneurons('BiasedChoice');
+
+3C
+> simulatePMdneurons('RT');
+
+## Figure S4
+
+Open 'plotFigure3.m'. If you want to display the 1st unit with 30 ms (S4 A) or 15 ms Gaussian (S4 B) or 50 ms boxcar (S4 C) smoothing presented in Figure S4 run the following commands:
+
+S4A
+> Fig3Neurons(1);
+
+S4B
+> Fig3Neurons(1, smoothing='gauss15');
+
+S4C
+> Fig3Neurons(1, smoothing='box50');
+
+The number corresponds to the order of presentation in the figure and you can plot all 8 units in this manner
+
+## Figure S5
+Open 'plotFigure4_5_7.m'. Load Figure4_5_7data.mat from DryadData. 
+
+Running the following code will initialize the data to recreate all of the plots in Figure S5:
+> N30 = PMddynamics(M); 
+
+
+
+
 
 
 
