@@ -55,15 +55,21 @@ dataTable.trajectories3 = N30.plotTrajectories('showPooled',0,'whichCoh',7,'show
 
 
 %% Figure S5
+load 15msGaussFRs.mat
+N15 = PMddynamics(M);
+
+load 50msBoxcarFRs.mat
+N50 = PMddynamics(M);
+
 
 % S5a
 dataTable.varExplained = N30.plotVariance('n',10);
 
 % S5b
-dataTable.varExplained = N30.plotVariance('n',10);
+dataTable.var15ms = N15.plotVariance('n',10);
 
 % S5c
-dataTable.varExplained = N30.plotVariance('n',10);
+dataTable.var50ms = N50.plotVariance('n',10);
 
 %% Replicate Figure S6, which plots Trial counts for various RT bins
 dataTable.trialCounts = N30.plotTrialCounts;
@@ -83,13 +89,11 @@ dataTable.SUKinet = NSU.plotKinet;
 % uses 15ms gaussian
 dataTable.traj15ms = N15.plotTrajectories;
 dataTable.Kinet15ms = N15.plotKinet;
-dataTable.var15ms = N15.plotVariance;
 
 
 % uses 50 ms boxcar
 dataTable.traj50ms = N50.plotTrajectories;
 dataTable.Kinet50ms = N50.plotKinet;
-dataTable.var50ms = N50.plotVariance;
 
 
 
