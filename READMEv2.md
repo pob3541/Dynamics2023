@@ -1,12 +1,12 @@
 # Dataset for recreating figures from Boucher et al., 2023
 ---
-Experimental data used to construct the figures found in (tested in Matlab R2021b):
+Experimental data used to construct the figures found in:
 
 > P. O. Boucher, T. Wang, L. Carceroni, G. Kane, K. V. Shenoy, C. Chandramouli.
 > *** Initial conditions combine with sensory evidence to induce decision-related dynamics in premotor cortex ***
 
 
-Experimental data ([doi:10.5061/dryad.9cnp5hqn0](doi:10.5061/dryad.9cnp5hqn0)) and scripts ([https://github.com/pob3541/Dynamics2023](https://github.com/pob3541/Dynamics2023)) are organized based on the order of figures in the manuscript.
+Experimental data ([doi:10.5061/dryad.9cnp5hqn0](doi:10.5061/dryad.9cnp5hqn0)) and scripts ([https://github.com/pob3541/Dynamics2023](https://github.com/pob3541/Dynamics2023)) are organized based on the order of figures in the manuscript (tested in Matlab R2021b).
 
 Download Github repository:        `git clone https://github.com/pob3541/Dynamics2023.git`
 
@@ -29,7 +29,7 @@ Size of data files (>1 MB):
 
 ## Description of the data and file structure
 
-To make replotting the figures as easy as possible a script entitled 'plotAllFigures.m' can be used as a guide to open scripts to plot specific figures (e.g., 'plotFigure2.m').
+To make replotting the figures as easy as possible a script entitled 'plotAllFigures.m' can be used as a guide to open scripts to plot specific figures (e.g., 'plotFigure2.m'). All figures, except schematic figures (Figures 1, & 2a-c,g; Supplementary Figures 1, 8, 12a, 15a, & 20a) and Supplementary Figure 2, can be plotted in this manner. Data for replotting Supplmentary Figure 2 is available upon request (Dr. Chandramouli Chandrasekaran: cchandr1@bu.edu).
 
 ### Figure 2: Psychometric curves for the monkey, and RT and box plots
 
@@ -102,7 +102,7 @@ The following commands will plot all parts of Figure 6:
 >D.plotAcc()
 
 
-## Figure 7: 
+## Figure 7: Initial conditions and inputs contribute to choice-related dynamics 
 Open 'plotFigure4_5_7.m'. Load Figure4_5_7data.mat from DryadData.
 
 Running the following code will initialize the data to recreate all of the plots in Figure 7:
@@ -130,36 +130,26 @@ The following commands will plot all parts of Figure 7:
 
 ## Figure 8: Outcome changes initial conditions
 
-Load Figure8Data.mat from DryadData. Open Figure7\@POA\POA.m.
+Open 'plotFigure8.m'. Load Figure8Data.mat from DryadData.
 
-Running the following command in POA.m will initialize the data to recreate all of the plots in Figure 7. 
+Running the following command in POA.m will initialize the data to recreate all of the plots in Figure 8: 
 >[r] = POA_plotting(outcome) 
 
-7A
+8A
 >r.plotComponents()
 
-7B
+8B
 >r.plotTrajectories()
 
-7C & E
+8C & E
 >r.plotKinet()
 
-7D
+8D
 >r.plotDecoder()
 
-## Sharing/Access information
-
-This is a section for linking to other ways to access the data, and for linking to sources the data is derived from, if any.
-
-Links to other publicly accessible locations of the data:
-  * 
-
-Data was derived from the following sources:
-  * 
+## Supplementary Figures 3-22
+'plotAllMainFigures.m'
+Please follow instructions in 'plotAllSupplementaryFigures.m' in order to recreate all supplementary figures except any schematic figures or Supplementary Figure 2. 
 
 
-## Code/Software
 
-This is an optional, freeform section for describing any code in your submission and the software used to run it.
-
-Describe any scripts, code, or notebooks (e.g., R, Python, Mathematica, MatLab) as well as the software versions (including loaded packages) that you used to run those files. If your repository contains more than one file whose relationship to other scripts is not obvious, provide information about the workflow that you used to run those scripts and notebooks.
