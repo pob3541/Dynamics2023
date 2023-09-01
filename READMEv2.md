@@ -70,7 +70,6 @@ Open 'plotFigure4_5_7.m'. Load Figure4_5_7data.mat from DryadData.
 
 Running the following code will initialize the data to recreate all of the plots in Figure 5:
 > Nnon = PMddynamics(M,'useNonOverlapping',1);
-> Nnon.calcWinCoh(M);
 
 The following commands will plot all parts of Figure 5: 
 
@@ -103,25 +102,50 @@ The following commands will plot all parts of Figure 6:
 >D.plotAcc()
 
 
->## Figure 7: Single-trial analysis and decoding
-Open 'plotFigure6.m'. Load regressions.mat from DryadData. 
+## Figure 7: 
+Open 'plotFigure4_5_7.m'. Load Figure4_5_7data.mat from DryadData.
 
-Running the following code will initialize the data to recreate all of the plots in Figure 6. 
-> D= PMddecoding(regressions) 
+Running the following code will initialize the data to recreate all of the plots in Figure 7:
+> N30 = PMddynamics(M); 
+> N30.calcWinCoh(M);
 
-The following commands will plot all parts of Figure 6: 
+> Nnon = PMddynamics(M,'useNonOverlapping',1);
+> Nnon.calcWinCoh(M);
 
-6A
->D.plotRTLFADS() 
+The following commands will plot all parts of Figure 7: 
 
-6B
->D.plotChoiceLFADS()
+7C
+> dataTable.trajectories1 = N30.plotTrajectories('showPooled',0,'whichCoh',1, 'showGrid',0, 'hideAxes',1);
+>
+> dataTable.trajectories2 = N30.plotTrajectories('showPooled',0,'whichCoh',4, 'showGrid',0, 'hideAxes',1);
+> 
+> dataTable.trajectories3 = N30.plotTrajectories('showPooled',0,'whichCoh',7,'showGrid',0, 'hideAxes',1);
 
-6C & E
->D.plotR2() 
+7 D-G
+>[~, ~, ~, ~, ~, inputsAndIC] = N30.calcInputsAndIC;
 
-6D & F
->D.plotAcc() 
+7 H-K
+> [~, ~, ~, ~, ~, nonOverlapping] = Nnon.calcInputsAndIC;
+
+
+## Figure 8: Outcome changes initial conditions
+
+Load Figure8Data.mat from DryadData. Open Figure7\@POA\POA.m.
+
+Running the following command in POA.m will initialize the data to recreate all of the plots in Figure 7. 
+>[r] = POA_plotting(outcome) 
+
+7A
+>r.plotComponents()
+
+7B
+>r.plotTrajectories()
+
+7C & E
+>r.plotKinet()
+
+7D
+>r.plotDecoder()
 
 ## Sharing/Access information
 
