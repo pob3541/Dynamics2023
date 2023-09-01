@@ -17,6 +17,15 @@ Toolboxes needed:
 - Statistics and Machine Learning Toolbox
 - Bioinformatics Toolbox
 
+Size of data files (>1 MB):
+- HetNeurons.mat - 188.6 MB
+- Figure4_5_7.mat - 14.7GB
+- regressions.mat - 30 MB
+- Figure8data.mat - 16 GB
+- LFADSdata (folder) - 3.2 GB
+- FigureS14 (folder) - 705 MB
+- TCAdata (folder) - 10.7 GB
+- 14October2013_Tiberius.mat - 1.2 GB
 
 ## Description of the data and file structure
 
@@ -74,6 +83,27 @@ The following commands will plot all parts of Figure 5:
 
 
 ## Figure 6: Single-trial analysis and decoding
+Open 'plotFigure6.m'. Load regressions.mat from DryadData. 
+
+Running the following code will initialize the data to recreate all of the plots in Figure 6. 
+> D= PMddecoding(regressions) 
+
+The following commands will plot all parts of Figure 6: 
+
+6A
+>D.plotRTLFADS() 
+
+6B
+>D.plotChoiceLFADS()
+
+6C & E
+>D.plotR2() 
+
+6D & F
+>D.plotAcc()
+
+
+>## Figure 7: Single-trial analysis and decoding
 Open 'plotFigure6.m'. Load regressions.mat from DryadData. 
 
 Running the following code will initialize the data to recreate all of the plots in Figure 6. 
