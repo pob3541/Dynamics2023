@@ -1,12 +1,12 @@
 # Dataset for recreating figures from Boucher et al., 2023
 ---
-Experimental data used to construct the figures found in (tested in Matlab R2021b):
+Experimental data used to construct the figures found in:
 
 > P. O. Boucher, T. Wang, L. Carceroni, G. Kane, K. V. Shenoy, C. Chandramouli.
 > *** Initial conditions combine with sensory evidence to induce decision-related dynamics in premotor cortex ***
 
 
-Experimental data ([doi:10.5061/dryad.9cnp5hqn0](doi:10.5061/dryad.9cnp5hqn0)) and scripts ([https://github.com/pob3541/Dynamics2023](https://github.com/pob3541/Dynamics2023)) are organized based on the order of figures in the manuscript.
+Experimental data ([doi:10.5061/dryad.9cnp5hqn0](doi:10.5061/dryad.9cnp5hqn0)) and scripts ([https://github.com/pob3541/Dynamics2023](https://github.com/pob3541/Dynamics2023)) are organized based on the order of figures in the manuscript (tested in Matlab R2021b).
 
 Download Github repository:        `git clone https://github.com/pob3541/Dynamics2023.git`
 
@@ -17,10 +17,19 @@ Toolboxes needed:
 - Statistics and Machine Learning Toolbox
 - Bioinformatics Toolbox
 
+Size of data files (>1 MB):
+- HetNeurons.mat - 188.6 MB
+- Figure4_5_7.mat - 14.7GB
+- regressions.mat - 30 MB
+- Figure8data.mat - 16 GB
+- LFADSdata (folder) - 3.2 GB
+- FigureS14 (folder) - 705 MB
+- TCAdata (folder) - 10.7 GB
+- 14October2013_Tiberius.mat - 1.2 GB
 
 ## Description of the data and file structure
 
-To make replotting the figures as easy as possible a script entitled 'plotAllFigures.m' can be used as a guide to open scripts to plot specific figures (e.g., 'plotFigure2.m').
+To make replotting the figures as easy as possible a script entitled 'plotAllFigures.m' can be used as a guide to open scripts to plot specific figures (e.g., 'plotFigure2.m'). All figures, except schematic figures (Figures 1, & 2a-c,g; Supplementary Figures 1, 8, 12a, 15a, & 20a) and Supplementary Figure 2, can be plotted in this manner. Data for replotting Supplmentary Figure 2 is available upon request (Dr. Chandramouli Chandrasekaran: cchandr1@bu.edu).
 
 ### Figure 2: Psychometric curves for the monkey, and RT and box plots
 
@@ -61,7 +70,6 @@ Open 'plotFigure4_5_7.m'. Load Figure4_5_7data.mat from DryadData.
 
 Running the following code will initialize the data to recreate all of the plots in Figure 5:
 > Nnon = PMddynamics(M,'useNonOverlapping',1);
-> Nnon.calcWinCoh(M);
 
 The following commands will plot all parts of Figure 5: 
 
@@ -91,21 +99,57 @@ The following commands will plot all parts of Figure 6:
 >D.plotR2() 
 
 6D & F
->D.plotAcc() 
-
-## Sharing/Access information
-
-This is a section for linking to other ways to access the data, and for linking to sources the data is derived from, if any.
-
-Links to other publicly accessible locations of the data:
-  * 
-
-Data was derived from the following sources:
-  * 
+>D.plotAcc()
 
 
-## Code/Software
+## Figure 7: Initial conditions and inputs contribute to choice-related dynamics 
+Open 'plotFigure4_5_7.m'. Load Figure4_5_7data.mat from DryadData.
 
-This is an optional, freeform section for describing any code in your submission and the software used to run it.
+Running the following code will initialize the data to recreate all of the plots in Figure 7:
+> N30 = PMddynamics(M); 
+> N30.calcWinCoh(M);
 
-Describe any scripts, code, or notebooks (e.g., R, Python, Mathematica, MatLab) as well as the software versions (including loaded packages) that you used to run those files. If your repository contains more than one file whose relationship to other scripts is not obvious, provide information about the workflow that you used to run those scripts and notebooks.
+> Nnon = PMddynamics(M,'useNonOverlapping',1);
+> Nnon.calcWinCoh(M);
+
+The following commands will plot all parts of Figure 7: 
+
+7C
+> dataTable.trajectories1 = N30.plotTrajectories('showPooled',0,'whichCoh',1, 'showGrid',0, 'hideAxes',1);
+>
+> dataTable.trajectories2 = N30.plotTrajectories('showPooled',0,'whichCoh',4, 'showGrid',0, 'hideAxes',1);
+> 
+> dataTable.trajectories3 = N30.plotTrajectories('showPooled',0,'whichCoh',7,'showGrid',0, 'hideAxes',1);
+
+7 D-G
+>[~, ~, ~, ~, ~, inputsAndIC] = N30.calcInputsAndIC;
+
+7 H-K
+> [~, ~, ~, ~, ~, nonOverlapping] = Nnon.calcInputsAndIC;
+
+
+## Figure 8: Outcome changes initial conditions
+
+Open 'plotFigure8.m'. Load Figure8Data.mat from DryadData.
+
+Running the following command in POA.m will initialize the data to recreate all of the plots in Figure 8: 
+>[r] = POA_plotting(outcome) 
+
+8A
+>r.plotComponents()
+
+8B
+>r.plotTrajectories()
+
+8C & E
+>r.plotKinet()
+
+8D
+>r.plotDecoder()
+
+## Supplementary Figures 3-22
+'plotAllMainFigures.m'
+Please follow instructions in 'plotAllSupplementaryFigures.m' in order to recreate all supplementary figures except any schematic figures or Supplementary Figure 2. 
+
+
+
