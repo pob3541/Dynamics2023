@@ -77,7 +77,7 @@ The following commands will plot all parts of Figure 5:
 Open 'plotFigure6.m'. Load regressions.mat from DryadData. 
 
 Running the following code will initialize the data to recreate all of the plots in Figure 6. 
-> D= PMddecoding(regressions) 
+> D= PMDdecoding(regressions) 
 
 The following commands will plot all parts of Figure 6: 
 

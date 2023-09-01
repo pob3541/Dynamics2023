@@ -5,6 +5,10 @@ load Figure4_5_7data.mat
 N30 = PMddynamics(M);
 N30.calcWinCoh(M);
 
+%% Replicates figures that use non-overlapping bins (e.g., Figure 5, 7h-k);
+Nnon = PMddynamics(M,'useNonOverlapping',1);
+Nnon.calcWinCoh(M);
+
 
 %% Figure 4,a-g
 
@@ -17,10 +21,6 @@ sgtitle('Figure 4B');
 dataTable.kinet = N30.plotKinet;
 sgtitle('Fig. 4C-G');
 
-%% Replicates figures that use non-overlapping bins (e.g., Figure 5, 7h-k);
-Nnon = PMddynamics(M,'useNonOverlapping',1);
-Nnon.calcWinCoh(M);
-
 
 %% Figure 5, a-e
 dataTable.noTraj = Nnon.plotTrajectories('showPooled',1,'showGrid',0, 'hideAxes',1);
@@ -30,6 +30,12 @@ dataTable.noKinet = Nnon.plotKinet;
 sgtitle('Fig. 5B-E');
 
 %% Figure 7, c-k
+
+% Figure 7a, b
+% a. plotTrajectories M.coherence.FR
+%N30 = PMddynamics(M);
+
+% b. plotComponents
 
 % Calculate within coh trajectories (Figure 7c & 4b inset)
 dataTable.trajectories1 = N30.plotTrajectories('showPooled',0,'whichCoh',1, 'showGrid',0, 'hideAxes',1);
@@ -48,8 +54,16 @@ dataTable.trajectories3 = N30.plotTrajectories('showPooled',0,'whichCoh',7,'show
 [~, ~, ~, ~, ~, nonOverlapping] = Nnon.calcInputsAndIC;
 
 
-%% Figure S5A
-dataTable.varExplained = N30.plotVariance;
+%% Figure S5
+
+% S5a
+dataTable.varExplained = N30.plotVariance('n',10);
+
+% S5b
+dataTable.varExplained = N30.plotVariance('n',10);
+
+% S5c
+dataTable.varExplained = N30.plotVariance('n',10);
 
 %% Replicate Figure S6, which plots Trial counts for various RT bins
 dataTable.trialCounts = N30.plotTrialCounts;
@@ -64,16 +78,15 @@ NSU = PMddynamics(M,'useSingleNeurons',1);
 dataTable.SUtrajectories = NSU.plotTrajectories;
 dataTable.SUKinet = NSU.plotKinet;
 
+%% Replicate Figure that uses different smoothing kernals (Figure S11)
 
-%% uses 15ms gaussian
-
+% uses 15ms gaussian
 dataTable.traj15ms = N15.plotTrajectories;
 dataTable.Kinet15ms = N15.plotKinet;
 dataTable.var15ms = N15.plotVariance;
 
 
-%% uses 50 ms boxcar
-
+% uses 50 ms boxcar
 dataTable.traj50ms = N50.plotTrajectories;
 dataTable.Kinet50ms = N50.plotKinet;
 dataTable.var50ms = N50.plotVariance;

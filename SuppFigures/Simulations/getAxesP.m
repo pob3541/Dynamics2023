@@ -58,7 +58,7 @@ else
     hP.tickLocations = [hTickLocations];
     for d = 1:length(hP.tickLabelLocations)
         hP.tickLabels{d} = sprintf('%g',hP.tickLabelLocations(d));
-        hP.tickColor{d} = [0.8 0 0];
+        hP.tickColor{d} = [0 0 0];
     end
     
 end

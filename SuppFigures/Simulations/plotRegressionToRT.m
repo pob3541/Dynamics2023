@@ -72,7 +72,7 @@ ylimit = [yLower, yUpper];
 
 
 plot([0,0], ylimit, 'color', [0.5 0.5 0.5], 'linestyle', '--', 'linewidth',5)
-title('Regression on RT', 'fontsize', 10)
+title('Left trials RT regression', 'fontsize', 10)
 
 
 xpatch = [-before -before 0 0];
@@ -87,13 +87,13 @@ hLimits = [-before,after];
 hTickLocations = -before:250:after;
 hLabOffset = 0.05;
 hAxisOffset = yLower-0.01;
-hLabel = "Time: ms";
+hLabel = "Time (ms)";
 
 vLimits = ylimit;
 vTickLocations = [yLower (yLower + yUpper)/2 yUpper];
 vLabOffset = 150;
 vAxisOffset = -before-20;
-vLabel = "R^{2}";
+vLabel = "RT variance explained";
 
 plotAxis = [1 1];
 

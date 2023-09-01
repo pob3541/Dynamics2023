@@ -45,7 +45,7 @@ p1.EdgeAlpha = 0;
 plot(t, accuracy_l,'linewidth', 3)
 
 xlabel('Time (ms)')
-ylabel('Accuracy')
+ylabel('Accuracy (%)')
 title('Prediction accuracy')
 
 % plot slow trials decoding accuracy
@@ -56,7 +56,7 @@ yline(0.5, 'k--')
 xline(0, 'color', [0.5 0.5 0.5], 'linestyle', '--')
 
 xlabel('Time (ms)')
-ylabel('Accuracy')
+ylabel('Accuracy (%)')
 title('Prediction accuracy')
 
 choiceTable = array2table([t' accuracy_l accuracy_g],'VariableNames',{'Time','Accuracy Fast','Accuracy Slow'});
@@ -68,7 +68,7 @@ hLimits = [-before,after];
 hTickLocations = -before:250:after;
 hLabOffset = 0.05;
 hAxisOffset =  yLower - 0.01;
-hLabel = "Time: ms";
+hLabel = "Time (ms)";
 
 
 vLimits = [yLower,yUpper];
@@ -77,7 +77,7 @@ vTickLocations = [yLower (yLower + yUpper)/2 yUpper];
 
 vLabOffset = 150;
 vAxisOffset = -before-20;
-vLabel = "Accuracy";
+vLabel = "Accuracy (%)";
 
 plotAxis = [1 1];
 

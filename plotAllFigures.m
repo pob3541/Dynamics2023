@@ -37,54 +37,91 @@ edit plotFigure8.m
 
 %% Figure S2
 
-% If interested in recreating these figures please reach out to the
+% If interested in recreating this Supplementary Figure please reach out to the
 % corresponding author (Dr. Chandramouli Chandrasekaran - cchandr1@bu.edu) 
 % in order to obtain the data set. 
 
 %% Figure S3
-edit plotFigureS3.m
 
+% S3A
+simulatePMdneurons('UnbiasedChoice');
+
+% S3B
+simulatePMdneurons('BiasedChoice');
+
+% S3C
+simulatePMdneurons('RT');
 
 %% Figure S4
 edit plotFigure3.m
 
 %% Figure S5
+edit plotFigure4_5_7.m
+
 
 %% Figure S6
+edit plotFigure4_5_7.m
+
 
 %% Figure S7
-
-%% Figure S8
+edit plotFigure4_5_7.m
 
 %% Figure S9
+edit plotFigure8.m
+
 
 %% Figure S10
+edit plotFigure4_5_7.m
+
 
 %% Figure S11
+edit plotFigureS11.m %  plotFigure4_5_7
 
-%% Figure S12
 
-%% Figure S13
+%% Figure S12 - TCA
+edit plotFigureS12.m
 
-%% Figure S14
 
-%% Figure S15
+%% Figure S13 - LDS
+edit plotFigureS13.m
 
-%% Figure S16
 
-%% Figure S17
+%% Figure S14 - LFADS
+edit plotFigureS14.m
+
+
+%% Figure S15 - Reduced rank regression
+edit plotFigureS15.m
+
+
+%% Figure S16 - Decoding within RT bins
+edit plotFigureS16.m
+
+
+%% Figure S17 - Decoding within RT bins for hardest coherence
+edit plotFigureS17.m
+
 
 %% Figure S18
+edit plotFigureS18.m
+
 
 %% Figure S19
+edit plotFigureS19.m
+
 
 %% Figure S20
+edit plotFigureS20.m
+
 
 %% Figure S21
+edit plotFigureS21.m
+
 
 %% Figure S22
+edit plotFigureS22.m
 
-%% Figure S23
+
 
 
 

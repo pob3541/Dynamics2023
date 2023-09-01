@@ -1,4 +1,6 @@
-clear; close all; clc
+function simulatePMdneurons(whichType)
+
+%clear; close all; clc
 time = [0:1:200]/100;
 nNeurons = 200;
 
@@ -21,7 +23,8 @@ tLatency = 0.1;
 CISmult = 15;
 kernel = 0.02;
 
-whichType = 'RT';
+%whichType = 'RT';
+%assignopts(who,varargin);
 
 cprintf('cyan',sprintf('-----------------------------------------------\n Simulating %d Neurons from %s, %d trials per neuron \n', nNeurons, whichType, nTrials));
 
@@ -161,3 +164,5 @@ line(get(gca,'xlim'),0.9,'linestyle','--')
 [simData.choice] = plotChoiceDecoding(FR, RT, nTrials);
 
 % print('-painters','-depsc',['~/Desktop/', 'simPMd_RT','.eps'], '-r300');
+
+end
