@@ -79,7 +79,8 @@ N30.plotTrajectories('showPooled',1,'showGrid',1,'hideAxes',0);
 axis equal
 sgtitle('Figure S7');
 
-%% Replicate Figure that uses single neurons (Figure S9)
+%% Replicate Figure that uses single neurons (Figure S10)
+
 NSU = PMddynamics(M,'useSingleNeurons',1);
 dataTable.SUtrajectories = NSU.plotTrajectories;
 dataTable.SUKinet = NSU.plotKinet;
@@ -88,12 +89,12 @@ dataTable.SUKinet = NSU.plotKinet;
 
 % uses 15ms gaussian
 dataTable.traj15ms = N15.plotTrajectories;
-dataTable.Kinet15ms = N15.plotKinet;
+dataTable.kinet15ms = N15.plotKinet;
 
 
 % uses 50 ms boxcar
 dataTable.traj50ms = N50.plotTrajectories;
-dataTable.Kinet50ms = N50.plotKinet;
+dataTable.kinet50ms = N50.plotKinet;
 
 
 

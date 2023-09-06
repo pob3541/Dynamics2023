@@ -56,7 +56,7 @@ end
 
 if projectToOutcome
     % project RT data into outcome space
-    reducedOutSpace=outSpace(:,1:6);
+    reducedOutSpace=outSpace(r.metaData.neuronIdx,1:6);
     scoreProjRT = Ye*reducedOutSpace;
     [TrajInProjRT, TrajOutProjRT] = chopScoreMatrix(scoreProjRT, Lens);
     pcData.TrajInProjRT = TrajInProjRT;

@@ -157,8 +157,8 @@ classdef PMddynamics < handle
             
             if r.processingFlags.useSingleUnits
                 cprintf('magenta','using Single Neurons');
-                tibs = load('TibsISI');
-                olaf = load('OlafISI');
+                tibs = load('TibsISI.mat');
+                olaf = load('OlafISI.mat');
                 allISI = [olaf.allISI; tibs.allISI];
                 r.metaData.neuronIdx = allISI(:,3) <=0.015;
             else
