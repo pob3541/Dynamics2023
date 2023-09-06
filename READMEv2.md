@@ -238,7 +238,7 @@ S10B-E
 > dataTable.SUKinet = NSU.plotKinet;
 
 
-> ## Figure S11
+## Figure S11
 Open 'plotFigure4_5_7.m'. Load Figure4_5_7data.mat from DryadData. 
 
 Running the following code will initialize the data to recreate all of the plots in Figure S11:
