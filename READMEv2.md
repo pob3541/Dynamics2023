@@ -177,7 +177,93 @@ The number corresponds to the order of presentation in the figure and you can pl
 Open 'plotFigure4_5_7.m'. Load Figure4_5_7data.mat from DryadData. 
 
 Running the following code will initialize the data to recreate all of the plots in Figure S5:
-> N30 = PMddynamics(M); 
+> N30 = PMddynamics(M);
+
+> load 15msGaussFRs.mat
+> N15 = PMddynamics(M);
+
+> load 50msBoxcarFRs.mat
+> N50 = PMddynamics(M);
+
+
+S5A
+dataTable.varExplained = N30.plotVariance('n',10);
+
+S5B
+dataTable.var15ms = N15.plotVariance('n',10);
+
+S5C
+dataTable.var50ms = N50.plotVariance('n',10);
+
+## Figure S6
+Open 'plotFigure4_5_7.m'. Load Figure4_5_7data.mat from DryadData. 
+
+Running the following code will initialize the data to recreate all of the plots in Figure S6:
+> N30 = PMddynamics(M);
+
+S6A & B
+> dataTable.trialCounts = N30.plotTrialCounts;
+
+## Figure S7
+Open 'plotFigure4_5_7.m'. Load Figure4_5_7data.mat from DryadData. 
+
+Running the following code will initialize the data to recreate all of the plots in Figure S7:
+> N30 = PMddynamics(M);
+
+S7
+> N30.plotTrajectories('showPooled',1,'showGrid',1,'hideAxes',0);
+> axis equal
+
+## Figure S9
+Open 'plotFigure4_5_7.m'. Load Figure4_5_7data.mat from DryadData. 
+
+Running the following code will initialize the data to recreate all of the plots in Figure S9:
+> N30 = PMddynamics(M);
+
+S9A
+
+S9B
+
+
+## Figure S10
+Open 'plotFigure4_5_7.m'. Load Figure4_5_7data.mat from DryadData. 
+
+Running the following code will initialize the data to recreate all of the plots in Figure S10:
+> NSU = PMddynamics(M,'useSingleNeurons',1);
+
+S10A
+> dataTable.SUtrajectories = NSU.plotTrajectories;
+
+S10B-E
+> dataTable.SUKinet = NSU.plotKinet;
+
+
+> ## Figure S11
+Open 'plotFigure4_5_7.m'. Load Figure4_5_7data.mat from DryadData. 
+
+Running the following code will initialize the data to recreate all of the plots in Figure S11:
+> N30 = PMddynamics(M);
+
+> load 15msGaussFRs.mat
+> N15 = PMddynamics(M);
+
+> load 50msBoxcarFRs.mat
+> N50 = PMddynamics(M);
+
+S11A
+> dataTable.trajectories = N30.plotTrajectories('showPooled',1,'showGrid',0,'hideAxes',1);
+> dataTable.traj15ms = N15.plotTrajectories;
+> dataTable.traj50ms = N50.plotTrajectories;
+
+
+S11B-E
+> dataTable.kinet = N30.plotKinet;
+> dataTable.kinet15ms = N15.plotKinet;
+> dataTable.kinet50ms = N50.plotKinet;
+
+
+
+
 
 
 
