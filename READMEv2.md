@@ -215,14 +215,17 @@ S7
 > axis equal
 
 ## Figure S9
-Open 'plotFigure4_5_7.m'. Load Figure4_5_7data.mat from DryadData. 
+Open 'plotFigure8.m'. Load Figure8data.mat from DryadData. 
 
 Running the following code will initialize the data to recreate all of the plots in Figure S9:
-> N30 = PMddynamics(M);
+> dataS9= outcome.pcaCohRT;
+> [pcDataS9]=calculatePCs_S9(dataS9);
 
 S9A
+plotComponents_S9(pcDataS9)
 
 S9B
+plotTrajectories_S9(pcDataS9)
 
 
 ## Figure S10
@@ -260,6 +263,48 @@ S11B-E
 > dataTable.kinet = N30.plotKinet;
 > dataTable.kinet15ms = N15.plotKinet;
 > dataTable.kinet50ms = N50.plotKinet;
+
+## Figure S12
+
+## Figure S13
+Open 'plotFigureS13.m'. Change directory to folder containing LFADS '.mat' files inside of DryadData (... /DryadData/DryadDataSupp/LFADSdata). 
+
+Run:
+> files=dir('*.mat');
+
+S13A
+> singleSessionLDS(files);
+
+S13B-C
+> bothEpochs(files);
+
+
+## Figure S14
+Open 'plotFigureS14.m'. Change directory to folder containing LFADS '.mat' files inside of DryadData (... /DryadData/DryadDataSupp/FigureS14). 
+
+Run:
+> lfadsR = load('Tsess1.mat');
+> folder=dir('*.mat');
+
+S14A
+> plotLFADSFR(lfadsR);
+
+S14B
+> lfadsSingleTrialVarianceExplained(folder);
+
+S14C
+> lfadsFR_RT_regression(folder); 
+
+
+## Figure S15
+
+## Figure S16
+
+## Figure S17
+
+
+
+
 
 
 
