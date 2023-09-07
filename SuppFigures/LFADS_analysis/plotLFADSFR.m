@@ -1,9 +1,9 @@
 % created by Tian on Mar.16th, 2023. Plot some units and lfads FRs of 
 % Oct14th, 2014 session 
 
-clear all; close all;clc
+function plotLFADSFR(lfadsR)
 
-lfadsR = load('~/Desktop/multiSessionLFADS/Tsess1.mat');
+
 
 rates = lfadsR.rates;
 validInds = lfadsR.validInds;
@@ -12,10 +12,6 @@ validRT = lfadsR.RT(validInds);
 validChoice = lfadsR.choice(validInds);
 validId = lfadsR.conditionIds(validInds);
 
-
-
-
-%% 
 
 raster = lfadsR.rawCounts;
 % testPSTH: raw raster plot of recording
@@ -60,17 +56,17 @@ for unit = [1,6,10,11]
     plot(t, mean(squeeze(validRates(unit,:,:)),2), 'color', [236 112 22]./255, 'linewidth', 3);
     hold on
     set(gca,'visible','off');
-    getAxesP([-600 1200],setdiff([-600:200:1200],0), 'Time (ms)', -5,0,[0 150],[0:50:150],'FR (Spks/s)',-625,-625,[1 1], gt);
+    getAxesP([-600 1200], setdiff(-600:200:1200,0),20,0,'Time (ms)',[0 150], 0:50:150,75,-625,'FR (Spks/s)',[1 1], gt);
     axis tight;
     drawRestrictedLines(0,[-5 150]);
     
     % generate source excel data
-    psthAll = [psthAll; [squeeze(psth(unit,:,1:5:end)), unit.*ones(size(psth,2),1),t']];
-    psthMean = [psthMean; mean(squeeze(psth(unit,:,:)),2)];
-    
-    ratesAll = [ratesAll; squeeze(validRates(unit,:,1:5:end))];
-    ratesMean = [ratesMean; mean(squeeze(validRates(unit,:,:)),2)];
-    
+    % psthAll = [psthAll; [squeeze(psth(unit,:,1:5:end)), unit.*ones(size(psth,2),1),t']];
+    % psthMean = [psthMean; mean(squeeze(psth(unit,:,:)),2)];
+    % 
+    % ratesAll = [ratesAll; squeeze(validRates(unit,:,1:5:end))];
+    % ratesMean = [ratesMean; mean(squeeze(validRates(unit,:,:)),2)];
+    % 
     
     
     cnt = cnt + 1;
@@ -84,5 +80,7 @@ end
 
 
 LFADSFR = [psthAll, psthMean, ratesAll ratesMean];
+
+end
 
 % save('~/Desktop/sourceData/LFADS_analysis/LFADSFR.mat', 'LFADSFR');

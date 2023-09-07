@@ -75,7 +75,7 @@ edit plotFigure4_5_7.m
 
 
 %% Figure S11
-edit plotFigureS11.m %  plotFigure4_5_7
+edit plotFigure4_5_7.m
 
 
 %% Figure S12 - TCA

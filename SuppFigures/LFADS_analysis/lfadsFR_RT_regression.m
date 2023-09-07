@@ -4,9 +4,11 @@
 
 
 % load data
-close all; clear; clc;
+%close all; clear; clc;
+function lfadsFR_RT_regression(folder)
+%folder = dir('~/Desktop/multiSessionLFADS/*.mat');
 
-folder = dir('~/Desktop/multiSessionLFADS/*.mat');
+
 
 regression = struct;
 for ii = 1:length(folder)
@@ -29,9 +31,9 @@ for ii = 1:length(folder)
 end
 
 
-%% plot with 99 percentile line
-figure; hold on
-
+%%% plot with 99 percentile line
+% figure; hold on
+% 
 before = 600;
 after = 1200;
 t = linspace(-before, after, length(r2));
@@ -47,49 +49,49 @@ end
 
 yLower = 0;
 yUpper = 1;
-
-ylimit = [yLower, yUpper];
-xpatch = [-before -before 0 0];
-ypatch = [yLower yUpper yUpper yLower];
-p1 = patch(xpatch, ypatch, 'cyan');
-p1.FaceAlpha = 0.2;
-p1.EdgeAlpha = 0;
-
-
-plot([0,0], ylimit, 'color', [0.5 0.5 0.5], 'linestyle', '--', 'linewidth',5)
-title('Regression on RT', 'fontsize', 30)
-
-
-% cosmetic code
-hLimits = [-before,after];
-hTickLocations = -before:200:after;
-hLabOffset = 0.05;
-hAxisOffset = yLower-0.01;
-hLabel = "Time: ms"; 
-
-vLimits = ylimit;
-vTickLocations = [yLower (yLower + yUpper)/2 yUpper];
-vLabOffset = 150;
-vAxisOffset = -before-20;
-vLabel = "R^{2}"; 
-
-plotAxis = [1 1];
-
-[hp,vp] = getAxesP(hLimits,...
-    hTickLocations,...
-    hLabOffset,...
-    hAxisOffset,...
-    hLabel,...
-    vLimits,...
-    vTickLocations,...
-    vLabOffset,...
-    vAxisOffset,...
-    vLabel, plotAxis);
-
-set(gcf, 'Color', 'w');
-axis off; 
-axis square;
-axis tight;
+% 
+% ylimit = [yLower, yUpper];
+% xpatch = [-before -before 0 0];
+% ypatch = [yLower yUpper yUpper yLower];
+% p1 = patch(xpatch, ypatch, 'cyan');
+% p1.FaceAlpha = 0.2;
+% p1.EdgeAlpha = 0;
+% 
+% 
+% plot([0,0], ylimit, 'color', [0.5 0.5 0.5], 'linestyle', '--', 'linewidth',5)
+% title('Regression on RT', 'fontsize', 30)
+% 
+% 
+% % cosmetic code
+% hLimits = [-before,after];
+% hTickLocations = -before:200:after;
+% hLabOffset = 0;
+% hAxisOffset = yLower-0.01;
+% hLabel = "Time (ms)"; 
+% 
+% vLimits = ylimit;
+% vTickLocations = [yLower (yLower + yUpper)/2 yUpper];
+% vLabOffset = 150;
+% vAxisOffset = -before-20;
+% vLabel = "R^2"; 
+% 
+% plotAxis = [1 1];
+% 
+% [hp,vp] = getAxesP(hLimits,...
+%     hTickLocations,...
+%     hLabOffset,...
+%     hAxisOffset,...
+%     hLabel,...
+%     vLimits,...
+%     vTickLocations,...
+%     vLabOffset,...
+%     vAxisOffset,...
+%     vLabel, plotAxis);
+% 
+% set(gcf, 'Color', 'w');
+% axis off; 
+% axis square;
+% axis tight;
 
 %% error bar plot
 options.color_area = [243 169 114]./255;    % Orange theme
@@ -128,13 +130,13 @@ hLimits = [-before,after];
 hTickLocations = -before:200:after;
 hLabOffset = 0.05;
 hAxisOffset = yLower-0.01;
-hLabel = "Time: ms"; 
+hLabel = "Time (ms)"; 
 
 vLimits = ylimit;
 vTickLocations = [yLower (yLower + yUpper)/2 yUpper];
 vLabOffset = 150;
 vAxisOffset = -before-20;
-vLabel = "R^{2}"; 
+vLabel = "RT R^2 (%)"; 
 
 plotAxis = [1 1];
 
@@ -153,6 +155,7 @@ set(gcf, 'Color', 'w');
 axis off; 
 axis square;
 axis tight;
+end
 
 % print('-painters','-depsc',['~/Desktop/', 'lfadsRatesR2RT','.eps'], '-r300');
 
@@ -162,10 +165,10 @@ axis tight;
 % T = array2table(errBarData, 'VariableNames',{'data_mean','upperBd','lowerBd'});
 % writetable(T, '~/Desktop/sourceData/LFADS_analysis/lfadsr2.xlsx')
 
-%% check max and min # of units a
-aa = struct;
-for ii = 1:length(folder)
-    
-    aa(ii).rates = load([folder(ii).folder '/' folder(ii).name]).rates;
-    aa(ii).subject = load([folder(ii).folder '/' folder(ii).name]).subject;
-end
+% %% check max and min # of units a
+% aa = struct;
+% for ii = 1:length(folder)
+% 
+%     aa(ii).rates = load([folder(ii).folder '/' folder(ii).name]).rates;
+%     aa(ii).subject = load([folder(ii).folder '/' folder(ii).name]).subject;
+% end
