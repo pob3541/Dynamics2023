@@ -103,15 +103,17 @@ edit plotFigureS17.m
 
 
 %% Figure S18
-edit plotFigureS18.m
+edit plotFigure8.m
 
 
 %% Figure S19
-edit plotFigureS19.m
+edit plotFigure8.m
 
 
 %% Figure S20
-edit plotFigureS20.m
+
+edit plotFigure8.m
+
 
 
 %% Figure S21
@@ -119,7 +121,7 @@ edit plotFigureS21.m
 
 
 %% Figure S22
-edit plotFigureS22.m
+edit plotFigure8.m
 
 
 
