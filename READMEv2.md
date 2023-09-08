@@ -301,6 +301,84 @@ S14C
 ## Figure S16
 
 ## Figure S17
+Open 'plotFigureS17.m'. 
+
+
+
+## Figure S18
+Open 'plotFigure8.m'. Load Figure8data.mat from DryadData.
+
+Running the following code will initialize the data to recreate all of the plots in Figure S18:
+> [r] = POA(outcome);
+
+S18A
+> [accPer] = errorRate(outcome.bx.Y_logic);
+
+S18B
+> [CCEC_RT]=findBxErrs(outcome.bx.Y_logic,outcme.bx.RT,outcome.bx.ST_logic,'CCEC');
+> plotCCEC(CCECC_RT)
+
+S18C
+> r.plotVariance
+
+S18D
+> load regressions.mat
+> load 14October2013_T.mat
+> plotLFADS_previousResult(regressions,Trials);
+
+S18E
+> [CI, meanDist]=plotComponents(r,'moveAlign',1);
+
+## Figure S19
+Open 'plotFigure8.m'. Load Figure8data.mat from DryadData.
+
+Running the following code will initialize the data to recreate all of the plots in Figure S19:
+> [r] = POA(outcome,trials ='CCE_ECC');
+
+S19A
+> r.plotComponents
+
+S19a (inset)
+r.plotVariance
+
+S19B
+> r.plotTrajectories
+
+S19C
+> [CCEC_RT]=findBxErrs(outcome.bx.Y_logic,outcme.bx.RT,outcome.bx.ST_logic,'CCEC');
+> plotCCEC(CCECC_RT)
+
+S19D, E, & inset
+> r.plotKinet
+
+## Figure S20
+Open 'plotFigure8.m'. Load Figure8data.mat and Figure4_5_7.mat from DryadData.
+
+Running the following code will initialize the data to recreate all of the plots in Figure S20:
+> [r] = POA(outcome);
+> [r2]=PMddynamics(M);
+
+S20B
+> plotComponents(r,'TrajIn', r.project.TrajIn, 'TrajOut', r.project.TrajOut);
+
+S20C
+> plotComponents(r2,'TrajIn', r2.project.TrajInProjRT, 'TrajOut', r2.project.TrajOutProjRT);
+
+
+## Figure S21
+
+## Figure S22
+Open 'plotFigure8.m'. Load Figure8data.mat from DryadData.
+
+Running the following code will initialize the data to recreate all of the plots in Figure S22:
+> [r] = POA(outcome, 'useSingleNeurons', 'true'); 
+
+S22A & B
+> plotBiplot(r);
+
+
+
+
 
 
 
