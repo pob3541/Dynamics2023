@@ -265,6 +265,26 @@ S11B-E
 > dataTable.kinet50ms = N50.plotKinet;
 
 ## Figure S12
+Open 'plotFigureS12.m'.  
+
+Run:
+> whichCV='hard';
+> [modelToUse,choiceV,RTs,trainError,testError,st,st1,tAxis,whichT]=populationTCA(whichCV);
+
+> whichCV='soft';
+> [~,~,~,trainError_soft,testError_soft,st_soft,st1_soft]=populationTCA(whichCV);
+
+S12B
+> plotTCAmodel(modelToUse,tAxis,whichT)
+
+S12C
+> plotTCAsessionDynamics(modelToUse,choiceV,RTs,tAxis,whichT)
+
+S12D & E
+> plotTCAvar(testError_soft,trainError_soft,st_soft,st1_soft)
+> plotTCAvar(testError,trainError,st,st1)
+
+
 
 ## Figure S13
 Open 'plotFigureS13.m'. Change directory to folder containing LFADS '.mat' files inside of DryadData (... /DryadData/DryadDataSupp/LFADSdata). 
@@ -297,11 +317,44 @@ S14C
 
 
 ## Figure S15
+Open 'plotFigureS15.m'. 
+
+Run:
+> [AllRsquare, AllRsquare_s,alignAngles,tAxis,timeValues,whichTimePoint,AllAngles] =redRank2023();
+
+S15B
+> plotRedRank(AllRsquare, AllRsquare_s,alignAngles,tAxis,timeValues,whichTimePoint,AllAngles)
 
 ## Figure S16
+Open 'plotFigureS16.m'. 
+
+Load the following data for S16:
+> load regressions.mat
+> load 'decoderbyRTBins.mat'
+
+S16A, B
+plotRegScatters(regressions)
+
+S16C
+plotAccByBin(classifier);
 
 ## Figure S17
 Open 'plotFigureS17.m'. 
+
+Load the following data for S17:
+> load('ChoicePerRTbin_hardCoh.mat');
+> load('RTandChoice_hardCoh.mat')
+> load('RTandChoice_allCoh.mat');
+> load('decoderbyRTBinsAllCoh.mat')
+
+S17A
+> plotDecodeByBin(allDecodes,1)
+
+S17B
+> plotDecodeByBin(allDecodes,7)
+
+S17C, D
+> ChoiceSignals(allFastHardCoh, allSlowHardCoh,justHardRTsigmap,allRTsigmap)
 
 
 
@@ -366,6 +419,7 @@ S20C
 
 
 ## Figure S21
+
 
 ## Figure S22
 Open 'plotFigure8.m'. Load Figure8data.mat from DryadData.
