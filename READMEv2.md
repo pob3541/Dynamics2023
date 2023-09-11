@@ -148,15 +148,28 @@ Running the following command in POA.m will initialize the data to recreate all 
 > r.plotDecoder()
 
 ## Figure S3
+Open 'plotFigureS3.m'.
+
+Running the following code will initialize the data to recreate all of the plots in Figure S3:
+kernel = 0.02;
+[ucFR, ucFRc, ucRT, tNew]=simulatePMdneurons('UnbiasedChoice',kernel,nNeurons,nTrials);
+[bcFR, bcFRc, bcRT, tNew]=simulatePMdneurons('BiasedChoice',kernel,nNeurons,nTrials);
+[rtFR, rtFRc, rtRT, tNew]=simulatePMdneurons('RT',kernel,nNeurons,nTrials);
 
 3A
-> simulatePMdneurons('UnbiasedChoice');
+> plotPCA(ucFRc, ucRT, tNew, nNeurons);
+> plotRegressionToRT(ucFR, ucRT, nTrials);
+> plotChoiceDecoding(ucFR, ucRT, nTrials);
 
 3B
-> simulatePMdneurons('BiasedChoice');
+> plotPCA(bcFRc, bcRT, tNew, nNeurons);
+> plotRegressionToRT(bcFR, bcRT, nTrials);
+> plotChoiceDecoding(bcFR, bcRT, nTrials);
 
 3C
-> simulatePMdneurons('RT');
+> plotPCA(rtFRc, rtRT, tNew, nNeurons);
+> plotRegressionToRT(rtFR, rtRT, nTrials);
+> plotChoiceDecoding(rtFR, rtRT, nTrials);
 
 ## Figure S4
 
@@ -419,6 +432,25 @@ S20C
 
 
 ## Figure S21
+Open 'plotFigureS3.m'.
+
+Running the following code will initialize the data to recreate all of the plots in Figure S21:
+nNeurons = 200;
+nTrials = 300;
+
+kernel = 0.03;
+[~, FRc_30, RT_30, tNew]=simulatePMdneurons('UnbiasedChoice',kernel,nNeurons,nTrials);
+V_30 = plotPCA(FRc_30, RT_30, tNew, nNeurons);
+
+kernel = 0.02;
+[~, FRc_20, RT_20, tNew, nNeurons]=simulatePMdneurons('UnbiasedChoice',kernel,nNeurons,nTrials);
+V_20 = plotPCA(FRc_20, RT_20, tNew, nNeurons);
+
+S21A
+plotSingleTrialPCA(FRc_30, tNew, nNeurons,V_30);
+
+S21B
+plotSingleTrialPCA(FRc_20, tNew, nNeurons,V_20);
 
 
 ## Figure S22
