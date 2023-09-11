@@ -25,7 +25,7 @@ function [hP,vP] = getAxesP(hLimits,...
 %     vLabel, 
 %     plotAxes, 
 %     TextLabels
-tickColor = [0.4 0.4 0.4];
+tickColor = [0 0 0];
 set(gca,'clipping','off');
 if ~exist('plotAxes','var')
     plotAxes = [1 1];
@@ -69,7 +69,7 @@ hP.tickLength = D;
 hP.axisLabelOffset = hLabOffset;
 hP.axisOffset = hAxisOffset;
 hP.axisLabel = hLabel;
-hP.axesColor = 'r';
+hP.axesColor = 'k';
 hP.fontSize = 12;
 hP.tickFontSize = 12;
 if plotAxes(1)
@@ -89,7 +89,7 @@ for d = 1:length(vTickLocations)
     vP.tickLabels{d} = sprintf('%g',vTickLocations(d));
     vP.tickColor{d} = tickColor;
 end
-vP.axesColor = 'r';
+vP.axesColor = 'k';
 vP.tickLocations = vTickLocations;
 vP.axisLabel = vLabel;
 vP.tickLength = D;

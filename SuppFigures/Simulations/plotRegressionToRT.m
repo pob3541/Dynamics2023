@@ -60,23 +60,23 @@ subplot(1,3,2)
 
 t = linspace(-before,after,length(R2));
 hold on
-plot(t, R2);
+plot(t, R2*100);
 
-plot(t, upper, 'k--');
-plot(t,lower, 'k--');
+plot(t, upper*100, 'k--');
+plot(t,lower*100, 'k--');
 
 
 regressTable = array2table([t' R2' upper lower],'VariableNames',{'time','R2','Upper','Lower'});
 
-ylimit = [yLower, yUpper];
+ylimit = [yLower, yUpper*100];
 
 
-plot([0,0], ylimit, 'color', [0.5 0.5 0.5], 'linestyle', '--', 'linewidth',5)
-title('Left trials RT regression', 'fontsize', 10)
+plot([0,0], ylimit, 'color', [0 0 0], 'linestyle', '--', 'linewidth',5)
+title('Left trials RT regression', 'fontsize', 20)
 
 
 xpatch = [-before -before 0 0];
-ypatch = [yLower yUpper yUpper yLower];
+ypatch = [yLower yUpper*100 yUpper*100 yLower];
 p1 = patch(xpatch, ypatch, 'cyan');
 p1.FaceAlpha = 0.2;
 p1.EdgeAlpha = 0;
@@ -85,15 +85,15 @@ p1.EdgeAlpha = 0;
 % cosmetic code
 hLimits = [-before,after];
 hTickLocations = -before:250:after;
-hLabOffset = 0.05;
+hLabOffset = 0.05*100;
 hAxisOffset = yLower-0.01;
 hLabel = "Time (ms)";
 
 vLimits = ylimit;
-vTickLocations = [yLower (yLower + yUpper)/2 yUpper];
+vTickLocations = [yLower (yLower + yUpper*100)/2 yUpper*100];
 vLabOffset = 150;
 vAxisOffset = -before-20;
-vLabel = "RT variance explained";
+vLabel = "RT variance explained (%)";
 
 plotAxis = [1 1];
 

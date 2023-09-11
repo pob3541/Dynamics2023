@@ -33,8 +33,8 @@ t = linspace(-before, after, length(accuracy_l));
 % plot fast trials decoding accuracy
 subplot(1,3,3); hold on
 
-yLower = 0.4;
-yUpper = 1;
+yLower = 0.4*100;
+yUpper = 1*100;
 
 xpatch = [yLower yLower -before -before];
 ypatch = [yLower yUpper yUpper yLower];
@@ -42,22 +42,18 @@ p1 = patch(xpatch, ypatch, 'cyan');
 p1.FaceAlpha = 0.2;
 p1.EdgeAlpha = 0;
 
-plot(t, accuracy_l,'linewidth', 3)
+plot(t, accuracy_l*100,'linewidth', 3)
 
-xlabel('Time (ms)')
-ylabel('Accuracy (%)')
-title('Prediction accuracy')
 
 % plot slow trials decoding accuracy
-plot(t, accuracy_g,'linewidth', 3)
+plot(t, accuracy_g*100,'linewidth', 3)
 
 
-yline(0.5, 'k--')
-xline(0, 'color', [0.5 0.5 0.5], 'linestyle', '--')
+yline(0.5*100, 'k--')
+xline(0, 'color', [0 0 0], 'linestyle', '--')
 
-xlabel('Time (ms)')
-ylabel('Accuracy (%)')
-title('Prediction accuracy')
+title('Prediction accuracy','FontSize',20)
+
 
 choiceTable = array2table([t' accuracy_l accuracy_g],'VariableNames',{'Time','Accuracy Fast','Accuracy Slow'});
 
@@ -66,8 +62,8 @@ choiceTable = array2table([t' accuracy_l accuracy_g],'VariableNames',{'Time','Ac
 % cosmetic code
 hLimits = [-before,after];
 hTickLocations = -before:250:after;
-hLabOffset = 0.05;
-hAxisOffset =  yLower - 0.01;
+hLabOffset = 0.05*100;
+hAxisOffset =  yLower - 0.01*100;
 hLabel = "Time (ms)";
 
 

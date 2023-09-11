@@ -1,45 +1,53 @@
+
+% cd into SuppFigures/Simulations
+
 % select a kernel size for spike convolution
 kernel = 0.02;
+nNeurons = 200;
+nTrials = 300;
 
-% S3A
-[FR, FRc, RT, tNew, nNeurons,nTrials]=simulatePMdneurons('UnbiasedChoice',kernel);
+% S3a
+[ucFR, ucFRc, ucRT, tNew]=simulatePMdneurons('UnbiasedChoice',kernel,nNeurons,nTrials);
 
-[~, ~, simData.PCA] = plotPCA(FRc, RT, tNew, nNeurons);
-[simData.R2] = plotRegressionToRT(FR, RT, nTrials);
-[simData.choice] = plotChoiceDecoding(FR, RT, nTrials);
+plotPCA(ucFRc, ucRT, tNew);
+plotRegressionToRT(ucFR, ucRT, nTrials);
+plotChoiceDecoding(ucFR, ucRT, nTrials);
 
-% S3B
-[FR, FRc, RT, tNew, nNeurons,nTrials]=simulatePMdneurons('BiasedChoice',kernel);
+% S3b
+[bcFR, bcFRc, bcRT, tNew]=simulatePMdneurons('BiasedChoice',kernel,nNeurons,nTrials);
 
-[~, ~, simData.PCA] = plotPCA(FRc, RT, tNew, nNeurons);
-[simData.R2] = plotRegressionToRT(FR, RT, nTrials);
-[simData.choice] = plotChoiceDecoding(FR, RT, nTrials);
+plotPCA(bcFRc, bcRT, tNew, nNeurons);
+plotRegressionToRT(bcFR, bcRT, nTrials);
+plotChoiceDecoding(bcFR, bcRT, nTrials);
 
-% S3C
-[FR, FRc, RT, tNew, nNeurons,nTrials]=simulatePMdneurons('RT',kernel);
+% S3b
+[rtFR, rtFRc, rtRT, tNew]=simulatePMdneurons('RT',kernel,nNeurons,nTrials);
 
-[~, ~, simData.PCA] = plotPCA(FRc, RT, tNew, nNeurons);
-[simData.R2] = plotRegressionToRT(FR, RT, nTrials);
-[simData.choice] = plotChoiceDecoding(FR, RT, nTrials);
+plotPCA(rtFRc, rtRT, tNew, nNeurons);
+plotRegressionToRT(rtFR, rtRT, nTrials);
+plotChoiceDecoding(rtFR, rtRT, nTrials);
 
 %% S21
 
-% S21A
-kernel = 0.02;
-[~, FRc, RT, tNew, nNeurons]=simulatePMdneurons('UnbiasedChoice',kernel);
+nNeurons = 200;
+nTrials = 300;
 
-[V, ~, simData.PCA] = plotPCA(FRc, RT, tNew, nNeurons);
-simTable.variance = plotSingleTrialPCA(FRc, tNew, nNeurons,V);
-hold on
-line(get(gca,'xlim'),0.9,'linestyle','--')
-
-
-
-% S21B
+% S21a
 kernel = 0.03;
-[~, FRc, RT, tNew, nNeurons]=simulatePMdneurons('UnbiasedChoice',kernel);
+[~, FRc_30, RT_30, tNew]=simulatePMdneurons('UnbiasedChoice',kernel,nNeurons,nTrials);
 
-[V, score, simData.PCA] = plotPCA(FRc, RT, tNew, nNeurons);
-simTable.variance = plotSingleTrialPCA(FRc, tNew, nNeurons,V);
-hold on
-line(get(gca,'xlim'),0.9,'linestyle','--')
+V_30 = plotPCA(FRc_30, RT_30, tNew, nNeurons);
+plotSingleTrialPCA(FRc_30, tNew, nNeurons,V_30);
+
+% S21b
+kernel = 0.02;
+[~, FRc_20, RT_20, tNew, nNeurons]=simulatePMdneurons('UnbiasedChoice',kernel,nNeurons,nTrials);
+
+V_20 = plotPCA(FRc_20, RT_20, tNew, nNeurons);
+plotSingleTrialPCA(FRc_20, tNew, nNeurons,V_20);
+
+
+
+
+
+
