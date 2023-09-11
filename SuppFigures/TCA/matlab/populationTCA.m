@@ -1,5 +1,5 @@
 %%
-
+function [modelToUse,choiceV,RTs,trainError,testError,st,st1,tAxis,whichT]=populationTCA(whichCV)
 monkeys = {'o','t'};
 r = [];
 cnt = 1;
@@ -12,7 +12,7 @@ whichT = 1:50:1200;
 verbose = false;
 
 
-whichCV = 'hard';
+%whichCV = 'hard';
 
 if whichCV == 'hard'
     cprintf('magenta','Using Hard Cross Validation');
@@ -135,6 +135,7 @@ for m = 1:2
     end
 end
 
+
 %%
 tAll = tAxis(whichT);
 classifydata = nanmean(Yproj(:,:,tAll < 0),3)';
@@ -161,30 +162,6 @@ end
 %%
 oldTestError = testError;
 
-%%
-testError(testError < 0) = NaN
-figure;
-subplot(221);
-hold on
-trainColor = [.1 0.4 0.5];
-testColor = [0.8 0.3 0];
-errorbar(1:4, nanmean(trainError*100), nanstd(trainError*100)./sqrt(sum(~isnan(trainError))),'o-','color',trainColor,'markerfacecolor',trainColor,'markeredgecolor','none','markersize',12);
-errorbar(1:4, nanmean(testError*100), nanstd(testError*100)./sqrt(sum(~isnan(testError))),'o-','color',testColor,'markerfacecolor',testColor,'markeredgecolor','none','markersize',12);
-set(gca,'visible','off');
-getAxesP([1 4],[1:4],'Rank',20,20,[0.2 .5]*100,[0.2:0.10:0.5]*100,'Variance (%)',0.65,0.85,[1 1]);
-axis square;
-axis tight;
-
-
-subplot(222);
-hold on
-errorbar(1:4, nanmean(st(:,:,1)*100), nanstd(st(:,:,1)*100)./sqrt(sum(~isnan(testError))),'o-','color',testColor,'markerfacecolor',testColor,'markeredgecolor','none','markersize',12);
-set(gca,'visible','off');
-getAxesP([1 4],[1:4],'Rank',5,5,[.05 0.4]*100,[0.05:0.10:0.4]*100,'Variance (%)',0.65,0.85,[1 1]);
-axis square;
-axis tight;
-base = nanmean(st1(:,1,1))*100;
-line([1 4],[base base],'color','k','linestyle','--','linewidth',1)
 
 %%
 M1 = nanmean(trainError);
@@ -200,33 +177,6 @@ TCAtable.TCAregress =  array2table([(1:4)' M1' M1e'],'VariableNames',{'Rank','R2
 
 %%
 
-figure;
-model = modelToUse;
-fullData = full(model);
-Xticks = {[1:5:size(fullData,1)],[tAxis(whichT)],[1:100:size(fullData,3)]};
-[Info, dataV] = viz_ktensor(model, ...
-    'Plottype', {'bar', 'line', 'scatter'}, ...
-    'Modetitles', {'neurons', 'time', 'trials'},'PlotColors',{[0.6 0.6 0.6],[0 0 0],[0.8 0.8 0.8]});
-
-
-set(Info.FactorAxes(2,4),'Xtick',[1:4:length(whichT)],'XTickLabel',tAxis(whichT(1:4:length(whichT))),'box','off');
-ax = Info.FactorAxes(2,4);
-axes(ax);
-drawLines(13);
-
-fNames = {'Neurons','Time','Trials'};
-
-vNames = {'ID1','D1','ID2','D2','ID3','D3','ID4','D4'};
-for nF = 1:3
-    currD = [dataV(nF).Factors];
-    TCAtable.(fNames{nF}) =  array2table(horzcat(currD.V), 'VariableNames',vNames);
-end
-
-
-
-%%
-figure
-
 sId = 52;
 [forTCA,nL, nR] = getTCAdata(sId, 'monkey',monkey,'reMake',0);
 forRRR = cat(3, forTCA.dataStruct.RawData.Left, forTCA.dataStruct.RawData.Right);
@@ -235,112 +185,39 @@ nSquares = [forTCA.dataStruct.Info.Left.nSquares'; forTCA.dataStruct.Info.Right.
 nSquares = abs([nSquares-(225-nSquares)]./225);
 choiceV = [ones(1, forTCA.nL) 2*ones(1,forTCA.nR)];
 tAxis = forTCA.dataStruct.RawData.timeAxis;
-
-
-%%
-figure;
-X1 = modelToUse.u;
-Vl = choiceV' == 1 & RTs < 350;
-Vl = find(Vl);
-Vl = Vl(1:1:min(length(Vl),50));
-Vr = choiceV' == 1 & RTs > 600;
-Vr = find(Vr);
-Vr = Vr(1:1:min(length(Vr),50));
-
-ix = [2 3 4];
-Y1 = X1{3}(:,ix(1)).*X1{2}(:,ix(1))';
-Y2 = X1{3}(:,ix(2)).*X1{2}(:,ix(2))';
-Y3 = X1{3}(:,ix(3)).*X1{2}(:,ix(3))';
-
-
-
-tId = 1:size(Y1,2);
-hold on
-tAll = tAxis(whichT);
-bigD = [];
-
-for i=1:length(Vl)
-    currT = find(tAll*1000 >= RTs(Vl(i)),1,'first');
-    if isempty(currT) | currT > length(tAll)
-        currT = length(tAll);
-    end
-    plot3(Y1(Vl(i),currT)', Y2(Vl(i),currT)', Y3(Vl(i),currT)', 'bd','markerfacecolor','b','markeredgecolor','none','markersize',12);
-    hold on;
-    currT = currT + 4;
-    plot3(Y1(Vl(i),:)', Y2(Vl(i),:)', Y3(Vl(i),:)', 'b-');
-
-    currD1 = [Y1(Vl(i),:); Y2(Vl(i),:); Y3(Vl(i),:)]';
-    currD1(:,end+1) = 1;
-    currD1(:,end+1) = Vl(i);
-    bigD = [bigD; currD1];
 end
 
 
 
-tAll = tAxis(whichT);
-for i=1:length(Vr)
-    currT = find(tAll*1000 >= RTs(Vr(i)),1,'first');
-    if isempty(currT) | currT > length(tAll)
-        currT = length(tAll);
-        hold on;
-        plot3(Y1(Vr(i),1:currT)', Y2(Vr(i),1:currT)', Y3(Vr(i),1:currT)', 'm-');
-    else
-        plot3(Y1(Vr(i),1:currT)', Y2(Vr(i),1:currT)', Y3(Vr(i),1:currT)', 'm-');
-        plot3(Y1(Vr(i),currT)', Y2(Vr(i),currT)', Y3(Vr(i),currT)', 'mo','markerfacecolor','m','markeredgecolor','none','markersize',12);
-    end
-    currD1 = [Y1(Vr(i),:); Y2(Vr(i),:); Y3(Vr(i),:)]';
-    currD1(:,end+1) = 2;
-    currD1(:,end+1) = Vr(i);
-    bigD = [bigD; currD1];
-
-end
-
-TCAtable.Trajectories = array2table(bigD,'VariableNames',{'X','Y','Z','Type','ID'});
-
-tAll = find(tAll >= 0,1,'first');
-plot3(Y1(Vl,tAll)', Y2(Vl,tAll)', Y3(Vl,tAll)', 'bo','markerfacecolor','b','markeredgecolor','none','markersize',12);
-hold on
-plot3(Y1(Vr,tAll)', Y2(Vr,tAll)', Y3(Vr,tAll)','mo','markerfacecolor','m','markeredgecolor','none','markersize',12);
-
-xlabel('S_2');
-ylabel('S_3');
-zlabel('S_4');
-
-ThreeVector(gca);
-
-ax = gca;
-set(ax,'CameraPosition', [0.0592 0.0475 0.0455]);
-set(ax,'CameraTarget', [0.0055 0.0040 0.0100]);
-
-%%
-
-
-
-if whichCV == 'hard'
-    cprintf('magenta','Using Hard Cross Validation');
-
-        cprintf('yellow','Using soft Cross Validation');
-    fileName = '/net/home/chand/code/Dynamics2023/SourceData/FigS12.xls'
-    cprintf('yellow','\nFigure S12');
-
-
-    writetable(TCAtable.TCA, fileName,'FileType','spreadsheet','Sheet','Fig.S12d-bottom');
-    writetable(TCAtable.TCAregress, fileName,'FileType','spreadsheet','Sheet','Fig.S12e-bottom');
-else
-    cprintf('yellow','Using soft Cross Validation');
-    fileName = '/net/home/chand/code/Dynamics2023/SourceData/FigS12.xls'
-    cprintf('yellow','\nFigure S12');
-    
-    
-    writetable(TCAtable.Neurons, fileName,'FileType','spreadsheet','Sheet','Fig.S12b-left');
-    writetable(TCAtable.Time, fileName,'FileType','spreadsheet','Sheet','Fig.S12b-middle');
-    writetable(TCAtable.Trials, fileName,'FileType','spreadsheet','Sheet','Fig.S12b-right');
-   
-    writetable(TCAtable.Trajectories, fileName,'FileType','spreadsheet','Sheet','Fig.S12c');
-   
-
-    writetable(TCAtable.TCA, fileName,'FileType','spreadsheet','Sheet','Fig.S12d-top');
-    writetable(TCAtable.TCAregress, fileName,'FileType','spreadsheet','Sheet','Fig.S12e-top');
-
-
-end
+% %%
+% 
+% 
+% 
+% if whichCV == 'hard'
+%     cprintf('magenta','Using Hard Cross Validation');
+% 
+%         cprintf('yellow','Using soft Cross Validation');
+%     fileName = '/net/home/chand/code/Dynamics2023/SourceData/FigS12.xls'
+%     cprintf('yellow','\nFigure S12');
+% 
+% 
+%     writetable(TCAtable.TCA, fileName,'FileType','spreadsheet','Sheet','Fig.S12d-bottom');
+%     writetable(TCAtable.TCAregress, fileName,'FileType','spreadsheet','Sheet','Fig.S12e-bottom');
+% else
+%     cprintf('yellow','Using soft Cross Validation');
+%     fileName = '/net/home/chand/code/Dynamics2023/SourceData/FigS12.xls'
+%     cprintf('yellow','\nFigure S12');
+% 
+% 
+%     writetable(TCAtable.Neurons, fileName,'FileType','spreadsheet','Sheet','Fig.S12b-left');
+%     writetable(TCAtable.Time, fileName,'FileType','spreadsheet','Sheet','Fig.S12b-middle');
+%     writetable(TCAtable.Trials, fileName,'FileType','spreadsheet','Sheet','Fig.S12b-right');
+% 
+%     writetable(TCAtable.Trajectories, fileName,'FileType','spreadsheet','Sheet','Fig.S12c');
+% 
+% 
+%     writetable(TCAtable.TCA, fileName,'FileType','spreadsheet','Sheet','Fig.S12d-top');
+%     writetable(TCAtable.TCAregress, fileName,'FileType','spreadsheet','Sheet','Fig.S12e-top');
+% 
+% 
+% end

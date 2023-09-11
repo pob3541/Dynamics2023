@@ -1,4 +1,4 @@
-function simulatePMdneurons(whichType)
+function [FR, FRc, RT, tNew, nNeurons,nTrials]=simulatePMdneurons(whichType,kernel)
 
 %clear; close all; clc
 time = [0:1:200]/100;
@@ -21,7 +21,7 @@ tStart = 0.6;
 % Latency
 tLatency = 0.1;
 CISmult = 15;
-kernel = 0.02;
+%kernel = 0.02;
 
 %whichType = 'RT';
 %assignopts(who,varargin);
@@ -139,30 +139,5 @@ nNeurons = size(FR,1);
 FRc = [];
 FRc(1:2:nNeurons,:,:,:) = FR(1:2:nNeurons,:,[2 1],:);
 FRc(2:2:nNeurons,:,:,:) = FR(2:2:nNeurons,:,[1 2],:);
-
-
-%% Plot the average FR of the neurons.
-figure;
-plot(squeeze(nanmean(FR(:,:,1,:),2))','k-');
-hold on;
-plot(squeeze(nanmean(FR(:,:,2,:),2))','m--');
-
-
-%% Now create Binned Firing rates.
-[V, score, simData.PCA] = plotPCA(FRc, RT, tNew, nNeurons);
-
-%% plot variance explained by average vs single trial pca
-simTable.variance = plotSingleTrialPCA(FRc, tNew, nNeurons,V);
-hold on
-line(get(gca,'xlim'),0.9,'linestyle','--')
-
-%% Now do regression to RT
-[simData.R2] = plotRegressionToRT(FR, RT, nTrials);
-
-
-%% decoding choice
-[simData.choice] = plotChoiceDecoding(FR, RT, nTrials);
-
-% print('-painters','-depsc',['~/Desktop/', 'simPMd_RT','.eps'], '-r300');
 
 end

@@ -211,7 +211,9 @@ return
 % create the average accuracy matrix over 51 sessions
 aveAccuracy = [];
 % load the data created by code above
-a = load('decoderbyRTBins.mat').classifier;
+%a = load('decoderbyRTBins.mat').classifier;
+a = classifier;
+
 
 
 
@@ -269,7 +271,7 @@ end
 
 
 % cosmetic code
-addpath('./LabCode');
+%addpath('./LabCode');
 
 ylimit = 0.4;
 yUp = 0.9;

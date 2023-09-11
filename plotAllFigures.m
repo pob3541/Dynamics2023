@@ -42,15 +42,7 @@ edit plotFigure8.m
 % in order to obtain the data set. 
 
 %% Figure S3
-
-% S3A
-simulatePMdneurons('UnbiasedChoice');
-
-% S3B
-simulatePMdneurons('BiasedChoice');
-
-% S3C
-simulatePMdneurons('RT');
+edit plotFigureS3.m
 
 %% Figure S4
 edit plotFigure3.m
@@ -111,13 +103,11 @@ edit plotFigure8.m
 
 
 %% Figure S20
-
 edit plotFigure8.m
 
 
-
 %% Figure S21
-edit plotFigureS21.m
+edit plotFigureS3.m
 
 
 %% Figure S22

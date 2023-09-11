@@ -1,18 +1,9 @@
-clear all; close all; clc
 
-% add path 
-addpath('./LabCode');
-% load data
-classifier = load('~/code/tianwangrotation/JulPaperFigures/classifierData/classifier500SE.mat').classifier(8:end);
-regression = load('~/code/tianwangrotation/JulPaperFigures/regressionData/regression500S.mat').regression(8:end);
-
-load regressions.mat
-
+function plotRegScatters(regressions)
 
 classifier = regressions.classifier;
 regression = regressions.linreg;
 
-%%
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % %%% Regression Plots
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -31,7 +22,6 @@ end
 meanR2 = mean(r2,2);
 
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % calculate p-value 
 trueMean = mean(r2(1:30,:),1);
@@ -41,23 +31,22 @@ alpha = 0.05/length(regression);
 % plot 99 percentile shuffleMean 
 subplot(1,2,1); hold on
 
-
-line([0 0.4],[0 0.4],'color', 'k', 'linewidth', 5, 'linestyle', '--');
-plot(prctile(shuffledMean,99), trueMean, 'mo', 'markersize', 15, 'markerfacecolor', 'm');
-title('Population Summary', 'fontsize', 30)
+line([0 0.4*100],[0 0.4*100],'color', 'k', 'linewidth', 5, 'linestyle', '--');
+plot(prctile(shuffledMean,99)*100, trueMean*100, 'mo', 'markersize', 15, 'markerfacecolor', 'm','MarkerEdgeColor',[0.1 0.1 0.1]);
+%title('Population Summary', 'fontsize', 30)
 
 % cosmetic code
-hLimits = [0 0.4];
-hTickLocations = 0:0.1:0.4;
-hLabOffset = 0.02;
-hAxisOffset =  -0.01;
-hLabel = "Shuffled R^{2}"; 
+hLimits = [0 0.4*100];
+hTickLocations = 0:0.1*100:0.4*100;
+hLabOffset = 0.02*100;
+hAxisOffset =  -0.01*100;
+hLabel = "Shuffled R^{2} (%)"; 
 
-vLimits = [0 0.4];
-vTickLocations = 0:0.1:0.4;
-vLabOffset = 0.04;
-vAxisOffset =  -0.01;
-vLabel = "Real R^{2}"; 
+vLimits = [0 0.4]*100;
+vTickLocations = 0:0.1*100:0.4*100;
+vLabOffset = 0.04*100;
+vAxisOffset =  -0.01*100;
+vLabel = "Real R^{2} (%)"; 
 
 plotAxis = [1 1];
 
@@ -78,16 +67,14 @@ axis square;
 axis tight;
 
 
-% export to excel source data
-r2_data = [prctile(shuffledMean,99); trueMean];
+% % export to excel source data
+% r2_data = [prctile(shuffledMean,99); trueMean];
 
 
 %%
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % %%% Choice Plots
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -109,22 +96,22 @@ shuffledMean = squeeze(mean(shuffledAcc(:,1:30,:),2));
 % plot 99 percentile shuffleMean 
 subplot(1,2,2); hold on
 
-line([0.45 0.6],[0.45 0.6],'color','k', 'linewidth', 5, 'linestyle', '--');
-plot(prctile(shuffledMean,99), trueMean, 'mo', 'markerfacecolor', 'm', 'markersize', 15);
-title('Population Summary', 'fontsize', 30)
+line([0.45 0.6]*100,[0.45 0.6]*100,'color','k', 'linewidth', 5, 'linestyle', '--');
+plot(prctile(shuffledMean,99)*100, trueMean*100, 'mo', 'markerfacecolor', 'm', 'markersize', 15,'MarkerEdgeColor',[0.1 0.1 0.1]);
+%title('Population Summary', 'fontsize', 30)
 
 % cosmetic code
-hLimits = [0.45 0.6];
-hTickLocations = 0.45:0.05:0.6;
-hLabOffset = 0.02;
-hAxisOffset =  0.45 - 0.005;
-hLabel = "Shuffled Accuracy"; 
+hLimits = [0.45 0.6]*100;
+hTickLocations = 0.45*100:0.05*100:0.6*100;
+hLabOffset = 0.01*100;
+hAxisOffset =  0.45*100 - 0.005*100;
+hLabel = "Shuffled Accuracy (%)"; 
 
-vLimits = [0.45 0.6];
-vTickLocations = 0.45:0.05:0.6;
-vLabOffset = 0.028;
-vAxisOffset =  0.45 - 0.005;
-vLabel = "Real Accuracy"; 
+vLimits = [0.45 0.6]*100;
+vTickLocations = 0.45*100:0.05*100:0.6*100;
+vLabOffset = 0.02*100;
+vAxisOffset =  0.45*100 - 0.005*100;
+vLabel = "Real Accuracy (%)"; 
 
 plotAxis = [1 1];
 
@@ -149,13 +136,10 @@ axis tight;
 set(gcf,'Units','inches','Position',[10 10 40 20])
 set(gca,'LooseInset',get(gca,'TightInset'));
 
-% export to excel source data
-acc_data = [prctile(shuffledMean,99); trueMean];
+% % export to excel source data
+% acc_data = [prctile(shuffledMean,99); trueMean];
+end
 
-% save figure
-% set(gcf,'PaperUnits','inches','PaperPosition',[10 10 40 20])
-% print -djpeg ./resultFigure/RT.jpg -r300
-% print('-painters','-depsc',['./resultFigure/', 'Combined7','.eps'], '-r300');
 
 
 
