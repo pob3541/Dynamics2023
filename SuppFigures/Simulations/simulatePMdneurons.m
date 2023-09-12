@@ -1,10 +1,7 @@
-function [FR, FRc, RT, tNew]=simulatePMdneurons(whichType,kernel,nNeurons,nTrials)
+function [FR, FRc, RT, tNew,nNeuronsOut]=simulatePMdneurons(whichType,kernel,nNeurons,nTrials)
 
-%clear; close all; clc
 time = [0:1:200]/100;
-% nNeurons = 200;
-% 
-% nTrials = 300;
+
 
 FRsim = [];
 binSize = 0.05;
@@ -124,8 +121,8 @@ parfor_progress(0);
 %% Combine neurons into one big FR matrix.
 
 % Creates decreased neurons
-nNeurons2 = size(FRsim2,1);
-FRtemp = max(10-FRsim2(1:nNeurons2/2,:,:,:),0);
+nNeuronsOut = size(FRsim2,1);
+FRtemp = max(10-FRsim2(1:nNeuronsOut/2,:,:,:),0);
 FR = [];
 FR = cat(1, FRsim2, FRtemp);
 FR = cat(1, FR, FR2);
@@ -137,7 +134,7 @@ tNew = t(100:end) - tStart;
 
 nNeurons2 = size(FR,1);
 FRc = [];
-FRc(1:2:nNeurons2,:,:,:) = FR(1:2:nNeurons2,:,[2 1],:);
-FRc(2:2:nNeurons2,:,:,:) = FR(2:2:nNeurons2,:,[1 2],:);
+FRc(1:2:nNeuronsOut,:,:,:) = FR(1:2:nNeuronsOut,:,[2 1],:);
+FRc(2:2:nNeuronsOut,:,:,:) = FR(2:2:nNeuronsOut,:,[1 2],:);
 
 end
