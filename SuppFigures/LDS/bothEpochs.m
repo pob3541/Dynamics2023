@@ -1,9 +1,9 @@
+
+function bothEpochs(files)
+
 %%
-files = dir('/net/derived/tianwang/LFADSdata/*.mat')
 step = 100;
 
-
-%%
 fileList = [1:length(files)];
 
 
@@ -70,28 +70,28 @@ for timeperiods = 1:2
             [b,bi,c,ci,stSimple] = regress(RTv', [C(trialIds)' ones(size(RTv,2),1)]);
             
             
-            if n==40
-                figure(40)
-                
-                subplot(2,1,timeperiods);
-                cla;
-                tOrig = tV(whichTs);
-                tPred = tOrig(2:end);
-                plot(tOrig, squeeze(origData(1:10:end,:,1))','-','color',[0.2 .8 0.4 0.4]);
-                hold on;
-                plot(tPred, squeeze(predData(1:10:end,:,1))','-','color',[0.8 0 0.8 0.4],'linewidth',2)
-                
-                
-                %         [rv(end+1),pv] = corr(RTv', nanmean(predData(:,tV < 0,1),2),'type','spearman');
-                tLims = [tOrig(1) tPred(end)];
-                set(gca,'visible','off');
-                set(gcf,'renderer','painters');
-                getAxesP(tLims, tLims(1):.2:tLims(end), 'Time (s)', -110, 2, [-100 250], [-100:50:250],'X_1',tLims(1)-0.1, 0.1);
-                axis tight;
-                
-                %         plot(tPred, rv.^2,'r-');
-                %         drawnow;
-            end
+            % if n==40
+            %     figure(40)
+            % 
+            %     subplot(2,1,timeperiods);
+            %     cla;
+            %     tOrig = tV(whichTs);
+            %     tPred = tOrig(2:end);
+            %     plot(tOrig, squeeze(origData(1:10:end,:,1))','-','color',[0.2 .8 0.4 0.4]);
+            %     hold on;
+            %     plot(tPred, squeeze(predData(1:10:end,:,1))','-','color',[0.8 0 0.8 0.4],'linewidth',2)
+            % 
+            % 
+            %     %         [rv(end+1),pv] = corr(RTv', nanmean(predData(:,tV < 0,1),2),'type','spearman');
+            %     tLims = [tOrig(1) tPred(end)];
+            %     set(gca,'visible','off');
+            %     set(gcf,'renderer','painters');
+            %     getAxesP(tLims, tLims(1):.2:tLims(end), 'Time (s)', -110, 2, [-100 250], [-100:50:250],'X_1',tLims(1)-0.1, 0.1);
+            %     axis tight;
+            % 
+            %     %         plot(tPred, rv.^2,'r-');
+            %     %         drawnow;
+            % end
             
             Xs = [];
             Xall = [];
@@ -148,18 +148,18 @@ for n=1:2
     R2shuffle = dualPeriod(n).R2shuffle;
     
     
-    subplot(2,2, 2*n-1);
+    subplot(2,2, n);
     errorbar(dims, nanmean(R2actual), nanstd(R2actual)./sqrt(size(Rall,1)),'mo-','markersize',8, 'markeredgecolor','none','markerfacecolor','m')
     hold on
     errorbar(dims, nanmean(R2shuffle), nanstd(R2shuffle)./sqrt(size(Rall,1)),'ko-','markersize',8,  'markeredgecolor','none','markerfacecolor','k')
     ax = gca; ax.Visible = 'off';
     ax.XLim = [2 10];
     hold on;
-    getAxesP([2 10],[2:2:10],'Dimensions',18,1,[20 50],20+[0:10:30],'Variance (%)',1,1,[1 1]);
+    getAxesP([2 10], 2:2:10,3,18,'Dimensionality',[20 50],20+[0:10:30],1,1,'Cross-validated R^2 (%)')
     axis square;
     axis tight;
     
-    subplot(2,2,2*n);
+    subplot(2,2,n+2);
     Rall = dualPeriod(n).DynamicsToRT;
     Rorig = dualPeriod(n).FullToRT;
     
@@ -172,7 +172,9 @@ for n=1:2
     line(ax.XLim, nanmean(Rorig(:,2)*100)*ones(1,2), 'color','k','linestyle','--');
     
     hold on;
-    getAxesP([2 10],[2:2:10],'Dimensions',-1,1,[0 40],[0:10:40],'Variance (%)',1,1,[1 1]);
+    % getAxesP([2 10],[2:2:10],'Dimensions',-1,1,[0 40],[0:10:40],'Variance (%)',1,1,[1 1]);
+    getAxesP([2 10], 2:2:10,3,-2,'Dimensionality',[0 40],[0:10:40],1,1,'RT R^2 (%)',[1 1])
+
     axis square;
     axis tight;
     
@@ -188,33 +190,35 @@ for n=1:2
 end
 %%
 
-tV = tAxis(1:step:end);
-whichTv = tV > -0.05;
-tOrig = tV(whichTv);
-tPred = tOrig(2:end);
+% tV = tAxis(1:step:end);
+% whichTv = tV > -0.05;
+% tOrig = tV(whichTv);
+% tPred = tOrig(2:end);
+% 
+% [R1, A1, origDataX1, predDataX1, RTv] = summarizeLDS(X1(whichTv,:,:),[4],1,RTs, tV);
+% R1
+% 
+% %%
+% figure;
+% subplot(221);
+% plot(tOrig, squeeze(origDataX1(2:10:end,:,1))','g-')
+% hold on;
+% plot(tPred, squeeze(predDataX1(2:10:end,:,1))','m-')
+% 
+% subplot(222);
+% 
+% 
+% Xref = corr(RTv', nanmean(origDataX1(:,:,1),2),'type','spearman')
+% plot(corr(RTv', origDataX1(:,:,1)),'r-');
+% Xorig = corr(RTv', origDataX1(:,:,1))';
+% hold on;
+% plot(Xall','k-');
 
-[R1, A1, origDataX1, predDataX1, RTv] = summarizeLDS(X1(whichTv,:,:),[4],1,RTs, tV);
-R1
+end
 
-%%
-figure;
-subplot(221);
-plot(tOrig, squeeze(origDataX1(2:10:end,:,1))','g-')
-hold on;
-plot(tPred, squeeze(predDataX1(2:10:end,:,1))','m-')
-
-subplot(222);
-
-
-Xref = corr(RTv', nanmean(origDataX1(:,:,1),2),'type','spearman')
-plot(corr(RTv', origDataX1(:,:,1)),'r-');
-Xorig = corr(RTv', origDataX1(:,:,1))';
-hold on;
-plot(Xall','k-');
-
-%%
-cprintf('yellow','\nFigure S13');
-baseDir = '/net/home/chand/code/Dynamics2023/'
-fileName = fullfile(baseDir, 'SourceData/FigS13.xls');
-writetable(ldsTable.pre,fileName,'FileType','spreadsheet','Sheet','fig.S13b');
-writetable(ldsTable.post,fileName,'FileType','spreadsheet','Sheet','fig.S13c');
+% %%
+% cprintf('yellow','\nFigure S13');
+% baseDir = '/net/home/chand/code/Dynamics2023/'
+% fileName = fullfile(baseDir, 'SourceData/FigS13.xls');
+% writetable(ldsTable.pre,fileName,'FileType','spreadsheet','Sheet','fig.S13b');
+% writetable(ldsTable.post,fileName,'FileType','spreadsheet','Sheet','fig.S13c');

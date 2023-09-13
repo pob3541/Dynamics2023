@@ -49,7 +49,8 @@ Q3=ceil(mean(quantile(accPer,0.75)));
 yTicks=[ymin, Q1,ymed,Q3, ymax];
 xLims=[1, perc];
 xTicks= 1:perc;
-getAxesP(xLims, xTicks,1, ymin-(ymin/5), 'Part of session', yLims, yTicks, 0.3, 0.5, 'Error Rate (%)',[1 1]);
+hold on;
+getAxesP(xLims, xTicks,1, ymin-(ymin/5), 'Part of session', yLims, yTicks, 0.5, 0.5, 'Error Rate (%)',[1 1]);
 axis square;
 axis tight;
 

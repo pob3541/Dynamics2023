@@ -7,14 +7,14 @@
 
 
 % load data
-close all; clear; clc;
+%close all; clear; clc;
 
 % lfadsR = load('~/Desktop/lfadPM.mat').pm;
 % raw = load('~/Desktop/14October2013_Data.mat').forGPFA;
 
 
-%%
-folder = dir('~/Desktop/multiSessionLFADS/*.mat');
+function lfadsSingleTrialVarianceExplained(folder)
+%folder = dir('~/Desktop/multiSessionLFADS/*.mat');
 
 allR2 = [];
 allR2Shuffle = [];
@@ -172,13 +172,13 @@ hLimits = [0 1];
 hTickLocations = 0:0.5:1;
 hLabOffset = 0.05;
 hAxisOffset = yLower-0.01;
-hLabel = "Time: ms"; 
+hLabel = "Shuffled correlation coefficient (r)"; 
 
 vLimits = ylimit;
 vTickLocations = [yLower (yLower + yUpper)/2 yUpper];
 vLabOffset = 0.1;
 vAxisOffset = 0;
-vLabel = "R^{2}"; 
+vLabel = "Correlation coefficient (r)"; 
 
 plotAxis = [1 1];
 
@@ -197,6 +197,7 @@ set(gcf, 'Color', 'w');
 axis off; 
 axis square;
 axis tight;
+end
 
 % print('-painters','-depsc',['~/Desktop/', 'lfadsRatesR2PSTH','.eps'], '-r300');
 

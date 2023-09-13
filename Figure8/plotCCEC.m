@@ -23,7 +23,7 @@ yTicks=ceil(linspace(ymin-3,ymax+3,5));
 tg = getTextLabel(1:4,{'C','C','E','C'},{'g','g','r','g'});
 xLims=[1, 4];
 xTicks= [];
-getAxesP(xLims, xTicks,2, min(mean(RT,'omitnan'))-10, 'Trial Outcome', yLims, yTicks, 0.2, 0.8, 'RT',[1 1],tg);
+getAxesP(xLims, xTicks,5, min(mean(RT,'omitnan'))-10, 'Trial Outcome', yLims, yTicks, 0.4, 0.8, 'RT',[1 1],tg);
 axis square;
 axis tight;
 end

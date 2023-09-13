@@ -1,8 +1,7 @@
-clear; close all; clc
-time = [0:1:200]/100;
-nNeurons = 200;
+function [FR, FRc, RT, tNew,nNeuronsOut]=simulatePMdneurons(whichType,kernel,nNeurons,nTrials)
 
-nTrials = 300;
+time = [0:1:200]/100;
+
 
 FRsim = [];
 binSize = 0.05;
@@ -19,9 +18,10 @@ tStart = 0.6;
 % Latency
 tLatency = 0.1;
 CISmult = 15;
-kernel = 0.02;
+%kernel = 0.02;
 
-whichType = 'RT';
+%whichType = 'RT';
+%assignopts(who,varargin);
 
 cprintf('cyan',sprintf('-----------------------------------------------\n Simulating %d Neurons from %s, %d trials per neuron \n', nNeurons, whichType, nTrials));
 
@@ -121,8 +121,8 @@ parfor_progress(0);
 %% Combine neurons into one big FR matrix.
 
 % Creates decreased neurons
-nNeurons = size(FRsim2,1);
-FRtemp = max(10-FRsim2(1:nNeurons/2,:,:,:),0);
+nNeuronsOut = size(FRsim2,1);
+FRtemp = max(10-FRsim2(1:nNeuronsOut/2,:,:,:),0);
 FR = [];
 FR = cat(1, FRsim2, FRtemp);
 FR = cat(1, FR, FR2);
@@ -132,32 +132,9 @@ FR = FR(:,:,:,100:end);
 tNew = t(100:end) - tStart;
 
 
-nNeurons = size(FR,1);
+nNeurons2 = size(FR,1);
 FRc = [];
-FRc(1:2:nNeurons,:,:,:) = FR(1:2:nNeurons,:,[2 1],:);
-FRc(2:2:nNeurons,:,:,:) = FR(2:2:nNeurons,:,[1 2],:);
+FRc(1:2:nNeuronsOut,:,:,:) = FR(1:2:nNeuronsOut,:,[2 1],:);
+FRc(2:2:nNeuronsOut,:,:,:) = FR(2:2:nNeuronsOut,:,[1 2],:);
 
-
-%% Plot the average FR of the neurons.
-figure;
-plot(squeeze(nanmean(FR(:,:,1,:),2))','k-');
-hold on;
-plot(squeeze(nanmean(FR(:,:,2,:),2))','m--');
-
-
-%% Now create Binned Firing rates.
-[V, score, simData.PCA] = plotPCA(FRc, RT, tNew, nNeurons);
-
-%% plot variance explained by average vs single trial pca
-simTable.variance = plotSingleTrialPCA(FRc, tNew, nNeurons,V);
-hold on
-line(get(gca,'xlim'),0.9,'linestyle','--')
-
-%% Now do regression to RT
-[simData.R2] = plotRegressionToRT(FR, RT, nTrials);
-
-
-%% decoding choice
-[simData.choice] = plotChoiceDecoding(FR, RT, nTrials);
-
-% print('-painters','-depsc',['~/Desktop/', 'simPMd_RT','.eps'], '-r300');
+end

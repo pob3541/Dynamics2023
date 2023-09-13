@@ -1,12 +1,9 @@
 % plot LFADS trajectories with color representing previous trial results 
+function plotLFADS_previousResult(regressions,Trials)
 
-
-clear all; close all; clc
-
-factors = load('~/Desktop/lfadsResults.mat').factors;
-raw = load('~/Desktop/14October2013_Data.mat').forGPFA;
-data = raw.dat;
-fullData = load('~/Desktop/14October2013_Tiberius.mat').Trials;
+factors = regressions.lfadsR.factors;
+data = regressions.raw.dat;
+fullData =Trials;
 
 test = reshape(factors, [size(factors,1), size(factors,2)*size(factors,3)])';
 [coeff, score, latent] = pca(test);
@@ -15,7 +12,7 @@ for thi = 1 : size(factors, 3)
     orthF(:,:,thi) = (score( (1:180) + (thi-1)*180, :))';
 end
 
-%% 
+%%
 
 [x,idx]=sort([data.GlobalTrialId]);
 
@@ -171,5 +168,5 @@ rotate3d on;
 ax = gca;
 ax.SortMethod = 'childorder';
 
-
+end
 

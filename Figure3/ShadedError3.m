@@ -1,4 +1,4 @@
-function [Pa,Li,t] = ShadedError(varargin)
+function [Pa,Li,t] = ShadedError3(varargin)
 % JACKKNIFE plots jackknife errorbars around a given curve
 %
 %     [Pa,Li,t] = JACKKNIFE(x,y,L,U,'r','g')
@@ -103,10 +103,14 @@ switch(nargin)
         LineColor =  varargin{5};
         PatchColor = varargin{6};
 end
-
+% x = x(~isnan(E));
+% y = y(~isnan(E));
+% L = L(~isnan(L));
+% U = U(~isnan(U));
 
 Xcoords = [x x(end:-1:1)];
 Ycoords = [U L(end:-1:1)];
+% lw=.01;
 
 % remove indices with nans as they don't play nice w/ patch
 keepIndex = ~isnan(Xcoords) & ~isnan(Ycoords);
@@ -115,10 +119,8 @@ Ycoords = Ycoords(keepIndex);
 
 Pa = patch(Xcoords,Ycoords',PatchColor,'FaceAlpha',.4);
 set(Pa,'linestyle','none');
-
-hold on;
-Li = plot(x,y,'color',LineColor,'linewidth',2);
-
+% hold on;
+% Li = plot(x,y,'color',LineColor,'linewidth',lw);
 
 
 

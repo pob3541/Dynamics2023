@@ -429,7 +429,7 @@ classdef PMDdecoding < handle
             areaColor=[243 169 114]./255;
             AvgR2 =D.reg.AvgR2'*100;
             semAvgR2=std(AvgR2)/sqrt(size(AvgR2,1));
-            ShadedError(t,mean(AvgR2),semAvgR2,lineColor,areaColor);
+            ShadedError6(t,mean(AvgR2),semAvgR2,lineColor,areaColor);
             
             D.dataTable.Fig6e = table(t', mean(AvgR2)', semAvgR2',...
                 'VariableNames',{'Time', 'AvgR2','SEM'});
@@ -559,7 +559,7 @@ classdef PMDdecoding < handle
             areaColor=[243 169 114]./255;
             AvgAcc =D.dec.AvgAcc'*100;
             semAvgAcc=std(AvgAcc)/sqrt(size(AvgAcc,1));
-            ShadedError(t,mean(AvgAcc),semAvgAcc,lineColor,areaColor);
+            ShadedError6(t,mean(AvgAcc),semAvgAcc,lineColor,areaColor);
             
             D.dataTable.Fig6f = table(t', mean(AvgAcc)', semAvgAcc',...
                 'VariableNames',{'Time','Average','SEM'});

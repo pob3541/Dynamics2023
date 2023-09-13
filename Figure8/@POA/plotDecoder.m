@@ -15,7 +15,7 @@ U = y + err;
 
 hold on;
 plot([-600 1200],[50 50],'--k','LineWidth',2)
-ShadedError(xlin,y,err)
+ShadedError8(xlin,y,err)
 
 
 

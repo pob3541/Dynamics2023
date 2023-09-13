@@ -1,7 +1,7 @@
 % Created by Tian Wang on Dec.29th 2022: function to predict choice
 
 
-function [accuracy] = predictChoice1(alignState, RT, decision, options, thresholdSide)
+function [accuracy] = predictChoice(alignState, RT, decision, options, thresholdSide)
 
 
 rtThreshold = options.rtThreshold;

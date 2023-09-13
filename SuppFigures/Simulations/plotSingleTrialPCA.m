@@ -25,28 +25,27 @@ aveVar = cumsum(Vave)./sum(Vave);
 trialVar = cumsum(Vsingle)./sum(Vsingle);
 
 figure; hold on
-plot(aveVar(1:10), '.-', 'MarkerSize', 20);
-plot(trialVar(1:10), '.-', 'markersize', 20);
-yline(0.9, 'k--')
+tAvg=plot(aveVar(1:10)*100, '.-', 'MarkerSize', 20);
+tVar=plot(trialVar(1:10)*100, '.-', 'markersize', 20);
 
 
 varTable = array2table([(1:10)' aveVar(1:10) trialVar(1:10)],'VariableNames',{'Dim','Averaged','Single'});
     
 
-ylimit = [0 1];
+ylimit = [0 1]*100;
 yLower = ylimit(1);
 yUpper = ylimit(2);
 hLimits = [1,10];
 hTickLocations = 1:1:10;
-hLabOffset = 0.05;
-hAxisOffset = yLower-0.01;
-hLabel = "PC";
+hLabOffset = 0.05*100;
+hAxisOffset = yLower-0.01*100;
+hLabel = "Dimensions";
 
 vLimits = ylimit;
 vTickLocations = [yLower (yLower + yUpper)/2 yUpper];
 vLabOffset = 0.8;
 vAxisOffset = hLimits(1)-0.2;
-vLabel = "R^{2}";
+vLabel = "Variance explained (%)";
 
 plotAxis = [1 1];
 
@@ -60,6 +59,11 @@ plotAxis = [1 1];
     vLabOffset,...
     vAxisOffset,...
     vLabel, plotAxis);
+
+hold on
+line([1 10],[90 90],'LineStyle','--','Color','k')
+legend([tAvg,tVar],{'trial-averaged','single-trial'},'Box','Off','location','east','FontSize',12)
+
 
 set(gcf, 'Color', 'w');
 axis off;

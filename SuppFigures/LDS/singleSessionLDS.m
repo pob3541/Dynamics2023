@@ -1,17 +1,15 @@
 %%
 % summarizeLDSsingle is identical to summarizeLDS except we do every other
-% trial. Only for the stats do we hold out one trial and do fit on all
-% other trials. It is a tad lazy just to change one variable but it is
-% simple and easy.
+% trial. Only for the stats do we hold out one trial and fit on all
+% other trials.
 
-files = dir('/net/derived/tianwang/LFADSdata/*.mat')
-step = 100;
+%files = dir('/home/eyebeast/Code/DryadData/DryadDataSupp/LFADSdata/*.mat');
+function singleSessionLDS(files)
 
-%%
 sessionId = 40;
 step = 100;
 titles = {'Before Checkerboard Onset', 'After Checkerboard Onset'};
-loc = [-.6 0];
+loc = [-590 10];
 
 for timeperiods = 1:2
 
@@ -57,7 +55,7 @@ for timeperiods = 1:2
 
     subplot(2,1,timeperiods);
     cla;
-    tOrig = tV(whichTs);
+    tOrig = tV(whichTs)*1000;
     tPred = tOrig(2:end);
     
     Xo = squeeze(origData(1:10:end,:,1));
@@ -70,10 +68,10 @@ for timeperiods = 1:2
     tLims = [tOrig(1) tPred(end)];
     set(gca,'visible','off');
     set(gcf,'renderer','painters');
-    getAxesP(tLims, tLims(1):.2:tLims(end), 'Time (s)', -110, 2, [-100 250], [-100:50:250],'X_1',tLims(1)-0.1, 0.1);
-    axis tight;
+    getAxesP(tLims, tLims(1):200:tLims(end),30,-110,'Time (ms)',[-100 250], -100:50:250,60,tLims(1),'X_1')
 
-    
+    axis square
+
     text(loc(timeperiods), 250, titles{timeperiods}); 
 
     dataV = [Xo Yp];
@@ -88,9 +86,9 @@ for timeperiods = 1:2
     ldsTable.(sprintf('data%d',timeperiods)) = array2table(dataV, 'VariableNames',vNames);
 end
 
-
-%%
-baseDir = '/net/home/chand/code/Dynamics2023/'
-fileName = fullfile(baseDir, 'SourceData/FigS13.xls');
-writetable(ldsTable.data1,fileName,'FileType','spreadsheet','Sheet','fig.S13a-left');
-writetable(ldsTable.data2,fileName,'FileType','spreadsheet','Sheet','fig.S13a-right');
+end
+% %%
+% baseDir = '/net/home/chand/code/Dynamics2023/'
+% fileName = fullfile(baseDir, 'SourceData/FigS13.xls');
+% writetable(ldsTable.data1,fileName,'FileType','spreadsheet','Sheet','fig.S13a-left');
+% writetable(ldsTable.data2,fileName,'FileType','spreadsheet','Sheet','fig.S13a-right');
