@@ -46,7 +46,7 @@ classdef PMddynamics < handle
             
             [r.signalplusnoise] = r.calculatePCs(M.rt.FR(:,:,r.metaData.neuronIdx,:));
             [r.noise] = r.calculatePCs(M.rt.FRnoise(:,:,r.metaData.neuronIdx,:));
-            [r.project] = r.calculatePCs(M.rt.FR(:,:,r.metaData.neuronIdx,:),'outSpace',M.rt.outSpace,'projectToOutcome','true');
+          %  [r.project] = r.calculatePCs(M.rt.FR(:,:,r.metaData.neuronIdx,:),'outSpace',M.rt.outSpace,'projectToOutcome','true');
 
 
  

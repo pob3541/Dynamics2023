@@ -12,7 +12,7 @@ whichT = 1:50:1200;
 verbose = false;
 
 
-whichCV = 'hard';
+whichCV = 'soft';
 
 if whichCV == 'hard'
     cprintf('magenta','Using Hard Cross Validation');
@@ -21,7 +21,7 @@ else
 end
 
 rng(20);
-for m = 1:2
+for m = 2
 
 
     monkey = monkeys{m};
@@ -37,7 +37,7 @@ for m = 1:2
             whichSess = setdiff(52:75, 57);
 
             [Sessions, remoteDir, remoteScratch] = validSessions('PMd');
-
+            whichSess = 52;
     end
 
 

@@ -4,6 +4,7 @@ function [dataTable] = plotComponents(r, varargin)
 % Chand, 30 Mar 2022
 TrajIn = r.signalplusnoise.TrajIn;
 TrajOut = r.signalplusnoise.TrajOut;
+tData = r.signalplusnoise.tData;
 project=0;
 assignopts(who,varargin)
 cValues = r.metaData.condColors;
@@ -23,7 +24,7 @@ V = r.signalplusnoise.varExplained;
 MinMax = [];
 
 
-tData = r.signalplusnoise.tData;
+
 bigData = [];
 bigDist = [];
 

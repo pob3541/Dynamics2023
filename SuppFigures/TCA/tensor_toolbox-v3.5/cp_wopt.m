@@ -96,10 +96,8 @@ if do_zeroing
     Zdata(double(W)==0) = 0;
     Z = tensor(Zdata,size(Z));
     ztime = toc;
-    if verbosity
-        fprintf('Time for zeroing out masked entries of data tensor is %.2e seconds.\n', ztime);
-        fprintf('(If zeroing is done in preprocessing, set ''skip_zeroing'' to true.)\n');
-    end
+    fprintf('Time for zeroing out masked entries of data tensor is %.2e seconds.\n', ztime);
+    fprintf('(If zeroing is done in preprocessing, set ''skip_zeroing'' to true.)\n');
 end
 
 %% Initialization
